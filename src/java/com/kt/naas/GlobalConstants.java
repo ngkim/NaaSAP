@@ -7,9 +7,14 @@ public interface GlobalConstants {
 	public final static long	NULL_LONG = -1L;
 	
 	public final static boolean OP_DEMO_POTN = false;
-	public final static boolean OP_DEMO_CLOUD = false;
+	public final static boolean OP_DEMO_CLOUD = true;
 	public final static boolean OP_DEMO_PREMISE_DJ = false;
 	public final static boolean OP_DEMO_PREMISE_WM = false;
+	
+	
+	public final static String URL_CLOUD_SDN_API = "http://210.183.241.184:5000/";
+	public final static String URL_PREMISE_SDN_API_WM = "http://211.224.204.157:8080/APIServer/psdnRetrieveNWList";
+	public final static String URL_PREMISE_SDN_API_DJ = "http://211.224.204.137:8080/NaaS/api.retrievePremiseSDNConnection";
 	
 	public final static int HTTP_GET = 0x11;
 	public final static int HTTP_POST = 0x12;

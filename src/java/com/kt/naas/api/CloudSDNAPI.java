@@ -24,10 +24,13 @@ public class CloudSDNAPI extends SDNAPI {
 			+ "</VirtualNetworkList> </ResponseInfo>";
 
 	public CloudSDNAPI(RequestMessage request, ResponseMessage response,
-			String url) {
-		super(request, response, url);
+			String apiServer) {
+		super(request, response, apiServer);
+		
+		this.setUrlRetrieveNetwork(apiServer + "/RetrievedCloudSDNTenantNEtworkList");
+		this.setUrlCreateNetwork(apiServer + "/createCloudSDNConnection");		
 	}
-
+	
 	public RequestInfoCloudSDN recvRequestfromWeb() {
 		String dcid = null;
 		String tenantname = null;
@@ -98,9 +101,9 @@ public class CloudSDNAPI extends SDNAPI {
 		return xml;
 
 	}
-
-	// get response from API server
-	public String getResponseXML(String requestXml) {
+	
+	// request and get response from API server
+	public String getResponseXML(String apiUrl, String requestXml){
 		String xml = "";
 
 		HttpResponse res = null;
@@ -109,7 +112,7 @@ public class CloudSDNAPI extends SDNAPI {
 				Thread.sleep(1000);
 				xml = wmResponseXml;
 			} else {
-				res = apiUtil.requestToAPIServer(url,
+				res = apiUtil.requestToAPIServer(apiUrl,
 						GlobalConstants.HTTP_POST, requestXml);
 				xml = apiUtil.getResponseXml(res);
 			}
@@ -118,7 +121,6 @@ public class CloudSDNAPI extends SDNAPI {
 		}
 
 		return xml;
-
 	}
 
 	public ResponseCloudNWList xmlToResponse(String responseXml) {

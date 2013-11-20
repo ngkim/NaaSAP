@@ -8,8 +8,11 @@ public class SDNAPI {
 	protected RequestMessage request;
 	protected ResponseMessage response;
 	
-	protected String url;
 	protected RestAPIUtils apiUtil;
+	
+	protected String url;
+	protected String urlCreateNetwork;
+	protected String urlRetrieveNetwork;
 
 	public SDNAPI(RequestMessage request, ResponseMessage response,
 			String url) {
@@ -18,6 +21,22 @@ public class SDNAPI {
 		this.url = url;
 
 		apiUtil = new RestAPIUtils();
+	}
+
+	public String getUrlCreateNetwork() {
+		return urlCreateNetwork;
+	}
+
+	public void setUrlCreateNetwork(String urlCreateNetwork) {
+		this.urlCreateNetwork = urlCreateNetwork;
+	}
+
+	public String getUrlRetrieveNetwork() {
+		return urlRetrieveNetwork;
+	}
+
+	public void setUrlRetrieveNetwork(String urlRetrieveNetwork) {
+		this.urlRetrieveNetwork = urlRetrieveNetwork;
 	}
 
 }

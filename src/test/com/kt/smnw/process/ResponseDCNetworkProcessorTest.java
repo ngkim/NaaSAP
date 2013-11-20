@@ -20,6 +20,7 @@ import com.kt.naas.domain.FieldBuffer;
 import com.kt.naas.message.RequestMessage;
 import com.kt.naas.process.RequestDCNetworkProcessor;
 import com.kt.naas.util.RequestClient;
+import com.kt.naas.util.RestAPIUtils;
 import com.kt.naas.xml.CloudVNID;
 import com.kt.naas.xml.CloudVirtualNetwork;
 import com.kt.naas.xml.CloudVirtualNetworkList;
@@ -74,6 +75,7 @@ public class ResponseDCNetworkProcessorTest {
 	@Test
 	public void testRequestPRNetworkProcessor() {
 		RequestDCNetworkProcessor process = new RequestDCNetworkProcessor();
+		RestAPIUtils api = new RestAPIUtils();
 		
 		ResponseCloudNWList nwList = null; 
 		try {
@@ -111,7 +113,7 @@ public class ResponseDCNetworkProcessorTest {
 			System.out.println(getRequestXML(nwList));
 			
 			String responseXml = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?> <ResponseInfo>   <ReturnCode>200</ReturnCode>   <ReturnCodeDescription>Success</ReturnCodeDescription>   <TenantId>0be2a9fc8a7040d8963c9f67f521bdab</TenantId>   <TenantName>cloudsdn</TenantName>   <VirtualNetworkList>	<VirtualNetwork>	<VirtualNetworkName>net_sdn</VirtualNetworkName>		<VirtualNetworkID>d2f1b6e4-8721-4b66-a64a-6728d39862c2</VirtualNetworkID>		<Subnet>10.1.1.0/24</Subnet>	</VirtualNetwork>   <VirtualNetwork>	<VirtualNetworkName>net_sdn1</VirtualNetworkName>		<VirtualNetworkID>d1f1b6e4-8721-4b66-a64a-6728d39862c2</VirtualNetworkID>		<Subnet>10.1.2.0/24</Subnet>	</VirtualNetwork>   </VirtualNetworkList> </ResponseInfo>";
-			nwList = process.getResponseObject(responseXml);
+			nwList = api.getResponseObject(responseXml, new ResponseCloudNWList());
 			printResponseCloudNWList(nwList);
 			
 		} catch (Exception e) {
