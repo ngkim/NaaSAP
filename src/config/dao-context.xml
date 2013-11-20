@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:aop="http://www.springframework.org/schema/aop"
+         xmlns:p="http://www.springframework.org/schema/p"
+         xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+           
+
+    <bean id="vmIpDao" class="com.kt.naas.db.VmIpDao">
+		<property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean> 
+	
+	<bean id="serverDao" class="com.kt.naas.db.ServerDao">
+		<property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean> 
+	
+	<!-- ngkim -->
+	<bean id="domainNetworkDao" class="com.kt.naas.db.DomainNetworkDao">
+		<property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean>
+	
+	<bean id="domainNetworkEquipDao" class="com.kt.naas.db.DomainNetworkEquipDao">
+		<property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean> 
+	
+	<bean id="domainNetworkPortDao" class="com.kt.naas.db.DomainNetworkPortDao">
+		<property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean> 
+	
+	<bean id="domainNetworkLinkDao" class="com.kt.naas.db.DomainNetworkLinkDao">
+		<property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean> 
+	
+	<bean id="progressStatusDao" class="com.kt.naas.db.ProgressStatusDao">
+		<property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean>  
+	
+	<bean id="networkServiceDao" class="com.kt.naas.db.NetworkServiceDao">
+		<property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean>
+	
+	<bean id="dcNetworkServiceDao" class="com.kt.naas.db.DCNetworkServiceDao">
+		<property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean>
+	
+	<bean id="premiseNetworkServiceDao" class="com.kt.naas.db.PremiseNetworkServiceDao">
+		<property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean>
+	
+	<bean id="transportNetworkServiceDao" class="com.kt.naas.db.TransportNetworkServiceDao">
+		<property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean>
+	
+	<bean id="vmDao" class="com.kt.naas.db.VmDao">
+		<property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean> 
+	
+	<bean id="vmKeyDao" class="com.kt.naas.db.VmKeyDao">
+		<property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean>
+	
+	
+	
+	
+	
+	
+	<bean id="codeDao" class="com.kt.naas.db.CodeDao">
+		<property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean> 
+
+    <bean id="propertyDao" class="com.kt.naas.db.PropertyDao">
+		<property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean> 
+
+    <bean id="emsDao" class="com.kt.naas.db.EmsDao">
+		<property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean>  
+	
+    <bean id="snLocationDao" class="com.kt.naas.db.SnLocationDao">
+		<property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean>  
+	
+    <bean id="equipDao" class="com.kt.naas.db.EquipDao">
+		<property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean>	 
+
+	<bean id="snmpSettingDao" class="com.kt.naas.db.SnmpSettingDao">
+		<property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean>
+
+</beans>

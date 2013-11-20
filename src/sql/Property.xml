@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Properties">
+	<typeAlias alias="property" type="java.util.HashMap"/>
+	
+	<resultMap class="property" id="result">
+		<result property="propertyName" column="propertyname"/>
+		<result property="propertyValue" column="propertyvalue"/>
+	</resultMap>
+	
+    <select id="getAllProperties" resultClass="java.util.HashMap" resultMap="result">
+    	SELECT 
+    		PROPERTYNAME, PROPERTYVALUE
+    	FROM
+    		T_PROPERTY
+    	ORDER BY PROPERTYNAME ASC
+    </select>
+
+    <select id="getProperty" parameterClass="java.lang.String" resultClass="java.util.HashMap" resultMap="result">
+    	SELECT 
+    		PROPERTYNAME, PROPERTYVALUE
+    	FROM
+    		T_PROPERTY
+    	WHERE
+    		PROPERTYNAME = #propertyName#
+    </select>
+
+    <insert id="insertProperty" parameterClass="java.util.HashMap">
+    	INSERT INTO T_PROPERTY(
+    		PROPERTYNAME, PROPERTYVALUE
+    		)
+    	VALUES 
+    		(#propertyName#, #propertyValue#)
+    </insert>
+    
+    <update id="updateProperty" parameterClass="java.util.HashMap">
+    	UPDATE T_PROPERTY
+    	SET
+    		PROPERTYVALUE = #propertyValue#
+    	WHERE
+    		PROPERTYNAME = #propertyName#
+    </update>
+    
+    <delete id="deleteProperty" parameterClass="java.lang.String">
+        DELETE FROM T_PROPERTY
+        WHERE PROPERTYNAME = #propertyName#
+    </delete>      
+</sqlMap>

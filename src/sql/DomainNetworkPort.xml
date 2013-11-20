@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="DomainNetworkPort">    
+
+    <insert id="insertDomainNetworkPort" parameterClass="com.kt.naas.domain.DomainNetworkPort">
+		INSERT INTO T_DOMAIN_NETWORK_PORT(
+		    PORTID, NEID, PORTNAME, PORTTYPE)
+		VALUES 
+			(#portid#, #neid#, #portname#, #porttype#)
+    </insert> 
+    
+    
+    <select id="selectDomainNetworkPort" resultClass="com.kt.naas.domain.DomainNetworkPort">
+    	SELECT 
+    		PORTID, NEID, PORTNAME, PORTTYPE
+    	FROM
+    		T_DOMAIN_NETWORK_PORT
+    </select>
+    
+	<select id="selectDomainNetworkPortById" resultClass="com.kt.naas.domain.DomainNetworkPort" parameterClass="java.util.HashMap">
+		SELECT
+			PORTID, NEID, PORTNAME, PORTTYPE
+		FROM
+			T_DOMAIN_NETWORK_PORT
+		WHERE
+			PORTID = #portid# and NEID	= #neid#
+	</select> 
+    
+    <update id="updateDomainNetworkPort" parameterClass="com.kt.naas.domain.DomainNetworkPort">
+    	UPDATE T_DOMAIN_NETWORK_PORT
+    	SET
+    		PORTNAME = #portname#,
+			PORTTYPE = #porttype#
+		WHERE
+    		PORTID = #portid# and NEID	= #neid#
+    </update>
+
+    <delete id="deleteDomainNetworkPortById" parameterClass="java.util.HashMap">
+    <![CDATA[
+        DELETE FROM T_DOMAIN_NETWORK_PORT
+        WHERE 
+			PORTID = #portid# and NEID	= #neid#
+    ]]>
+    </delete>    
+    
+    
+    
+   
+</sqlMap>

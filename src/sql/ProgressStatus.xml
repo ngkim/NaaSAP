@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ProgressStatus">    
+    
+
+
+    <insert id="insertProgressStatus" parameterClass="com.kt.naas.domain.ProgressStatus">
+		INSERT INTO T_PROCESS(
+		    CUSTID, CURRENTCNT, TOTALCNT, PROCESSMSG)
+		VALUES 
+			(#custid#, #currentcnt#, #totalcnt#, #processmsg#)
+    </insert> 
+    
+    
+    <select id="selectProgressStatus" resultClass="com.kt.naas.domain.ProgressStatus">
+    	SELECT 
+    		CUSTID, CURRENTCNT, TOTALCNT, PROCESSMSG
+    	FROM
+    		T_PROCESS
+    </select>
+    
+	<select id="selectProgressStatusById" resultClass="com.kt.naas.domain.ProgressStatus" parameterClass="java.util.HashMap">
+		SELECT
+			CUSTID, CURRENTCNT, TOTALCNT, PROCESSMSG
+		FROM
+			T_PROCESS
+		WHERE
+			CUSTID	= #custid#
+	</select> 
+    
+    <update id="updateProgressStatus" parameterClass="com.kt.naas.domain.ProgressStatus">
+    	UPDATE T_PROCESS
+    	SET
+    		CURRENTCNT = #currentcnt#,
+			TOTALCNT = #totalcnt#,
+			PROCESSMSG = #processmsg#			
+		WHERE
+    		CUSTID	= #custid#
+    </update>
+
+    <delete id="deleteProgressStatusById" parameterClass="java.util.HashMap">
+    <![CDATA[
+        DELETE FROM T_PROCESS
+        WHERE 
+			CUSTID	= #custid#
+    ]]>
+    </delete>    
+   
+</sqlMap>

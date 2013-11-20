@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="DomainNetwork">    
+    
+
+
+    <insert id="insertDomainNetwork" parameterClass="com.kt.naas.domain.DomainNetwork">
+		INSERT INTO T_DOMAIN_NETWORK(
+		    DNID, DNNAME, DNTYPE, ROOTYN, CONNTYPE)
+		VALUES 
+			(#dnid#, #dnname#, #dntype#, #rootyn#, #conntype#)
+    </insert> 
+    
+    
+    <select id="selectDomainNetwork" resultClass="com.kt.naas.domain.DomainNetwork">
+    	SELECT 
+    		DNID, DNNAME, DNTYPE, ROOTYN, CONNTYPE
+    	FROM
+    		T_DOMAIN_NETWORK
+    </select>
+    
+	<select id="selectDomainNetworkById" resultClass="com.kt.naas.domain.DomainNetwork" parameterClass="java.util.HashMap">
+		SELECT
+			DNID, DNNAME, DNTYPE, ROOTYN, CONNTYPE
+		FROM
+			T_DOMAIN_NETWORK
+		WHERE
+			DNID	= #dnid#
+	</select> 
+    
+    <update id="updateDomainNetwork" parameterClass="com.kt.naas.domain.DomainNetwork">
+    	UPDATE T_DOMAIN_NETWORK
+    	SET
+    		DNNAME = #dnname#,
+			DNTYPE = #dntype#,
+			ROOTYN = #rootyn#, 
+			CONNTYPE = #conntype#
+		WHERE
+    		DNID	= #dnid#
+    </update>
+
+    <delete id="deleteDomainNetworkById" parameterClass="java.util.HashMap">
+    <![CDATA[
+        DELETE FROM T_DOMAIN_NETWORK
+        WHERE 
+			DNID	= #dnid#
+    ]]>
+    </delete>    
+    
+    
+    
+   
+</sqlMap>

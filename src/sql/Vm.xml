@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Vm">    
+    
+
+	<!-- Vm -->
+    <insert id="insertVm" parameterClass="com.kt.naas.domain.Vm">
+		INSERT INTO T_VM(
+		    SERVERID, SERVERNAME, CUSTID, VMID, VMNAME, LOCALIP, PUBLICIP, 
+		    IMAGEID, FLAVORID, KEY, CLID, STATUS, LOCATION, DEPLOYSTATUS, DEPLOYTYPE, RELAY, DESCRIPTION, REGDATE, UPDATETIME)
+		VALUES 
+			(#serverid#, #servername#, #custid#, #vmid#, #vmname#, #localip#, #publicip#, #imageid#, #flavorid#, #key#, #clid#, #status#, #location#, #deploystatus#, #deploytype#, #relay#, #description#, NOW(), NOW())
+    </insert> 
+    
+	<select id="selectVmById" resultClass="com.kt.naas.domain.Vm" parameterClass="java.util.HashMap">
+		SELECT
+			SERVERID, SERVERNAME, CUSTID, VMID, VMNAME, LOCALIP, PUBLICIP, 
+		    IMAGEID, FLAVORID, KEY, CLID, STATUS, LOWER(LOCATION), DEPLOYSTATUS, DEPLOYTYPE, RELAY, DESCRIPTION
+		FROM
+			T_VM
+		WHERE
+			SERVERID = #serverid#
+			AND CUSTID = #custid#
+			AND VMID = #vmid#
+	</select> 
+    
+    <update id="updateVm" parameterClass="com.kt.naas.domain.Vm">
+    	UPDATE T_VM
+    	SET
+			SERVERNAME = #servername#, 
+			VMNAME = #vmname#, 
+			LOCALIP = #localip#, 
+			PUBLICIP = #publicip#, 
+		    IMAGEID = #imageid#, 
+		    FLAVORID = #flavorid#, 
+		    KEY = #key#, 
+		    CLID = #clid#, 
+		    STATUS = #status#, 
+		    LOCATION = #location#, 
+		    DEPLOYSTATUS = #deploystatus#, 
+		    DEPLOYTYPE = #deploytype#, 
+		    DESCRIPTION = #description#, 
+			UPDATETIME = NOW()
+    	WHERE
+    		SERVERID = #serverid#
+			AND CUSTID = #custid#
+			AND VMID = #vmid#
+    </update>
+    
+    
+    
+    <update id="updateVmStatusById" parameterClass="java.util.HashMap">
+    	UPDATE T_VM
+    	SET
+			
+		    STATUS = #status#, 
+		    LOCATION = #location#, 
+		    DEPLOYSTATUS = #deploystatus#, 
+		    DEPLOYTYPE = #deploytype#, 
+		    RELAY	= #relay#
+    	WHERE
+    		SERVERID = #serverid#
+			AND CUSTID = #custid#
+			AND VMID = #vmid#
+    </update>
+
+    <delete id="deleteVmById" parameterClass="java.util.HashMap">
+    <![CDATA[
+        DELETE FROM T_VM
+        WHERE 
+			SERVERID = #serverid#
+			AND CUSTID = #custid#
+			AND VMID = #vmid#
+    ]]>
+    </delete>
+    
+    
+    
+    
+    <!-- VmConfigInfo -->
+    <insert id="insertVmConfigInfo" parameterClass="com.kt.naas.domain.VmConfigInfo">
+		INSERT INTO T_VMCONFIGINFO(
+		    SERVERID, CUSTID, VMID, VMNAME, ORIGINID, ORIGINIP, 
+		    DOMAIN, RELAYID, RELAYIP, EDGEID, EDGEIP, LOCATION, REGDATE, UPDATETIME)
+		VALUES 
+			(#serverid#, #custid#, #vmid#, #vmname#, #originid#, #originip#, #domain#, #relayid#, #relayip#, #edgeid#, #edgeip#, #location#, NOW(), NOW())
+    </insert> 
+    
+	<select id="selectVmConfigInfoById" resultClass="com.kt.naas.domain.VmConfigInfo" parameterClass="java.util.HashMap">
+		SELECT
+			SERVERID, CUSTID, VMID, VMNAME, ORIGINID, ORIGINIP, 
+		    DOMAIN, RELAYID, RELAYIP, EDGEID, EDGEIP, LOCATION
+		FROM
+			T_VMCONFIGINFO
+		WHERE
+			SERVERID = #serverid#
+			AND CUSTID = #custid#
+			AND VMID = #vmid#
+	</select> 
+    
+    <update id="updateVmConfigInfo" parameterClass="com.kt.naas.domain.VmConfigInfo">
+    	UPDATE T_VMCONFIGINFO
+    	SET
+			VMNAME = #vmname#, 
+			ORIGINID = #originid#, 
+			ORIGINIP = #originip#, 
+		    DOMAIN = #relayid#, 
+		    RELAYID = #relayid#, 
+		    RELAYIP = #relayip#, 
+		    EDGEID = #edgeid#, 
+		    EDGEIP = #edgeip#, 
+		    LOCATION = #location#, 
+			UPDATETIME = NOW()
+    	WHERE
+    		SERVERID = #serverid#
+			AND CUSTID = #custid#
+			AND VMID = #vmid#
+    </update>
+
+    <delete id="deleteVmConfigInfoById" parameterClass="java.util.HashMap">
+    <![CDATA[
+        DELETE FROM T_VMCONFIGINFO
+        WHERE 
+			SERVERID = #serverid#
+			AND CUSTID = #custid#
+			AND VMID = #vmid#
+    ]]>
+    </delete> 
+    
+    
+    
+   
+</sqlMap>

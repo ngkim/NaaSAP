@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+ 
+<sqlMap namespace="NetworkServicePremise">    
+
+    <insert id="insertNetworkServicePremise" parameterClass="com.kt.naas.domain.NetworkServicePremise">
+		INSERT INTO T_NW_SERVICE_PREMISE(
+		    CPSVCID, STATUS, RESULTMSG, NWNAME, CONNID, SVCID, TENANTID, TENANTNAME, SUBNET, 
+		    TRANSEQUIPID, TRANSEQUIPPPORTID,
+		    AGGRID, AGGRNAME, AGGRIP, AGGRUPPORTID, AGGRDOWNPORTID, AGGRBW, AGGRVLANID,
+		    L2ID, L2NAME, L2IP, L2UPPORTID, L2DOWNPORTID, L2BW, L2VLANID, 
+		    ENDPOINTID, ENDPOINTNAME, ENDPOINTIP, ENDPOINTUPPORTID, ENDPOINTDOWNPORTID, ENDPOINTBW, ENDPOINTVLANID)
+		VALUES 
+			(#cpsvcid#, #status#, #resultmsg#, #nwname#, #connid#, #svcid#, #tenantid#, #tenantname#, #subnet#, 
+			#transequipid#, #transequipportid#, 
+			#aggrid#, #aggrname#, #aggrip#, #aggrupportid#, #aggrdownportid#, #aggrbw#, #aggrvlanid#,
+			#l2id#, #l2name#, #l2ip#, #l2upportid#, #l2downportid#, #l2bw#, #l2vlanid#, 
+			#endpointid#, #endpointname#, #endpointip#, #endpointupportid#, #endpointdownportid#, #endpointbw#, #endpointvlanid#)
+    </insert> 
+    
+    
+    <select id="selectNetworkServicePremise" resultClass="com.kt.naas.domain.NetworkServicePremise">
+    	SELECT 
+    		CPSVCID, STATUS, RESULTMSG, NWNAME, CONNID, SVCID, TENANTID, TENANTNAME, SUBNET, 
+		    TRANSEQUIPID, TRANSEQUIPPPORTID,
+		    AGGRID, AGGRNAME, AGGRIP, AGGRUPPORTID, AGGRDOWNPORTID, AGGRBW, AGGRVLANID,
+		    L2ID, L2NAME, L2IP, L2UPPORTID, L2DOWNPORTID, L2BW, L2VLANID, 
+		    ENDPOINTID, ENDPOINTNAME, ENDPOINTIP, ENDPOINTUPPORTID, ENDPOINTDOWNPORTID, ENDPOINTBW, ENDPOINTVLANID
+    	FROM
+    		T_NW_SERVICE_PREMISE
+    </select>
+    
+	<select id="selectNetworkServicePremiseById" resultClass="com.kt.naas.domain.NetworkServicePremise" parameterClass="java.util.HashMap">
+		SELECT
+			STATUS, RESULTMSG, NWNAME, TENANTID, TENANTNAME, SUBNET, 
+		    TRANSEQUIPID, TRANSEQUIPPPORTID,
+		    AGGRID, AGGRNAME, AGGRIP, AGGRUPPORTID, AGGRDOWNPORTID, AGGRBW, AGGRVLANID,
+		    L2ID, L2NAME, L2IP, L2UPPORTID, L2DOWNPORTID, L2BW, L2VLANID, 
+		    ENDPOINTID, ENDPOINTNAME, ENDPOINTIP, ENDPOINTUPPORTID, ENDPOINTDOWNPORTID, ENDPOINTBW, ENDPOINTVLANID
+		FROM
+			T_NW_SERVICE_PREMISE
+		WHERE
+			CPSVCID = #cpsvcid# and CONNID = #connid# and SVCID	= #svcid#
+	</select> 
+    
+    <update id="updateNetworkServicePremise" parameterClass="com.kt.naas.domain.NetworkServicePremise">
+    	UPDATE T_NW_SERVICE_PREMISE
+    	SET
+    		STATUS = #status#, 
+    		RESULTMSG = #resultmsg#, 
+    		NWNAME = #nwname#, 
+    		TENANTID = #tenantid#, 
+    		TENANTNAME = #tenantname#, 
+    		SUBNET = #subnet#, 
+    		TRANSEQUIPID = #transequipid#, 
+    		TRANSEQUIPPPORTID = #transequipportid#,
+    		AGGRID = #aggrid#, 
+    		AGGRNAME = #aggrname#, 
+    		AGGRIP = #aggrip#, 
+    		AGGRUPPORTID = #aggrupportid#, 
+    		AGGRDOWNPORTID = #aggrdownportid#, 
+    		AGGRBW = #aggrbw#, 
+    		AGGRVLANID = #aggrvlanid#, 
+    		L2ID = #l2id#, 
+    		L2NAME = #l2name#, 
+    		L2IP = #l2ip#, 
+    		L2UPPORTID = #l2upportid#, 
+    		L2DOWNPORTID = #l2downportid#, 
+    		L2BW = #l2bw#, 
+    		L2VLANID = #l2vlanid#, 
+    		ENDPOINTID = #endpointid#, 
+    		ENDPOINTNAME = #endpointname#, 
+    		ENDPOINTIP = #endpointip#, 
+    		ENDPOINTUPPORTID = #endpointupportid#, 
+    		ENDPOINTDOWNPORTID = #endpointdownportid#, 
+    		ENDPOINTBW = #endpointbw#, 
+    		ENDPOINTVLANID = #endpointvlanid#
+		WHERE
+    		CPSVCID = #cpsvcid# and CONNID = #connid# and SVCID	= #svcid#
+    </update>
+
+    <delete id="deleteNetworkServicePremiseById" parameterClass="java.util.HashMap">
+    <![CDATA[
+        DELETE FROM T_NW_SERVICE_PREMISE
+        WHERE 
+			CPSVCID = #cpsvcid# and CONNID = #connid# and SVCID	= #svcid#
+    ]]>
+    </delete>    
+    
+    
+    
+   
+</sqlMap>

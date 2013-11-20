@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="DCNetworkService">    
+	
+    <insert id="insertDCNetworkService" parameterClass="com.kt.naas.domain.DCNetworkService">
+		INSERT INTO T_NW_SERVICE_DC(		
+		    DCSVCID, CONNID, SVCID, NWNAME, SUBNET, TENANTID, TENANTNAME, TRANSEQUIPID, TRANSEQUIPPORTID, 
+		    L2ID, L2NAME, L2IP, L2UPPORTID, L2DOWNPORTID, L2BW, L2VLANID,
+		    TORID, TORNAME, TORIP, TORUPPORTID, TORDOWNPORTID, TORBW, TORVLANID,
+		    STATUS, RESULTMSG, DCID)
+		VALUES 
+			(#dcsvcid#, #connid#, #svcid#, #nwname#, #subnet#, #tenantid#, #tenantname#, #transequipid#, #transequipportid#, 
+			#l2id#, #l2name#, #l2ip#, #l2upportid#, #l2downportid#, #l2bw#, #l2vlanid#, 
+			#torid#, #torname#, #torip#, #torupportid#, #tordownportid#, #torbw#, #torvlanid#, 
+			#status#, #resultmsg#, #dcid#)
+    </insert> 
+    
+    
+    <select id="selectDCNetworkService" resultClass="com.kt.naas.domain.DCNetworkService">
+    	SELECT 
+    		DCSVCID, CONNID, SVCID, NWNAME, SUBNET, TENANTID, TENANTNAME, TRANSEQUIPID, TRANSEQUIPPORTID, 
+		    L2ID, L2NAME, L2IP, L2UPPORTID, L2DOWNPORTID, L2BW, L2VLANID,
+		    TORID, TORNAME, TORIP, TORUPPORTID, TORDOWNPORTID, TORBW, TORVLANID,
+		    STATUS, RESULTMSG, DCID
+    	FROM
+    		T_NW_SERVICE_DC
+    </select>
+    
+	<select id="selectDCNetworkServiceById" resultClass="com.kt.naas.domain.DCNetworkService" parameterClass="java.util.HashMap">
+		SELECT
+			DCSVCID, CONNID, SVCID, NWNAME, SUBNET, TENANTID, TENANTNAME, TRANSEQUIPID, TRANSEQUIPPORTID, 
+		   	L2ID, L2NAME, L2IP, L2UPPORTID, L2DOWNPORTID, L2BW, L2VLANID,
+		   	TORID, TORNAME, TORIP, TORUPPORTID, TORDOWNPORTID, TORBW, TORVLANID,
+		   	STATUS, RESULTMSG, DCID
+		FROM
+			T_NW_SERVICE_DC
+		WHERE
+			DCSVCID = #dcsvcid# and CONNID = #connid# and SVCID	= #svcid#
+	</select> 
+    
+    <update id="updateDCNetworkService" parameterClass="com.kt.naas.domain.DCNetworkService">
+    	UPDATE T_NW_SERVICE_DC
+    	SET
+    		NWNAME = #nwname#, 
+    		SUBNET = #subnet#, 
+    		TENANTID = #tenantid#,
+    		TENANTNAME = #tenantname#, 
+    		TRANSEQUIPID = #transequipid#, 
+    		TRANSEQUIPPORTID = #transequipportid#, 			
+			L2ID = #l2id#,
+			L2NAME = #l2name#, 
+			L2IP = #l2ip#, 
+			L2UPPORTID = #l2upportid#, 
+			L2DOWNPORTID = #l2downportid#, 
+			L2BW = #l2bw#, 
+			L2VLANID = #l2vlanid#,
+			TORID = #torid#,			
+			TORNAME = #torname#, 
+			TORIP = #torip#, 
+			TORUPPORTID = #torupportid#,
+			TORDOWNPORTID = #tordownportid#, 
+			TORBW = #torbw#, 
+			TORVLANID = #torvlanid#,
+			STATUS = #status#, 
+			RESULTMSG = #resultmsg#,
+			DCID = #dcid#
+		WHERE
+    		DCSVCID = #dcsvcid# and CONNID = #connid# and SVCID	= #svcid#    		
+    </update>
+
+    <delete id="deleteDCNetworkServiceById" parameterClass="java.util.HashMap">
+    <![CDATA[
+        DELETE FROM T_NW_SERVICE_DC
+        WHERE 
+			DCSVCID = #dcsvcid# and CONNID = #connid# and SVCID	= #svcid# 
+    ]]>
+    </delete>    
+    
+    
+    
+   
+</sqlMap>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="DomainNetworkEquipEquip">    
+    
+    <insert id="insertDomainNetworkEquip" parameterClass="com.kt.naas.domain.DomainNetworkEquip">
+		INSERT INTO T_DOMAIN_NETWORK_EQUIP(
+		    NEID, DNID, NENAME, NETYPE)
+		VALUES 
+			(#neid#, #dnid#, #nename#, #netype#)
+    </insert> 
+    
+    
+    <select id="selectDomainNetworkEquip" resultClass="com.kt.naas.domain.DomainNetworkEquip">
+    	SELECT 
+    		NEID, DNID, NENAME, NETYPE
+    	FROM
+    		T_DOMAIN_NETWORK_EQUIP
+    </select>
+    
+	<select id="selectDomainNetworkEquipById" resultClass="com.kt.naas.domain.DomainNetworkEquip" parameterClass="java.util.HashMap">
+		SELECT
+			NEID, DNID, NENAME, NETYPE
+		FROM
+			T_DOMAIN_NETWORK_EQUIP
+		WHERE
+			NEID	= #neid# and DNID = #dnid#
+	</select> 
+    
+    <update id="updateDomainNetworkEquip" parameterClass="com.kt.naas.domain.DomainNetworkEquip">
+    	UPDATE T_DOMAIN_NETWORK_EQUIP
+    	SET
+    		NENAME = #nename#,
+			NETYPE = #netype#						
+		WHERE
+    		NEID	= #neid# and DNID = #dnid#
+    </update>
+
+    <delete id="deleteDomainNetworkEquipById" parameterClass="java.util.HashMap">
+    <![CDATA[
+        DELETE FROM T_DOMAIN_NETWORK_EQUIP
+        WHERE 
+			NEID	= #neid# and DNID = #dnid#
+    ]]>
+    </delete>    
+    
+    
+    
+   
+</sqlMap>

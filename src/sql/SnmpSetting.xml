@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="SnmpSetting">
+	<select id="selectSnmpSettingById" resultClass="com.kt.naas.domain.SnmpSetting" parameterClass="java.util.HashMap">
+		SELECT
+			EMSID, EQUIPID, SNMPPORT, COMMUNITY
+		FROM
+			T_SNMP
+		WHERE
+			EMSID = #emsId# AND EQUIPID = #equipId#
+	</select>
+	
+	<select id="selectSnmpSettingFromEquipById" resultClass="com.kt.naas.domain.SnmpSetting" parameterClass="java.util.HashMap">
+		SELECT
+			EMSID, EQUIPID, SNMPPORT, READCOMMUNITY COMMUNITY
+		FROM
+			T_SNMP
+		WHERE
+			EMSID = #emsId# AND EQUIPID = #equipId#
+	</select>
+ 	
+</sqlMap>

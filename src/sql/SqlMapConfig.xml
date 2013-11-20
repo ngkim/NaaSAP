@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMapConfig PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+	<sqlMap resource="Code.xml"/>
+	<sqlMap resource="Server.xml"/>
+	<sqlMap resource="DomainNetwork.xml"/>
+	<sqlMap resource="DomainNetworkLink.xml"/>
+	<sqlMap resource="DomainNetworkPort.xml"/>
+	<sqlMap resource="DomainNetworkEquip.xml"/>
+	<sqlMap resource="ProgressStatus.xml"/>
+	<sqlMap resource="NetworkService.xml"/>
+	<sqlMap resource="DCNetworkService.xml"/>
+	<sqlMap resource="PremiseNetworkService.xml"/>
+	<sqlMap resource="TransportNetworkService.xml"/>
+	<sqlMap resource="Vm.xml"/>	
+    <sqlMap resource="Property.xml"/>
+    <sqlMap resource="SnmpSetting.xml"/>
+</sqlMapConfig>

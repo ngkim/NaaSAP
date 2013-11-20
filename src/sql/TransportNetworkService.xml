@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="TransportNetworkService">    
+
+	
+<insert id="insertTransportNetworkService" parameterClass="com.kt.naas.domain.TransportNetworkService">
+		INSERT INTO T_NW_SERVICE_TRANSPORT(
+		    TRANSVCID, STATUS, RESULTMSG, NWNAME, SVCID, PWLABELID, ETHTYPE, CONNTYPE, 
+		    EQUIPID, EQUIPNAME, EQUIPINBOUNDPORTID, EQUIPOUTBOUNDPORTID, EQUIPBW, EQUIPVLANID, 
+		    ASSOCIATEDSWID, ASSOCIATEDSWTYPE, QOSOFEIR, QOSOFCIR)
+		VALUES 
+			(#transvcid#, #status#, #resultmsg#, #nwname#, #svcid#, #pwlabelid#, #ethtype#, #conntype#, 
+			#equipid#, #equipname#, #equipinboundportid#, #equipoutboundportid#, #equipbw#, #equipvlanid#,
+			#associatedswid#, #associatedswtype#, #qosofeir#, #qosofcir#)
+    </insert> 
+    
+    <select id="selectTransportNetworkService" resultClass="com.kt.naas.domain.TransportNetworkService">
+    	SELECT 
+    		TRANSVCID, STATUS, RESULTMSG, NWNAME, SVCID, PWLABELID, ETHTYPE, CONNTYPE, 
+		    EQUIPID, EQUIPNAME, EQUIPINBOUNDPORTID, EQUIPOUTBOUNDPORTID, EQUIPBW, EQUIPVLANID, 
+		    ASSOCIATEDSWID, ASSOCIATEDSWTYPE, QOSOFEIR, QOSOFCIR
+    	FROM
+    		T_NW_SERVICE_TRANSPORT
+    </select>
+    
+	<select id="selectTransportNetworkServiceById" resultClass="com.kt.naas.domain.TransportNetworkService" parameterClass="java.util.HashMap">
+		SELECT
+			STATUS, RESULTMSG, NWNAME, SVCID, PWLABELID, ETHTYPE, CONNTYPE, 
+		    EQUIPID, EQUIPNAME, EQUIPINBOUNDPORTID, EQUIPOUTBOUNDPORTID, EQUIPBW, EQUIPVLANID, 
+		    ASSOCIATEDSWID, ASSOCIATEDSWTYPE, QOSOFEIR, QOSOFCIR
+		FROM
+			T_NW_SERVICE_TRANSPORT
+		WHERE
+			TRANSVCID = #transvcid# and EQUIPID = #equipid# and ASSOCIATEDSWID	= #associatedswid# and SVCID = #svcid#
+	</select> 
+    
+    <update id="updateTransportNetworkService" parameterClass="com.kt.naas.domain.TransportNetworkService">
+    	UPDATE T_NW_SERVICE_TRANSPORT
+    	SET
+    		STATUS = #status#, 
+    		RESULTMSG = #resultmsg#, 
+    		NWNAME = #nwname#, 
+    		PWLABELID = #pwlabelid#, 
+    		ETHTYPE = #ethtype#,
+    		CONNTYPE = #conntype#, 
+    		EQUIPNAME = #equipname#,
+    		EQUIPINBOUNDPORTID = #equipinboundportid#,
+    		EQUIPOUTBOUNDPORTID = #equipoutboundportid#, 
+    		EQUIPBW = #equipbw#, 
+    		EQUIPVLANID = #equipvlanid#,
+    		ASSOCIATEDSWID = #associatedswid#,
+    		ASSOCIATEDSWTYPE = #associatedswtype#,
+    		QOSOFEIR = #qosofeir#,
+    		QOSOFCIR = #qosofcir#
+		WHERE
+    		TRANSVCID = #transvcid# and EQUIPID = #equipid# and ASSOCIATEDSWID	= #associatedswid# and SVCID = #svcid#
+    </update>
+
+    <delete id="deleteTransportNetworkServiceById" parameterClass="java.util.HashMap">
+    <![CDATA[
+        DELETE FROM T_NW_SERVICE_TRANSPORT
+        WHERE 
+			TRANSVCID = #transvcid# and EQUIPID = #equipid# and ASSOCIATEDSWID	= #associatedswid# and SVCID = #svcid#
+    ]]>
+    </delete>    
+    
+    
+    
+   
+</sqlMap>

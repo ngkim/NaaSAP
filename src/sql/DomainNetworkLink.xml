@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="DomainNetworkLink">    
+
+    <insert id="insertDomainNetworkLink" parameterClass="com.kt.naas.domain.DomainNetworkLink">
+		INSERT INTO T_DOMAIN_NETWORK_LINK(
+		    LINKID, A_NEID, A_PORTID, Z_NEID, Z_PORTID, VLANID, BANDWIDTH, COS, DIRECTION)
+		VALUES 
+			(#linkid#, #a_neid#, #a_portid#, #z_neid#, #z_portid#, #vlanid#, #bandwidth#, #cos#, #direction#)
+    </insert> 
+    
+    
+    <select id="selectDomainNetworkLink" resultClass="com.kt.naas.domain.DomainNetworkLink">
+    	SELECT 
+    		LINKID, A_NEID, A_PORTID, Z_NEID, Z_PORTID, VLANID, BANDWIDTH, COS, DIRECTION
+    	FROM
+    		T_DOMAIN_NETWORK_LINK
+    </select>
+    
+	<select id="selectDomainNetworkLinkById" resultClass="com.kt.naas.domain.DomainNetworkLink" parameterClass="java.util.HashMap">
+		SELECT
+			LINKID, A_NEID, A_PORTID, Z_NEID, Z_PORTID, VLANID, BANDWIDTH, COS, DIRECTION
+		FROM
+			T_DOMAIN_NETWORK_LINK
+		WHERE
+			LINKID	= #linkid# and A_NEID = #a_neid# and A_PORTID = #a_portid# and Z_NEID = #z_neid# and Z_PORTID = #z_portid#
+	</select> 
+    
+    <update id="updateDomainNetworkLink" parameterClass="com.kt.naas.domain.DomainNetworkLink">
+    	UPDATE T_DOMAIN_NETWORK_LINK
+    	SET
+    		VLANID = #vlanid#,
+			BANDWIDTH = #bandwidth#,
+			COS = #cos#, 
+			DIRECTION = #direction#
+		WHERE
+    		LINKID	= #linkid# and A_NEID = #a_neid# and A_PORTID = #a_portid# and Z_NEID = #z_neid# and Z_PORTID = #z_portid#
+    </update>
+
+    <delete id="deleteDomainNetworkLinkById" parameterClass="java.util.HashMap">
+    <![CDATA[
+        DELETE FROM T_DOMAIN_NETWORK_LINK
+        WHERE 
+			LINKID	= #linkid# and A_NEID = #a_neid# and A_PORTID = #a_portid# and Z_NEID = #z_neid# and Z_PORTID = #z_portid#
+    ]]>
+    </delete>    
+    
+   
+</sqlMap>

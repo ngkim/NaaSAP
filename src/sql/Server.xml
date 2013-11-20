@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Server">    
+    
+
+
+    <insert id="insertServer" parameterClass="com.kt.naas.domain.Server">
+		INSERT INTO T_SERVER(
+		    SERVERID, SERVERNAME, MASTERIP, PORT, MODEL, SERVEROS, 
+		    HOSTNAME, SERVICETYPE, STATUS, USERID, PASSWD, DESCRIPTION, REGDATE, UPDATETIME)
+		VALUES 
+			(#serverid#, #servername#, #masterip#, #port#, #model#, #serveros#, #hostname#, #servicetype#, #status#, #userid#, #passwd#, #description#, now(), now())
+    </insert> 
+    
+    
+    <select id="selectServer" resultClass="com.kt.naas.domain.Server">
+    	SELECT 
+    		SERVERID, SERVERNAME, MASTERIP, PORT, MODEL, SERVEROS, 
+		    HOSTNAME, SERVICETYPE, STATUS, USERID, PASSWD, DESCRIPTION
+    	FROM
+    		T_SERVER
+    </select>
+    
+	<select id="selectServerById" resultClass="com.kt.naas.domain.Server" parameterClass="java.util.HashMap">
+		SELECT
+			SERVERID, SERVERNAME, MASTERIP, PORT, MODEL, SERVEROS, 
+		    HOSTNAME, SERVICETYPE, STATUS, USERID, PASSWD, DESCRIPTION
+		FROM
+			T_SERVER
+		WHERE
+			SERVERID = #serverid#
+	</select> 
+    
+    <update id="updateServer" parameterClass="com.kt.naas.domain.Server">
+    	UPDATE T_SERVER
+    	SET
+			SERVERNAME = #servername#, 
+			MASTERIP = #masterip#, 
+			PORT = #port#, 
+			MODEL = #model#, 
+			SERVEROS = #serveros#,
+			HOSTNAME = #hostname#, 
+			SERVICETYPE = #servicetype#, 
+			STATUS = #status#, 
+			USERID = #userid#, 
+			PASSWD = #passwd#, 
+			DESCRIPTION = #description#, 
+			UPDATETIME = NOW()
+    	WHERE
+    		SERVERID	= #serverid#
+    </update>
+
+    <delete id="deleteServerById" parameterClass="java.util.HashMap">
+    <![CDATA[
+        DELETE FROM T_SERVER
+        WHERE 
+			SERVERID	= #serverid#
+    ]]>
+    </delete>    
+    
+    
+    
+   
+</sqlMap>

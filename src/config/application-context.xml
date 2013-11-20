@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:aop="http://www.springframework.org/schema/aop"
+         xmlns:p="http://www.springframework.org/schema/p"
+         xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+           
+	<bean id="mainContext" class="com.kt.naas.MainContext" scope="singleton"/>
+	<bean id="messageUtils" class = "com.kt.naas.util.MessageUtils" scope="singleton"/>
+	<bean id="emsService" class="com.kt.naas.service.EmsServiceProcessor" scope="singleton"/>
+	<bean id="processorFactory" class="com.kt.naas.process.ProcessorFactory" scope="singleton"/>
+	
+	<import resource="message-source.xml"/>
+	<import resource="db-context.xml"/>
+	<import resource="dao-context.xml"/>
+	<import resource="process.xml"/>
+
+   <!--
+	<bean id="snmpService" class="com.kt.naas.service.SnmpServiceProcessor"
+	p:serviceName="snmpService" scope="singleton" init-method="start"/>
+	-->
+	<!--
+	<bean id="pingService" class="com.kt.naas.service.PingServiceProcessor"
+	p:serviceName="pingService" scope="singleton" init-method="start"
+	p:timeout="3000" p:retries="2" p:jicmp="d:/workspaces/lib/jicmp.dll"
+	/> 
+	-->
+	<!-- 배포전 속성변경 필요함
+		 p:jicmp="/usr/lib/libjicmp.so"
+		 p:jicmp="d:/workspaces/SmartNetwork/ping/lib/jicmp.dll" 
+		 p:jicmp="d:/workspaces/lib/jicmp.dll"
+	-->
+	
+	<!-- Trap Receiver -->
+	<!--
+	<bean id="trapReceiver" class="com.kt.naas.service.TrapReceiver" scope="singleton" init-method="start">
+		<property name="trapPort"				value="162"/>
+		<property name="executionService"		ref="trapExecutionService"/>
+		<property name="processorFactory"		ref="processorFactory"/>
+	</bean>	
+	-->
+	<bean id="auditExecutionService" class="com.kt.naas.service.ExecutionServiceProcessor"
+	p:serviceName="auditExecutionService" scope="singleton" 
+	p:poolSize="5" p:keepAliveTime="2" init-method="start"/>
+	
+	<bean id="statisticExecutionService" class="com.kt.naas.service.ExecutionServiceProcessor"
+	p:serviceName="statisticExecutionService" scope="singleton" 
+	p:poolSize="5" p:keepAliveTime="2" init-method="start"/>
+	
+	
+
+	<bean id="requestExecutionService" class="com.kt.naas.service.ExecutionServiceProcessor"
+	p:serviceName="requestExecutionService" scope="singleton" 
+	p:poolSize="5" p:keepAliveTime="2" init-method="start"/>
+
+	<bean id="trapExecutionService" class="com.kt.naas.service.ExecutionServiceProcessor"
+	p:serviceName="trapExecutionService" scope="singleton" 
+	p:poolSize="2" p:keepAliveTime="2" init-method="start"/>
+		
+	<bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" 			value="failover://tcp://211.224.204.136:61616" />
+        <!-- 
+        <property name="username"			value="username" />
+        <property name="password"			value="password" />
+         -->
+    </bean>
+    
+    <!-- ngkim: restTemplate for Restful API client for JSON-->
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+  		<property name="messageConverters">
+    	<list>
+      		<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+        		<property name="objectMapper" ref="customObjectMapper"/>
+      		</bean>
+    	</list>
+  		</property>
+	</bean>
+ 
+	<bean id="customObjectMapper" class="org.codehaus.jackson.map.ObjectMapper"/>
+  
+	<!-- Audit -->
+	<bean id="auditLauncher" class="com.kt.naas.process.server.AuditLauncher">
+		<property name="executor"><ref bean="auditExecutionService"/></property>
+		<property name="factory"><ref bean="processorFactory"/></property>
+	</bean>
+	
+	<bean id="auditJobDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject"><ref bean="auditLauncher"/></property>
+		<property name="targetMethod"><value>run</value></property>	
+		<property name="concurrent"><value>false</value></property>
+	</bean>
+
+	<bean id="auditCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="auditJobDetail"/>
+		</property>
+		<property name="cronExpression">
+			<value>0 0,5,10,15,20,25,30,35,40,45,50,55 * * * ?</value> 
+		</property>
+	</bean>
+	
+	<bean id="myRestClient" class="com.kt.naas.process.client.RestClient">
+	</bean>
+	
+	<!-- scheduler settings -->
+	<bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<!--<ref local="auditCronTrigger"/>-->
+			</list>
+		</property>
+	</bean> 
+	
+	
+	<bean id="auditAwsResourceProcessor" class="com.kt.naas.process.server.AuditAwsResourceProcessor" scope="prototype"/>
+
+	<bean id="clientService" class="com.kt.naas.service.ClientServiceProcessor" scope="singleton" init-method="start">
+		<property name="serviceName"		value="clientService"/>
+		
+		<property name="connectionFactory"	ref="connectionFactory"/>
+		<property name="processorFactory"	ref="processorFactory"/>
+		<property name="executionService"	ref="requestExecutionService"/>
+		
+		<property name="requestTopicName" 	value="TOPIC.REQUEST"/>
+		<property name="responseTopicName" 	value="TOPIC.RESPONSE"/>
+		<property name="eventTopicName" 	value="TOPIC.EVENT"/>
+	</bean>	
+
+
+
+<!-- 
+	<bean id="sequencialExecutionService" class="com.kt.naas.service.ExecutionServiceProcessor"
+	p:serviceName="sequencialExecutionService" scope="singleton" 
+	p:poolSize="1" p:keepAliveTime="1" init-method="start"/>
+
+	<bean id="multipleExecutionService" class="com.kt.naas.service.ExecutionServiceProcessor"
+	p:serviceName="multipleExecutionService" scope="singleton" 
+	p:poolSize="10" p:keepAliveTime="2" init-method="start"/>
+
+	<bean id="lockingService" class="com.kt.naas.service.LockingServiceProcessor" scope="singleton" init-method="start">
+		<property name="serviceName"		value="lockingService"/>
+		<property name="lockTimeout" 		value="30000"/>
+		<property name="waitTimeout" 		value="10000"/>
+		<property name="cleanInterval" 		value="1000"/>
+	</bean>
+
+	
+    <bean id="processorFactory" class = "com.kt.naas.process.ProcessorFactory" scope="singleton"/>
+    <bean id="messageFactory" class = "com.kt.naas.util.MessageUtils" scope="singleton"/>
+
+	<import resource="message-source.xml"/>
+
+ -->
+	
+	
+</beans>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:aop="http://www.springframework.org/schema/aop"
+         xmlns:p="http://www.springframework.org/schema/p"
+         xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+           
+	<bean id="CREATE_SERVER" class="com.kt.naas.process.inventory.AddServerProcessor" scope="prototype">
+		<property name="clientService"><ref bean="clientService"/></property>
+	</bean>
+	
+	<bean id="ADD_DOMAIN_NETWORK" class="com.kt.naas.process.inventory.AddDomainNetworkProcessor" scope="prototype">
+		<property name="clientService"><ref bean="clientService"/></property>
+	</bean>
+	
+	<bean id="REQ_DC_NW_LIST" class="com.kt.naas.process.RequestDCNetworkProcessor" scope="prototype">
+		<property name="clientService"><ref bean="clientService"/></property>
+	</bean>
+	
+	<bean id="REQ_PR_NW_LIST" class="com.kt.naas.process.RequestPRNetworkProcessor" scope="prototype">
+		<property name="clientService"><ref bean="clientService"/></property>
+	</bean>
+	
+	<bean id="REQ_CREATE_NW" class="com.kt.naas.process.RequestCreateNetworkProcessor" scope="prototype">
+		<property name="clientService"><ref bean="clientService"/></property>
+	</bean>
+		
+	<bean id="REQUEST-DELIVERY" class="com.kt.naas.process.RequestDeliveryProcessor" scope="prototype">
+		<property name="clientService"><ref bean="clientService"/></property>
+		<property name="serviceRouterIp" value="121.156.47.3"/> <!-- 개발:10.10.103.7, 운용:121.156.47.3 -->
+		<!--  
+		<property name="exceptionNetworkPrefix" value="221.145.180,221.224.204.224,221.224.204.225,221.224.204.226,221.224.204.227,221.224.204.228,221.224.204.229,221.224.204.230"/>
+		<property name="exceptionNetworkGateway" value="221.145.180.58"/>
+		-->
+		<property name="exceptionNetworkPrefix" value="129.254.173.185,129.254.173.186"/>
+		<property name="exceptionNetworkGateway" value="129.254.173.38"/> <!-- ETRI GW -->		
+		<property name="exceptionNetworkPrefix2" value="211.253.241.240,211.253.241.241,211.253.241.242,211.253.241.243"/>
+		<property name="exceptionNetworkGateway2" value="211.253.241.240"/> <!-- TTA GW -->
+	</bean>	
+	
+	
+	
+
+	<bean id="TRAP_1.3.6.1.4.1.1315.78.1.1.0" class="com.kt.naas.process.trap.MgSoftTrapProcessor" scope="prototype">
+		<property name="oidNames">
+			<map>
+				<entry key="1.3.6.1.4.1.1315.78.1.2.0" 					value="message1"/>
+				<entry key="1.3.6.1.4.1.1315.78.1.3.0" 					value="message2"/>
+			</map>
+		</property>	
+	</bean>
+	
+
+</beans>

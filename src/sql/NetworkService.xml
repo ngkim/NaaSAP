@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="NetworkService">    
+
+    <insert id="insertNetworkService" parameterClass="com.kt.naas.domain.NetworkService">
+		INSERT INTO T_NW_SERVICE(
+		    SVCID, SVCNAME, SVCTYPE, TOPOLOGYTYPE, CONNTYPE, BANDWIDTH, CUSTID, CUSTNAME, CONTACTPOINT, ADDRESS, BEGINTIME, ENDTIME, STATE, REGDATE)
+		VALUES 
+			(#svcid#, #svcname#, #svctype#, #topologytype#, #conntype#, #bandwidth#, #custid#, #custname#, #contactpoint#, #address#, #begintime#, #endtime#, #state#, now())
+    </insert> 
+    
+    
+    <select id="selectNetworkService" resultClass="com.kt.naas.domain.NetworkService">
+    	SELECT 
+    		SVCID, SVCNAME, SVCTYPE, TOPOLOGYTYPE, CONNTYPE, BANDWIDTH, CUSTID, CUSTNAME, CONTACTPOINT, ADDRESS, BEGINTIME, ENDTIME, STATE
+    	FROM
+    		T_NW_SERVICE
+    </select>
+    
+	<select id="selectNetworkServiceById" resultClass="com.kt.naas.domain.NetworkService" parameterClass="java.util.HashMap">
+		SELECT
+			SVCID, SVCNAME, SVCTYPE, TOPOLOGYTYPE, CONNTYPE, BANDWIDTH, CUSTID, CUSTNAME, CONTACTPOINT, ADDRESS, BEGINTIME, ENDTIME, STATE
+		FROM
+			T_NW_SERVICE
+		WHERE
+			SVCID	= #svcid#
+	</select> 
+    
+    <update id="updateNetworkService" parameterClass="com.kt.naas.domain.NetworkService">
+    	UPDATE T_NW_SERVICE
+    	SET
+    		SVCNAME = #svcname#,
+    		SVCTYPE = #svctype#, 
+    		TOPOLOGYTYPE = #topologytype#, 
+    		CONNTYPE = #conntype#, 
+    		BANDWIDTH = #bandwidth#, 
+    		CUSTID = #custid#, 
+    		CUSTNAME = #custname#, 
+    		CONTACTPOINT = #contactpoint#, 
+    		ADDRESS = #address#, 
+    		BEGINTIME = #begintime#, 
+    		ENDTIME = #endtime#, 
+    		STATE = #state#
+		WHERE
+    		SVCID	= #svcid#
+    </update>
+
+    <delete id="deleteNetworkServiceById" parameterClass="java.util.HashMap">
+    <![CDATA[
+        DELETE FROM T_NW_SERVICE
+        WHERE 
+			SVCID	= #svcid#
+    ]]>
+    </delete>    
+    
+    
+    
+   
+</sqlMap>
