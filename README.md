@@ -1,4 +1,0 @@
-NaaSAP
-======
-
-NaaS Application Processor
