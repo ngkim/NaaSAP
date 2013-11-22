@@ -11,21 +11,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
-/*
- <?xml version=“1.0” encoding=“utf-8” ?>
- <Ethernet name=“myEth” description="DC to DC tunnel">
- <rid>requester-ID</rid>
- <cid>customer-ID</cid>
- <eType>E-LAN</eType>
- <UNIPeer id="switch1-ID" port="10" vlan="1001"/>
- <UNIPeer id="switch2-ID" port="20" vlan="1002"/>
- <UNIPeer id="switch3-ID" port="30" vlan="1003"/>
- <QoS bandwidth=“1G” exceed=“100M”/>
- </Ethernet>
- */
 @XmlRootElement(name = "Ethernet")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class RequestCreateTransportNetwork {
+public class RequestDeleteTransportNetwork {
 	@XmlAttribute
 	String name;
 	
@@ -37,15 +25,9 @@ public class RequestCreateTransportNetwork {
 
 	@XmlElement
 	String cid;
-
+	
 	@XmlElement
-	String eType;
-
-	@XmlElement(name = "UNIPeer")
-	ArrayList<UNIPeer> peers;
-
-	@XmlElement(name = "QoS")
-	QoS qos;
+	String eid;
 
 	public String getName() {
 		return name;
@@ -79,28 +61,12 @@ public class RequestCreateTransportNetwork {
 		this.cid = cid;
 	}
 
-	public String geteType() {
-		return eType;
+	public String getEid() {
+		return eid;
 	}
 
-	public void seteType(String eType) {
-		this.eType = eType;
+	public void setEid(String eid) {
+		this.eid = eid;
 	}
-
-	public ArrayList<UNIPeer> getPeers() {
-		return peers;
-	}
-
-	public void setPeers(ArrayList<UNIPeer> peers) {
-		this.peers = peers;
-	}
-
-	public QoS getQos() {
-		return qos;
-	}
-
-	public void setQos(QoS qos) {
-		this.qos = qos;
-	}
-
+	
 }

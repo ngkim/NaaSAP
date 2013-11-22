@@ -40,6 +40,7 @@ import com.kt.naas.domain.ProgressStatus;
 import com.kt.naas.domain.TenantNetworkInfo;
 import com.kt.naas.domain.TransportNetworkService;
 import com.kt.naas.util.RequestClient;
+import com.kt.naas.util.UUIDUtil;
 import com.kt.naas.xml.CloudConnectionList;
 import com.kt.naas.xml.CloudSwitch;
 import com.kt.naas.xml.CloudVNID;
@@ -71,11 +72,6 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 
 	RequestCreateCloudNetwork reqCloud;
 	RequestCreatePremiseNetwork reqPremise;
-
-	private String generateUUID() {
-		UUID uuid = UUID.randomUUID();
-		return uuid.toString();
-	}
 
 	public void printResponseCreateCloudNetwork(ResponseCreateCloudNetwork res) {
 		try {
@@ -331,8 +327,8 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 	@Override
 	public void processRequest() {
 		// generate a new id
-		String svcId = generateUUID();
-		String transportSvcId = generateUUID();
+		String svcId = UUIDUtil.generateUUID();
+		String transportSvcId = UUIDUtil.generateUUID();
 
 		int currentCnt = 0;
 		int totalCnt = 13;
