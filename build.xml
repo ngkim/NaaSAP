@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="AIT2013-NaaS">
+    <property environment="env"/>
+    <property name="ECLIPSE_HOME" value="../../eclipse-jee"/>
+    <property name="junit.output.dir" value="junit"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.7"/>
+    <property name="source" value="1.7"/>
+    <path id="JUnit 4.libraryclasspath">
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.junit_4.11.0.v201303080030/junit.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.hamcrest.core_1.3.0.v201303031735.jar"/>
+    </path>
+    <path id="AIT2013-NaaS.classpath">
+        <pathelement location="bin"/>
+        <path refid="JUnit 4.libraryclasspath"/>
+        <pathelement location="lib/activemq-core-5.4.0.jar"/>
+        <pathelement location="lib/aws-java-sdk-1.5.5-javadoc.jar"/>
+        <pathelement location="lib/aws-java-sdk-1.5.5-sources.jar"/>
+        <pathelement location="lib/aws-java-sdk-1.5.5.jar"/>
+        <pathelement location="lib/aws-java-sdk-flow-build-tools-1.5.5.jar"/>
+        <pathelement location="lib/commons-beanutils-1.8.3.jar"/>
+        <pathelement location="lib/commons-beanutils-bean-collections-1.8.3.jar"/>
+        <pathelement location="lib/commons-beanutils-core-1.8.3.jar"/>
+        <pathelement location="lib/commons-codec-1.7.jar"/>
+        <pathelement location="lib/commons-collections-3.2.1.jar"/>
+        <pathelement location="lib/commons-configuration-1.6.jar"/>
+        <pathelement location="lib/commons-dbcp-1.3.jar"/>
+        <pathelement location="lib/commons-digester-2.1.jar"/>
+        <pathelement location="lib/commons-httpclient-3.0.1.jar"/>
+        <pathelement location="lib/commons-httpclient-3.1-rc1.jar"/>
+        <pathelement location="lib/commons-io-1.3.1.jar"/>
+        <pathelement location="lib/commons-lang-2.5.jar"/>
+        <pathelement location="lib/commons-logging-1.1.1.jar"/>
+        <pathelement location="lib/commons-pool-1.5.4.jar"/>
+        <pathelement location="lib/geronimo-j2ee-management_1.1_spec-1.0.1.jar"/>
+        <pathelement location="lib/geronimo-jms_1.1_spec-1.1.1.jar"/>
+        <pathelement location="lib/google-collect-snapshot-20080530.jar"/>
+        <pathelement location="lib/httpclient-4.2.5.jar"/>
+        <pathelement location="lib/httpcore-4.2.4.jar"/>
+        <pathelement location="lib/ibatis.jar"/>
+        <pathelement location="lib/j2ssh-ant-0.2.9.jar"/>
+        <pathelement location="lib/j2ssh-common-0.2.9.jar"/>
+        <pathelement location="lib/j2ssh-core-0.2.9.jar"/>
+        <pathelement location="lib/j2ssh-dameon-0.2.9.jar"/>
+        <pathelement location="lib/jackson-all-1.9.11.jar"/>
+        <pathelement location="lib/jce-jdk13-119.jar"/>
+        <pathelement location="lib/jicmp-api-1.0.9.jar"/>
+        <pathelement location="lib/jicmp.jar"/>
+        <pathelement location="lib/jsch-0.1.49.jar"/>
+        <pathelement location="lib/json-20080701.jar"/>
+        <pathelement location="lib/log4j-1.2.15.jar"/>
+        <pathelement location="lib/mina-core-2.0.0-M5.jar"/>
+        <pathelement location="lib/opennms-ping.jar"/>
+        <pathelement location="lib/org.springframework.asm-3.0.5.RELEASE.jar"/>
+        <pathelement location="lib/org.springframework.beans-3.0.5.RELEASE.jar"/>
+        <pathelement location="lib/org.springframework.context-3.0.5.RELEASE.jar"/>
+        <pathelement location="lib/org.springframework.context.support-3.0.5.RELEASE.jar"/>
+        <pathelement location="lib/org.springframework.core-3.0.5.RELEASE.jar"/>
+        <pathelement location="lib/org.springframework.expression-3.0.5.RELEASE.jar"/>
+        <pathelement location="lib/org.springframework.jdbc-3.0.5.RELEASE.jar"/>
+        <pathelement location="lib/org.springframework.jms-3.0.5.RELEASE.jar"/>
+        <pathelement location="lib/org.springframework.orm-3.0.5.RELEASE.jar"/>
+        <pathelement location="lib/org.springframework.test-3.0.5.RELEASE.jar"/>
+        <pathelement location="lib/org.springframework.transaction-3.0.5.RELEASE.jar"/>
+        <pathelement location="lib/postgresql-9.0-801.jdbc4.jar"/>
+        <pathelement location="lib/quartz-all-1.8.4.jar"/>
+        <pathelement location="lib/slf4j-api-1.6.0.jar"/>
+        <pathelement location="lib/slf4j-log4j12-1.6.0.jar"/>
+        <pathelement location="lib/snmp4j-1.11.2.jar"/>
+        <pathelement location="lib/spring-oxm-3.0.5.RELEASE.jar"/>
+        <pathelement location="lib/spring-web-3.0.5.RELEASE.jar"/>
+        <pathelement location="lib/xmlpull-1.1.3.1.jar"/>
+        <pathelement location="lib/xstream-1.4.4.jar"/>
+        <pathelement location="lib/javax.ws.rs-api-2.0.jar"/>
+        <pathelement location="lib/jersey-common.jar"/>
+        <pathelement location="lib/jersey-client.jar"/>
+        <pathelement location="lib/hk2-api-2.2.0-b14.jar"/>
+        <pathelement location="lib/cglib-2.2.0-b14.jar"/>
+        <pathelement location="lib/hk2-locator-2.2.0-b14.jar"/>
+        <pathelement location="lib/hk2-utils-2.2.0-b14.jar"/>
+        <pathelement location="lib/javax.annotation-api-1.2.jar"/>
+        <pathelement location="lib/javax.inject-2.2.0-b14.jar"/>
+        <pathelement location="lib/guava-15.0.jar"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src/config">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src/test">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src/java">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src/sql">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src/config"/>
+            <src path="src/test"/>
+            <src path="src/java"/>
+            <src path="src/sql"/>
+            <classpath refid="AIT2013-NaaS.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
+        <copy todir="${ant.library.dir}">
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </copy>
+        <unzip dest="${ant.library.dir}">
+            <patternset includes="jdtCompilerAdapter.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </unzip>
+    </target>
+    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
+        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+        <antcall target="build"/>
+    </target>
+    <target name="NaaS Main">
+        <java classname="Main" failonerror="true" fork="yes">
+            <classpath refid="AIT2013-NaaS.classpath"/>
+        </java>
+    </target>
+    <target name="TestRequestCreateTransportNetwork">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="com.kt.smnw.process.TestRequestCreateTransportNetwork" todir="${junit.output.dir}"/>
+            <classpath refid="AIT2013-NaaS.classpath"/>
+        </junit>
+    </target>
+    <target name="TestResponseCreateTransportNetwork">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="com.kt.smnw.process.TestResponseCreateTransportNetwork" todir="${junit.output.dir}"/>
+            <classpath refid="AIT2013-NaaS.classpath"/>
+        </junit>
+    </target>
+    <target name="TestRequestDeleteTransportNetwork">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="com.kt.smnw.process.TestRequestDeleteTransportNetwork" todir="${junit.output.dir}"/>
+            <classpath refid="AIT2013-NaaS.classpath"/>
+        </junit>
+    </target>
+    <target name="TestResponseDeleteTransportNetwork">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="com.kt.smnw.process.TestResponseDeleteTransportNetwork" todir="${junit.output.dir}"/>
+            <classpath refid="AIT2013-NaaS.classpath"/>
+        </junit>
+    </target>
+    <target name="TestTransportCreateEthernet">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="com.kt.smnw.process.TestTransportCreateEthernet" todir="${junit.output.dir}"/>
+            <classpath refid="AIT2013-NaaS.classpath"/>
+        </junit>
+    </target>
+    <target name="TestTransportCreateEthernet.testRequestCreateTransportNetwork">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="com.kt.smnw.process.TestTransportCreateEthernet" todir="${junit.output.dir}"/>
+            <classpath refid="AIT2013-NaaS.classpath"/>
+        </junit>
+    </target>
+    <target name="junitreport">
+        <junitreport todir="${junit.output.dir}">
+            <fileset dir="${junit.output.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${junit.output.dir}"/>
+        </junitreport>
+    </target>
+</project>
