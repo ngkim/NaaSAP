@@ -36,7 +36,8 @@ public class TestTransportCreateEthernet {
 	
 	@Test
 	public void testRequestCreateTransportNetwork() {
-		String httpsURL = "https://220.123.31.55:7502/createEthernet";
+//		String httpsURL = "https://220.123.31.55:7502/createEthernet";
+		String httpsURL = "https://211.224.204.144:7502/createEthernet";
 
 		SslConfigurator sslConfig = SslConfigurator.newInstance()
 				.trustStoreFile("./trust/truststore_client")
@@ -55,12 +56,15 @@ public class TestTransportCreateEthernet {
 
 		System.out.println("Git Test");
 		System.out.println(res.readEntity(String.class));
+		System.out.println("Done!!!");
+
 	 
 	    client.close();
 	}
 	
 	public static void main(String args[]){
-		String httpsURL = "https://220.123.31.55:7502/createEthernet";
+//		String httpsURL = "https://220.123.31.55:7502/createEthernet";
+		String httpsURL = "https://211.224.204.144:7502/createEthernet";
 
 		SslConfigurator sslConfig = SslConfigurator.newInstance()
 				.trustStoreFile("./trust/truststore_client")

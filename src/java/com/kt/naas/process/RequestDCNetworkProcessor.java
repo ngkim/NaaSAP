@@ -34,7 +34,8 @@ public class RequestDCNetworkProcessor extends RequestProcessor {
 			responseXml = api.getResponseXML(api.getUrlRetrieveNetwork(), requestXml);
 			DebugUtils.printDebugMsg("Response XML...\n" + responseXml);
 
-			ResponseCloudNWList nwList = api.xmlToResponse(responseXml); 
+			ResponseCloudNWList nwList = new ResponseCloudNWList();
+			nwList = api.xmlToResponse(responseXml, nwList); 
 			if (nwList == null) {
 				DebugUtils.sendResponse(response, -1, "Error! No NW List...");				
 			} else {

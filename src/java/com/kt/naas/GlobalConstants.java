@@ -11,10 +11,11 @@ public interface GlobalConstants {
 	public final static boolean OP_DEMO_PREMISE_DJ = false;
 	public final static boolean OP_DEMO_PREMISE_WM = false;
 	
-	
-	public final static String URL_CLOUD_SDN_API = "http://210.183.241.184:5000/";
-	public final static String URL_PREMISE_SDN_API_WM = "http://211.224.204.157:8080/APIServer/psdnRetrieveNWList";
-	public final static String URL_PREMISE_SDN_API_DJ = "http://211.224.204.137:8080/NaaS/api.retrievePremiseSDNConnection";
+	public final static String URL_CLOUD_SDN_API = "http://210.183.241.184:5000";
+//	public final static String URL_PREMISE_SDN_API_WM = "http://211.224.204.157:8080/APIServer/psdnRetrieveNWList";
+	public final static String URL_PREMISE_SDN_API_WM = "http://211.241.161.153:9091/api";
+	public final static String URL_PREMISE_SDN_API_DJ = "http://211.224.204.137:8080/NaaS";
+	public final static String URL_TRANSPORT_SDN_API = "https://211.224.204.144:7502";
 	
 	public final static int HTTP_GET = 0x11;
 	public final static int HTTP_POST = 0x12;

@@ -6,8 +6,14 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
@@ -17,11 +23,22 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.glassfish.jersey.SslConfigurator;
+import org.glassfish.jersey.client.filter.HttpBasicAuthFilter;
 
 import com.kt.naas.GlobalConstants;
-import com.kt.naas.xml.RequestInfoCloudSDN;
 
 public class RestAPIUtils {
+	
+	public String callAPI(String url, int method,
+			String requestXml) throws Exception {
+		String responseXml = "";
+		
+		HttpResponse httpRes = requestToAPIServer(url, method, requestXml);
+		responseXml = getResponseXml(httpRes);
+		
+		return responseXml;
+	}
 
 	public HttpResponse requestToAPIServer(String url, int method,
 			String requestXml) throws Exception {
@@ -42,6 +59,37 @@ public class RestAPIUtils {
 		}
 
 		return res;
+	}
+
+	private class CustomizedHostnameVerifier implements HostnameVerifier {
+		public boolean verify(String hostname, SSLSession session) {
+			return true;
+		}
+	}
+
+	public String requestToAPIServerHttps(String url, String requestXml) throws Exception {
+		String response;
+
+		SslConfigurator sslConfig = SslConfigurator.newInstance()
+				.trustStoreFile("./trust/truststore_client")
+				.trustStorePassword("asdfgh")
+				.keyStoreFile("./trust/keystore_client").keyPassword("asdfgh");
+
+		Client client = ClientBuilder.newBuilder()
+				.hostnameVerifier(new CustomizedHostnameVerifier())
+				.sslContext(sslConfig.createSSLContext()).build();
+
+		client.register(new HttpBasicAuthFilter("admin", "admin"));
+		
+		Entity<String> entity = Entity.entity(requestXml, MediaType.APPLICATION_XML_TYPE);
+		
+		Response res = client.target(url)
+				.request(MediaType.APPLICATION_XML_TYPE).post(entity);
+		
+		response = res.readEntity(String.class);
+		client.close();
+
+		return response;
 	}
 
 	public String getResponseXml(HttpResponse res) {
@@ -68,8 +116,7 @@ public class RestAPIUtils {
 	public <E> String getRequestXML(E req) throws Exception {
 		String requestXml = "";
 
-		JAXBContext jaxbContext = JAXBContext
-				.newInstance(req.getClass());
+		JAXBContext jaxbContext = JAXBContext.newInstance(req.getClass());
 		Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
 		jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -89,6 +136,7 @@ public class RestAPIUtils {
 		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 
 		StringReader reader = new StringReader(responseXml);
+		@SuppressWarnings("unchecked")
 		E unmarshal = (E) jaxbUnmarshaller.unmarshal(reader);
 		res = unmarshal;
 

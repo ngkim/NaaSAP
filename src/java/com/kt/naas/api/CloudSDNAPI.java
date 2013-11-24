@@ -11,8 +11,14 @@ import com.kt.naas.message.ResponseMessage;
 import com.kt.naas.util.DebugUtils;
 import com.kt.naas.xml.CloudVirtualNetwork;
 import com.kt.naas.xml.CloudVirtualNetworkList;
+import com.kt.naas.xml.RequestCreateCloudNetwork;
+import com.kt.naas.xml.RequestCreateTransportNetwork;
+import com.kt.naas.xml.RequestDeleteCloudNetwork;
 import com.kt.naas.xml.RequestInfoCloudSDN;
 import com.kt.naas.xml.ResponseCloudNWList;
+import com.kt.naas.xml.ResponseCreateCloudNetwork;
+import com.kt.naas.xml.ResponseCreateTransportNetwork;
+import com.kt.naas.xml.ResponseDeleteCloudNetwork;
 
 public class CloudSDNAPI extends SDNAPI {
 	
@@ -27,8 +33,35 @@ public class CloudSDNAPI extends SDNAPI {
 			String apiServer) {
 		super(request, response, apiServer);
 		
-		this.setUrlRetrieveNetwork(apiServer + "/RetrievedCloudSDNTenantNEtworkList");
-		this.setUrlCreateNetwork(apiServer + "/createCloudSDNConnection");		
+		this.setUrlRead(apiServer + "/RetrievedCloudSDNTenantNEtworkList");
+		this.setUrlCreate(apiServer + "/createCloudSDNConnection");
+		this.setUrlDelete(apiServer + "/connectToInternet");
+	}
+	
+	public ResponseCreateCloudNetwork createNetwork(RequestCreateCloudNetwork req) {
+		ResponseCreateCloudNetwork resTransportNW = new ResponseCreateCloudNetwork();
+	
+		try {
+			String responseXml = apiUtil.callAPI(getUrlCreate(), GlobalConstants.HTTP_POST, getRequestXML(req));
+			resTransportNW = xmlToResponse(responseXml, resTransportNW);
+		} catch (Exception e) {
+			DebugUtils.sendResponse(response, -1, e.toString());
+		}
+		
+		return resTransportNW;		
+	}
+	
+	public ResponseDeleteCloudNetwork createNetwork(RequestDeleteCloudNetwork req) {
+		ResponseDeleteCloudNetwork resCloudNW = new ResponseDeleteCloudNetwork();
+	
+		try {
+			String responseXml = apiUtil.callAPI(getUrlDelete(), GlobalConstants.HTTP_POST, getRequestXML(req));
+			resCloudNW = xmlToResponse(responseXml, resCloudNW);
+		} catch (Exception e) {
+			DebugUtils.sendResponse(response, -1, e.toString());
+		}
+		
+		return resCloudNW;		
 	}
 	
 	public RequestInfoCloudSDN recvRequestfromWeb() {
@@ -89,32 +122,17 @@ public class CloudSDNAPI extends SDNAPI {
 
 	}
 
-	public String getRequestXML(RequestInfoCloudSDN req) {
-		String xml = "";
-
-		try {
-			xml = apiUtil.getRequestXML(req);
-		} catch (Exception e) {
-			DebugUtils.sendResponse(response, -1, e.toString());
-		}
-
-		return xml;
-
-	}
 	
 	// request and get response from API server
 	public String getResponseXML(String apiUrl, String requestXml){
 		String xml = "";
 
-		HttpResponse res = null;
 		try {
 			if (GlobalConstants.OP_DEMO_CLOUD) {
 				Thread.sleep(1000);
 				xml = wmResponseXml;
 			} else {
-				res = apiUtil.requestToAPIServer(apiUrl,
-						GlobalConstants.HTTP_POST, requestXml);
-				xml = apiUtil.getResponseXml(res);
+				xml = apiUtil.callAPI(getUrlCreate(), GlobalConstants.HTTP_POST, requestXml);
 			}
 		} catch (Exception e) {
 			DebugUtils.sendResponse(response, -1, e.toString());
@@ -122,15 +140,4 @@ public class CloudSDNAPI extends SDNAPI {
 
 		return xml;
 	}
-
-	public ResponseCloudNWList xmlToResponse(String responseXml) {
-		ResponseCloudNWList nwList = null;
-		try {
-			nwList = apiUtil.getResponseObject(responseXml, new ResponseCloudNWList());
-		} catch (Exception e) {
-			DebugUtils.sendResponse(response, -1, e.toString());
-		}
-		return nwList;
-	}
-
 }
