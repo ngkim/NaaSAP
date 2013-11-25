@@ -31,7 +31,7 @@ public class RequestDCNetworkProcessor extends RequestProcessor {
 			requestXml = api.getRequestXML(req);
 			DebugUtils.printDebugMsg("Request XML...\n" + requestXml);				
 			
-			responseXml = api.getResponseXML(api.getUrlRetrieveNetwork(), requestXml);
+			responseXml = api.getResponseXML(api.getUrlRead(), requestXml);
 			DebugUtils.printDebugMsg("Response XML...\n" + responseXml);
 
 			ResponseCloudNWList nwList = new ResponseCloudNWList();

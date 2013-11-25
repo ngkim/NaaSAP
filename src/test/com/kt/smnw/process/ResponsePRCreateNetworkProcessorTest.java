@@ -98,8 +98,6 @@ public class ResponsePRCreateNetworkProcessorTest {
 
 	@Test
 	public void testRequestPRNetworkProcessor() {
-		RequestDCNetworkProcessor process = new RequestDCNetworkProcessor();
-		
 		ResponsePremiseNWList nwList = null; 
 		try {
 			nwList = new ResponsePremiseNWList();
@@ -109,6 +107,7 @@ public class ResponsePRCreateNetworkProcessorTest {
 			nwList.setTenantid("abcde");
 			nwList.setTenantname("cloudsdn");
 			nwList.setCpsvcid("CP123456");
+			nwList.setNeossId("ABC0001");
 			
 			ArrayList<PremiseNetwork> list = new ArrayList<PremiseNetwork>();
 			
@@ -152,12 +151,6 @@ public class ResponsePRCreateNetworkProcessorTest {
 			
 			System.out.println("Request XML...");
 			System.out.println(getRequestXML(nwList));
-			
-//			String responseXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ResponseInfo><ReturnCode>200</ReturnCode><ReturnCodeDescription>Success</ReturnCodeDescription><CpSvcId>CSDN000001</CpSvcId><TenantId>A111222333</TenantId><TenantName>NH_ADMIN</TenantName><NetworkList><NetworkName>NH_PrivateNW1</NetworkName><Subnet>100.100.100.100/24</Subnet><VLANID>10</VLANID><Bandwidth>100M</Bandwidth><ConnectionList><Switch><SWName>4F_Partion</SWName><SWType>End-Point_Switch</SWType><SWID>cvbvxc34653</SWID><Ip>30.30.30.30</Ip><UpPort>1</UpPort><DownPort>2</DownPort></Switch><Switch><SWName>3F_L2_2211</SWName><SWType>L2_Switch</SWType><SWID>asfhkjas4234</SWID><Ip>20.20.20.20</Ip><UpPort>2</UpPort><DownPort>4</DownPort></Switch><Switch><SWName>3F_TransportSW</SWName><SWType>Aggregate_Switch</SWType><SWID>bbc11112222</SWID><Ip>10.10.10.10</Ip><UpPort>2</UpPort><DownPort>3</DownPort></Switch></ConnectionList></NetworkList></ResponseInfo>";
-			
-			
-//			nwList = process.getResponseObject(responseXml);
-//			printResponseCloudNWList(nwList);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

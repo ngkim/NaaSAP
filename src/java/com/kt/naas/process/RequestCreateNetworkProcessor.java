@@ -721,7 +721,7 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 			item.setSvctype(req.getServiceType());
 			item.setTopologyType(req.getTopologyType());
 			item.setConnType(req.getConnType());
-			item.setBandwidth(Integer.parseInt(req.getBandwidth()));
+			item.setBandwidth(req.getBandwidth());
 
 			System.out.println("*** NGKIM Network Service= " + item.getSvcName());
 			logger.info(req.getFromTime());
@@ -794,7 +794,7 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 			nsReq.setConnType(connType);
 			nsReq.setFromTime(fromTime);
 			nsReq.setToTime(toTime);
-			nsReq.setBandwidth(bandwidth);
+			nsReq.setBandwidth(Integer.parseInt(bandwidth));
 
 			ArrayList<TenantNetworkInfo> tnInfoList = new ArrayList<TenantNetworkInfo>();
 

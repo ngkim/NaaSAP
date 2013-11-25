@@ -28,6 +28,7 @@ import com.kt.naas.xml.PremiseSwitch;
 import com.kt.naas.xml.PremiseSwitchList;
 import com.kt.naas.xml.QoSAttribute;
 import com.kt.naas.xml.QoSAttributeList;
+import com.kt.naas.xml.RequestCreatePremiseNetwork;
 import com.kt.naas.xml.RequestInfoCloudSDN;
 import com.kt.naas.xml.ResponseCloudNWList;
 import com.kt.naas.xml.ResponseCreatePremiseNetwork;
@@ -59,50 +60,56 @@ public class ResponsePRNetworkProcessorTest {
 		return requestXml;
 	}
 	
+	private ResponseCreatePremiseNetwork generateResponse() {
+		ResponseCreatePremiseNetwork resPremiseNetwork = new ResponseCreatePremiseNetwork();
+		
+		resPremiseNetwork.setReturnCode("200");
+		resPremiseNetwork.setMessage("No Error");
+		resPremiseNetwork.setCpsvcid("CP123456");
+		
+		ArrayList<QoSAttributeList> attrList = new ArrayList<QoSAttributeList>();
+		
+		QoSAttributeList qosList = new QoSAttributeList();
+		
+		ArrayList<QoSAttribute> qaList = new ArrayList<QoSAttribute>();
+		
+		QoSAttribute attr = new QoSAttribute();
+		attr.setAttrName("Bandwidth");
+		attr.setPrevValue("100M");
+		attr.setUpdateValue("1G");
+		
+		qaList.add(attr);
+		
+		QoSAttribute attr1 = new QoSAttribute();
+		attr1.setAttrName("CoS");
+		attr1.setPrevValue("1");
+		attr1.setUpdateValue("2");
+		
+		qaList.add(attr1);
+		
+		qosList.setQosAttribute(qaList);
+		
+		attrList.add(qosList);
+		
+		resPremiseNetwork.setAttrList(attrList);
+		
+		return resPremiseNetwork;
+	}
+	
+	private RequestCreatePremiseNetwork generateRequest() {
+		RequestCreatePremiseNetwork reqPremiseNetwork = new RequestCreatePremiseNetwork();
+		
+		return reqPremiseNetwork;
+	}
 	
 	@Test
 	public void testRequestPRNetworkProcessor() {
-		RequestDCNetworkProcessor process = new RequestDCNetworkProcessor();
-		
 		ResponseCreatePremiseNetwork response = null; 
 		try {
-			response = new ResponseCreatePremiseNetwork();
-			
-			response.setReturnCode("200");
-			response.setMessage("No Error");
-			response.setCpsvcid("CP123456");
-			
-			ArrayList<QoSAttributeList> attrList = new ArrayList<QoSAttributeList>();
-			
-			QoSAttributeList qosList = new QoSAttributeList();
-			
-			ArrayList<QoSAttribute> qaList = new ArrayList<QoSAttribute>();
-			
-			QoSAttribute attr = new QoSAttribute();
-			attr.setAttrName("Bandwidth");
-			attr.setPrevValue("100M");
-			attr.setUpdateValue("1G");
-			
-			qaList.add(attr);
-			
-			QoSAttribute attr1 = new QoSAttribute();
-			attr1.setAttrName("CoS");
-			attr1.setPrevValue("1");
-			attr1.setUpdateValue("2");
-			
-			qaList.add(attr1);
-			
-			qosList.setQosAttribute(qaList);
-			
-			attrList.add(qosList);
-			
-			response.setAttrList(attrList);
+			response = generateResponse();
 						
 			System.out.println("Request XML...");
 			System.out.println(getRequestXML(response));
-			
-//			String responseXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ResponseInfo><ReturnCode>200</ReturnCode><ReturnCodeDescription>Success</ReturnCodeDescription><CpSvcId>CSDN000001</CpSvcId><TenantId>A111222333</TenantId><TenantName>NH_ADMIN</TenantName><NetworkList><NetworkName>NH_PrivateNW1</NetworkName><Subnet>100.100.100.100/24</Subnet><VLANID>10</VLANID><Bandwidth>100M</Bandwidth><ConnectionList><Switch><SWName>4F_Partion</SWName><SWType>End-Point_Switch</SWType><SWID>cvbvxc34653</SWID><Ip>30.30.30.30</Ip><UpPort>1</UpPort><DownPort>2</DownPort></Switch><Switch><SWName>3F_L2_2211</SWName><SWType>L2_Switch</SWType><SWID>asfhkjas4234</SWID><Ip>20.20.20.20</Ip><UpPort>2</UpPort><DownPort>4</DownPort></Switch><Switch><SWName>3F_TransportSW</SWName><SWType>Aggregate_Switch</SWType><SWID>bbc11112222</SWID><Ip>10.10.10.10</Ip><UpPort>2</UpPort><DownPort>3</DownPort></Switch></ConnectionList></NetworkList></ResponseInfo>";
-			
 			
 //			nwList = process.getResponseObject(responseXml);
 //			printResponseCloudNWList(nwList);

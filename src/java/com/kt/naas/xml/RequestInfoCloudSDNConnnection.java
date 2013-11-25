@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class RequestInfoCloudSDNConnnection {
 	String tid;
 	String vnid;
-	String bw;
+	int bw;
 	
 	public String getTid() {
 		return tid;
@@ -31,11 +31,11 @@ public class RequestInfoCloudSDNConnnection {
 		this.vnid = vnid;
 	}
 	
-	public String getBw() {
+	public int getBw() {
 		return bw;
 	}
 	
-	public void setBw(String bw) {
+	public void setBw(int bw) {
 		this.bw = bw;
 	}
 }

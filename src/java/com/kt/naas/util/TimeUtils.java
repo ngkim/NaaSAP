@@ -6,8 +6,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * ½Ã°£°ú °ü·ÃµÈ ¹®ÀÚ¿­ Ã³¸®¸¦ À§ÇÑ Utility
- * @author ¾Èº´±Ô
+ * ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½Ãµï¿½ ï¿½ï¿½ï¿½Ú¿ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Utility
+ * @author ï¿½Èºï¿½ï¿½ï¿½
  */
 public class TimeUtils {
 	public final static SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -19,7 +19,7 @@ public class TimeUtils {
 	public final static SimpleDateFormat SEC_FORMAT = new SimpleDateFormat("ss");
 	
 	/* 
-	// ¹®ÀÚ¿­ ÆÐÅÏ ÂüÁ¶
+	// ï¿½ï¿½ï¿½Ú¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	Letter	Date or Time Component	Presentation		Examples
 	--------------------------------------------------------------------
 	G		Era Designator			Text				Ad
@@ -44,8 +44,22 @@ public class TimeUtils {
 	--------------------------------------------------------------------
 	*/
 	
+	private long start_time; 
+	
+	public void setStartTime() {
+		start_time =  System.nanoTime();
+	}
+	
+	public double getDuration() {
+		long end_time = System.nanoTime();
+		
+		double duration = (end_time - start_time)/1e6;
+		
+		return duration;
+	}
+	
 	/**
-	 * milliseconds long °ªÀ» [2010-11-01 11:22:33] ÇüÅÂÀÇ String À¸·Î º¯È¯
+	 * milliseconds long ï¿½ï¿½ï¿½ï¿½ [2010-11-01 11:22:33] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ String ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
 	 */
 	public static String getDateTimeString(long ltime)
 	{
@@ -53,7 +67,7 @@ public class TimeUtils {
 	}
 
 	/**
-	 * milliseconds long °ªÀ» [2010-11-01] ÇüÅÂÀÇ String À¸·Î º¯È¯
+	 * milliseconds long ï¿½ï¿½ï¿½ï¿½ [2010-11-01] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ String ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
 	 */
 	public static String getDateString(long ltime)
 	{
@@ -61,7 +75,7 @@ public class TimeUtils {
 	}
 
 	/**
-	 * milliseconds long °ªÀ» [11:22:33] ÇüÅÂÀÇ String À¸·Î º¯È¯
+	 * milliseconds long ï¿½ï¿½ï¿½ï¿½ [11:22:33] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ String ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
 	 */
 	public static String getTimeString(long ltime)
 	{
@@ -69,7 +83,7 @@ public class TimeUtils {
 	}
 	
 	/**
-	 * milliseconds long °ª¿¡¼­ ³¯Â¥ ºÎºÐÀ» int ÇüÅÂ·Î º¯È¯(20100101)
+	 * milliseconds long ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Â¥ ï¿½Îºï¿½ï¿½ï¿½ int ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½È¯(20100101)
 	 */
 	public static int getDateInt(long ltime)
 	{
@@ -77,7 +91,7 @@ public class TimeUtils {
 	}
 
 	/**
-	 * milliseconds long °ª¿¡¼­ ½Ã°£À» int ÇüÅÂ·Î º¯È¯
+	 * milliseconds long ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ int ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½È¯
 	 */
 	public static int getHourInt(long ltime)
 	{
@@ -85,7 +99,7 @@ public class TimeUtils {
 	}
 
 	/**
-	 * milliseconds long °ª¿¡¼­ ºÐÀ» int ÇüÅÂ·Î º¯È¯
+	 * milliseconds long ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ int ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½È¯
 	 */
 	public static int getMinuteInt(long ltime)
 	{
@@ -93,7 +107,7 @@ public class TimeUtils {
 	}
 	
 	/**
-	 * milliseconds long °ª¿¡¼­ ÃÊ¸¦ int ÇüÅÂ·Î º¯È¯
+	 * milliseconds long ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¸ï¿½ int ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½È¯
 	 */
 	public static int getSecondInt(long ltime)
 	{
@@ -101,9 +115,9 @@ public class TimeUtils {
 	}
 	
 	/**
-	 * [2010-11-01 11:22:33] ÇüÅÂÀÇ String À» milliseconds long °ªÀ¸·Î º¯È¯
-	 * @param stime 2010-11-01 11:22:33 ÇüÅÂÀÇ ¹®ÀÚ¿­
-	 * @return ¹®ÀÚ¿­¿¡ ÇØ´çÇÏ´Â miliseconds °ª(long), ¹®ÀÚ¿­ ÆÄ½ÌÀ» ½ÇÇØÇÑ °æ¿ì¿¡´Â -1L
+	 * [2010-11-01 11:22:33] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ String ï¿½ï¿½ milliseconds long ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
+	 * @param stime 2010-11-01 11:22:33 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¿ï¿½
+	 * @return ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½Ø´ï¿½ï¿½Ï´ï¿½ miliseconds ï¿½ï¿½(long), ï¿½ï¿½ï¿½Ú¿ï¿½ ï¿½Ä½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ì¿¡ï¿½ï¿½ -1L
 	 */
 	public static long getDateTimeLong(String stime)
 	{
@@ -116,10 +130,10 @@ public class TimeUtils {
 	}
 	
 	/**
-	 * ÀÔ·Â¹ÞÀº ³¯Â¥(Àü, ÈÄ)¸¦ Áõ°¨½ÃÄÑ YYYY-MM-DD ÇüÅÂ·Î µ¹·ÁÁÖ±â
-	 * nowDate °¡ ³ÎÀÌ¸é ÇöÀç½Ã°£ ÀÌ¿ë
-	 * ex) getChangeDay( 7,"2011-04-04 00:00:00") ¶ó°í ÇÏ¸é 2011-04-11 °ªÀÌ ¸®ÅÏ
-	 * ex) getChangeDay(-7,"2011-04-04 00:00:00") ¶ó°í ÇÏ¸é 2011-03-28 °ªÀÌ ¸®ÅÏ
+	 * ï¿½Ô·Â¹ï¿½ï¿½ï¿½ ï¿½ï¿½Â¥(ï¿½ï¿½, ï¿½ï¿½)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ YYYY-MM-DD ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½
+	 * nowDate ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½Ã°ï¿½ ï¿½Ì¿ï¿½
+	 * ex) getChangeDay( 7,"2011-04-04 00:00:00") ï¿½ï¿½ï¿½ ï¿½Ï¸ï¿½ 2011-04-11 ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	 * ex) getChangeDay(-7,"2011-04-04 00:00:00") ï¿½ï¿½ï¿½ ï¿½Ï¸ï¿½ 2011-03-28 ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	 * @author james
 	 * @param tmpDay
 	 * @param nowDate (yyyy-MM-dd HH:mm:ss)
@@ -140,7 +154,7 @@ public class TimeUtils {
 		}
 		cal.setTime(trialTime);
 
-		// ÇÏ·ç Àü ³¯Â¥·Î °è»ê ÇÏ±â À§ÇÑ ¸Þ¼Òµå
+		// ï¿½Ï·ï¿½ ï¿½ï¿½ ï¿½ï¿½Â¥ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¼Òµï¿½
 		cal.add(Calendar.DATE, tmpDay);
 		String year = String.valueOf(cal.get(Calendar.YEAR));
 		String month = String.valueOf(cal.get(Calendar.MONTH) + 1);
@@ -154,16 +168,16 @@ public class TimeUtils {
 	}
 	
 	/**
-	 * µÎ ³¯Â¥ »çÀÌÀÇ °ªÀ» ¸®ÅÏÇÑ´Ù.
+	 * ï¿½ï¿½ ï¿½ï¿½Â¥ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 	 * ex) fromDate = "2011-04-04 00:00:00"
-	 *     toDate   = "2011-03-04 00:00:00" ÀÌ¸é °á°ú´Â 31 À» ¸®ÅÏÇÑ´Ù.
+	 *     toDate   = "2011-03-04 00:00:00" ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ 31 ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 	 * @author james
 	 * @param fromDate (yyyy-mm-dd hh24:mi:ss)
 	 * @param toDate (yyyy-mm-dd hh24:mi:ss)
 	 * @return
 	 */
 	public static int getDayDiff(String fromDate, String toDate) {
-		// ³¯Â¥´Â longÀ¸·Î Ç¥ÇöµË´Ï´Ù. µÎ ³¯Â¥ »çÀÌÀÇ ½Ã°£À» ±¸ÇÕ´Ï´Ù.
+		// ï¿½ï¿½Â¥ï¿½ï¿½ longï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½ï¿½Ë´Ï´ï¿½. ï¿½ï¿½ ï¿½ï¿½Â¥ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
 		long between = -1;
 		try {
 			between = getDateTimeLong(fromDate) - getDateTimeLong(toDate);
@@ -172,8 +186,8 @@ public class TimeUtils {
 			e.printStackTrace();
 		}
 
-		// µÎ ³¯Â¥ »çÀÌÀÇ ÀÏ ¼ö¸¦ ±¸ÇÕ´Ï´Ù. ÇÏ·ç´Â 86400ÃÊÀÌ°í 1ÃÊ´Â 1000¹Ð¸®ÃÊÀÌ±â ¶§¹®¿¡
-		// À§¿¡¼­ ±¸ÇÑ betweenÀ» 86400000À¸·Î ³ª´¯´Ï´Ù.
+		// ï¿½ï¿½ ï¿½ï¿½Â¥ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Õ´Ï´ï¿½. ï¿½Ï·ï¿½ï¿½ 86400ï¿½ï¿½ï¿½Ì°ï¿½ 1ï¿½Ê´ï¿½ 1000ï¿½Ð¸ï¿½ï¿½ï¿½ï¿½Ì±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ betweenï¿½ï¿½ 86400000ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.
 		// System.out.println("result: " + (between / 86400000));
 
 		return (int) (between / 86400000);

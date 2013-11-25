@@ -10,9 +10,17 @@ public class DJPremiseSDNAPI extends PremiseSDNAPI {
 		super(request, response, url);
 		// TODO Auto-generated constructor stub
 		
-		this.setUrlRead(url + "/api.retrievePremiseSDNConnection");
-		this.setUrlUpdate(url + "/api.updatePremiseSDNConnection?CpSvcId=CSDN000001");
-		this.setUrlDelete(url + "/api.deletePremiseSDNConnection");
+		this.setUrlRead("/api.retrievePremiseSDNConnection");
+		this.setUrlCreate("/api.updatePremiseSDNConnection");
+		this.setUrlDelete("/api.deletePremiseSDNConnection");
 	}
 
+	public DJPremiseSDNAPI(String url) {
+		super(url);
+		// TODO Auto-generated constructor stub
+		
+		this.setUrlRead("/api.retrievePremiseSDNConnection");
+		this.setUrlCreate("/api.updatePremiseSDNConnection");
+		this.setUrlDelete("/api.deletePremiseSDNConnection");
+	}	
 }

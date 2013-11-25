@@ -7,24 +7,24 @@ import javax.xml.bind.annotation.XmlAttribute;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class QoS {
 	@XmlAttribute
-	int bandwidth;
+	String bandwidth;
 
 	@XmlAttribute
-	int exceed;
+	String exceed;
 
-	public int getBandwidth() {
+	public String getBandwidth() {
 		return bandwidth;
 	}
 
-	public void setBandwidth(int bandwidth) {
+	public void setBandwidth(String bandwidth) {
 		this.bandwidth = bandwidth;
 	}
 
-	public int getExceed() {
+	public String getExceed() {
 		return exceed;
 	}
 
-	public void setExceed(int exceed) {
+	public void setExceed(String exceed) {
 		this.exceed = exceed;
 	}
 }

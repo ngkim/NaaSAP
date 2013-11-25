@@ -10,7 +10,7 @@ public class NetworkServiceRequest {
 	String connType;
 	String fromTime;
 	String toTime;
-	String bandwidth;
+	int bandwidth;
 
 	private ArrayList<TenantNetworkInfo> networklist;
 
@@ -70,11 +70,11 @@ public class NetworkServiceRequest {
 		this.toTime = toTime;
 	}
 
-	public String getBandwidth() {
+	public int getBandwidth() {
 		return bandwidth;
 	}
 
-	public void setBandwidth(String bandwidth) {
+	public void setBandwidth(int bandwidth) {
 		this.bandwidth = bandwidth;
 	}
 

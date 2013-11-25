@@ -1,14 +1,17 @@
 package com.kt.naas.api;
 
+import com.kt.naas.GlobalConstants;
 import com.kt.naas.message.RequestMessage;
 import com.kt.naas.message.ResponseMessage;
 import com.kt.naas.util.DebugUtils;
+import com.kt.naas.util.PrintUtils;
 import com.kt.naas.util.RestAPIUtils;
 
 public class SDNAPI {
 	protected RequestMessage request;
 	protected ResponseMessage response;
 	
+	protected PrintUtils printUtil; 
 	protected RestAPIUtils apiUtil;
 	
 	protected String url;
@@ -17,6 +20,13 @@ public class SDNAPI {
 	protected String urlUpdate;
 	protected String urlDelete;
 
+	public SDNAPI(String url) {
+		this.url = url;
+
+		apiUtil = new RestAPIUtils();
+		if(GlobalConstants.OP_DEBUG) printUtil = new PrintUtils();
+	}
+	
 	public SDNAPI(RequestMessage request, ResponseMessage response,
 			String url) {
 		this.request = request;
@@ -24,6 +34,7 @@ public class SDNAPI {
 		this.url = url;
 
 		apiUtil = new RestAPIUtils();
+		if(GlobalConstants.OP_DEBUG) printUtil = new PrintUtils();
 	}
 
 	public String getUrlCreate() {
@@ -34,7 +45,7 @@ public class SDNAPI {
 		this.urlCreate = url + urlCreate;
 	}
 
-	public String getUrlRetrieveNetwork() {
+	public String getUrlRead() {
 		return urlRead;
 	}
 
@@ -63,6 +74,8 @@ public class SDNAPI {
 
 		try {
 			xml = apiUtil.getRequestXML(req);
+			if (GlobalConstants.OP_DEBUG)
+				printUtil.printKeyAndValue("RequestXML", xml);
 		} catch (Exception e) {
 			DebugUtils.sendResponse(response, -1, e.toString());
 		}

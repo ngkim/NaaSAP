@@ -56,8 +56,8 @@ public class TestRequestCreateTransportNetwork {
 			req.setPeers(peers);
 			
 			QoS qos = new QoS();
-			qos.setBandwidth(1000 * 1000);
-			qos.setExceed(1000);
+			qos.setBandwidth("100M");
+			qos.setExceed("10M");
 			req.setQos(qos);
 			
 			String xml = apiUtil.getRequestXML(req);
