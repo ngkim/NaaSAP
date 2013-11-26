@@ -86,6 +86,8 @@ public class SDNAPI {
 	
 	public <E> E xmlToResponse(String responseXml, E obj) {
 		try {
+			if (GlobalConstants.OP_DEBUG)
+				printUtil.printKeyAndValue("ResponseXML", responseXml);
 			obj = apiUtil.getResponseObject(responseXml, obj);
 		} catch (Exception e) {
 			DebugUtils.sendResponse(response, -1, e.toString());

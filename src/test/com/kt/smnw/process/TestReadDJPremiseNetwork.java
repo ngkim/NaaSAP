@@ -26,7 +26,7 @@ public class TestReadDJPremiseNetwork {
 	private RequestPremiseNWList generateRequest() {
 		RequestPremiseNWList reqPremiseNW = new RequestPremiseNWList();
 		
-		reqPremiseNW.setTenantName("NH_ADMIN");
+		reqPremiseNW.setTenantName("농협_우면지사");
 			
 		return reqPremiseNW;		
 	}
@@ -41,10 +41,10 @@ public class TestReadDJPremiseNetwork {
 			RequestPremiseNWList reqPremiseNW = generateRequest();
 			
 			DJPremiseSDNAPI api = new DJPremiseSDNAPI(GlobalConstants.URL_PREMISE_SDN_API_DJ);
-			resPremiseNW = api.readNetwork(reqPremiseNW);
+			resPremiseNW = api.readNetwork(GlobalConstants.HTTP_GET, reqPremiseNW);
 			
-			double duration = time.getDuration();
-			System.out.println("Time for reading a premise network = " + duration + " ms");
+			double duration = time.getDuration() / 1000;
+			System.err.println("\nTime for reading a premise network = " + duration + " sec\n");
 			
 			api.printResponsePremiseNetwork(resPremiseNW);
 			

@@ -28,7 +28,7 @@ public class TestCreateTransportNetwork {
 	private RequestCreateTransportNetwork generateRequest() {
 		RequestCreateTransportNetwork req = new RequestCreateTransportNetwork();
 		
-		req.setName("myEth");
+		req.setName("naasEth");
 		req.setDescription("DJ POTN connection test");
 		
 		req.setRid("NaaS");
@@ -73,9 +73,9 @@ public class TestCreateTransportNetwork {
 			TransportSDNAPI api = new TransportSDNAPI(GlobalConstants.URL_TRANSPORT_SDN_API);
 			res = api.createNetwork(req);
 			
-			double duration = time.getDuration();
+			double duration = time.getDuration() / 1000;
 			
-			System.err.println("\nTime for creating a transport network = " + duration + " ms");
+			System.err.println("\nTime for creating a transport network = " + duration + " seconds.\n");
 			
 			api.printResponseCreateTransportNetwork(res);
 			

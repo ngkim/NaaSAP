@@ -15,6 +15,7 @@ import com.kt.naas.message.RequestMessage;
 import com.kt.naas.process.RequestCreateNetworkProcessor;
 import com.kt.naas.process.RequestDCNetworkProcessor;
 import com.kt.naas.util.RequestClient;
+import com.kt.naas.util.SnmpUtils;
 import com.kt.naas.xml.ResponseCloudNWList;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -28,7 +29,7 @@ public class RequestVlanSwapTest {
 		RequestCreateNetworkProcessor process = new RequestCreateNetworkProcessor();
 
 		try {
-			process.vlanSwap("10.10.65.3", "10001", 11);
+			SnmpUtils.vlanSwap("10.10.65.3", "10001", 11);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -41,7 +42,7 @@ public class RequestVlanSwapTest {
 
 		try {
 			System.out.println("Run vlan swap test...");
-			process.vlanSwap("10.10.65.3", "10001", 11);
+			SnmpUtils.vlanSwap("10.10.65.3", "10001", 11);
 			System.out.println("Done...");
 
 		} catch (Exception e) {

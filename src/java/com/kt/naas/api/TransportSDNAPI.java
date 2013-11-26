@@ -47,10 +47,12 @@ public class TransportSDNAPI extends SDNAPI {
 
 			String responseXml = apiUtil.requestToAPIServerHttps(
 					getUrlCreate(), getRequestXML(req));
-			if (GlobalConstants.OP_DEBUG)
-				printUtil.printKeyAndValue("ResponseXML", responseXml);
-
-			 resTransportNW = xmlToResponse(responseXml, resTransportNW);
+			
+			if (responseXml == null || responseXml.trim().equals("")){
+				DebugUtils.sendResponse(response, -1, "No response from Transport SDN API Server.(" + getUrlCreate() + ")");
+			} else {
+				resTransportNW = xmlToResponse(responseXml, resTransportNW);
+			}
 		} catch (Exception e) {
 			DebugUtils.sendResponse(response, -1, e.toString());
 		}
@@ -67,9 +69,7 @@ public class TransportSDNAPI extends SDNAPI {
 
 			String responseXml = apiUtil.requestToAPIServerHttps(getUrlRead(),
 					getRequestXML(req));
-			if (GlobalConstants.OP_DEBUG)
-				printUtil.printKeyAndValue("ResponseXML", responseXml);
-
+			
 			resInfoEthernet = xmlToResponse(responseXml, resInfoEthernet);
 		} catch (Exception e) {
 			DebugUtils.sendResponse(response, -1, e.toString());
@@ -91,6 +91,42 @@ public class TransportSDNAPI extends SDNAPI {
 		}
 
 		return resTransportNW;
+	}
+	
+	public RequestCreateTransportNetwork generateRequest() {
+		RequestCreateTransportNetwork req = new RequestCreateTransportNetwork();
+		
+		req.setName("naasEth");
+		req.setDescription("DJ POTN connection test");
+		
+		req.setRid("NaaS");
+		req.setCid("88888888880");
+		req.seteType("E-LINE");
+		
+		ArrayList<UNIPeer> peers = new ArrayList<UNIPeer>();
+		
+		UNIPeer sw_potn = new UNIPeer();
+		sw_potn.setId("L2SW00001");
+		sw_potn.setPort("8");
+		sw_potn.setVlan("100");
+		peers.add(sw_potn);
+		
+		UNIPeer sw_naas = new UNIPeer();
+		sw_naas.setId("L2SW00011");
+		sw_naas.setPort("22");
+		sw_naas.setVlan("100");
+					
+		peers.add(sw_naas);
+		req.setPeers(peers);
+		
+		QoS qos = new QoS();
+		
+		qos.setBandwidth("100M");
+		qos.setExceed("10M");
+		
+		req.setQos(qos);
+		
+		return req;
 	}
 
 	public void printRequestCreateTransportNetwork(
@@ -145,12 +181,14 @@ public class TransportSDNAPI extends SDNAPI {
 						peer.getVlan());
 
 				UNIME u = peer.getU();
-				printUtil
-						.printKeyAndValue("Peer " + i + " UNIME Id", u.getId());
-				printUtil.printKeyAndValue("Peer " + i + " UNIME Port",
-						u.getPort());
-				printUtil.printKeyAndValue("Peer " + i + " UNIME Name",
-						u.getName());
+				if ( u != null ) {
+					printUtil
+							.printKeyAndValue("Peer " + i + " UNIME Id", u.getId());
+					printUtil.printKeyAndValue("Peer " + i + " UNIME Port",
+							u.getPort());
+					printUtil.printKeyAndValue("Peer " + i + " UNIME Name",
+							u.getName());
+				}
 			}
 		}
 

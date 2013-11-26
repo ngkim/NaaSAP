@@ -23,10 +23,12 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HTTP;
 import org.glassfish.jersey.SslConfigurator;
 import org.glassfish.jersey.client.filter.HttpBasicAuthFilter;
 
 import com.kt.naas.GlobalConstants;
+import com.sun.xml.internal.messaging.saaj.packaging.mime.Header;
 
 public class RestAPIUtils {
 	
@@ -34,6 +36,10 @@ public class RestAPIUtils {
 			String requestXml) throws Exception {
 		String responseXml = "";
 		
+		PrintUtils pu = new PrintUtils();
+		if (GlobalConstants.OP_DEBUG) {
+			pu.printKeyAndValue("callAPI URL", url);
+		}
 		HttpResponse httpRes = requestToAPIServer(url, method, requestXml);
 		responseXml = getResponseXml(httpRes);
 		
@@ -47,14 +53,13 @@ public class RestAPIUtils {
 		HttpClient client = new DefaultHttpClient();
 		if (method == GlobalConstants.HTTP_GET) {
 			HttpGet req = new HttpGet(url);
-
+			
 			res = client.execute(req);
 		} else if (method == GlobalConstants.HTTP_POST) {
 			HttpPost req = new HttpPost(url);
-
-			StringEntity entity = new StringEntity(requestXml);
+			StringEntity entity = new StringEntity(requestXml, "UTF-8");
 			req.setEntity(entity);
-
+			
 			res = client.execute(req);
 		}
 

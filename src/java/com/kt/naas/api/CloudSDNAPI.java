@@ -9,12 +9,17 @@ import com.kt.naas.domain.FieldBuffer;
 import com.kt.naas.message.RequestMessage;
 import com.kt.naas.message.ResponseMessage;
 import com.kt.naas.util.DebugUtils;
+import com.kt.naas.xml.CloudConnectionList;
+import com.kt.naas.xml.CloudSwitch;
+import com.kt.naas.xml.CloudVNID;
 import com.kt.naas.xml.CloudVirtualNetwork;
 import com.kt.naas.xml.CloudVirtualNetworkList;
+import com.kt.naas.xml.RequestCloudNWList;
 import com.kt.naas.xml.RequestCreateCloudNetwork;
 import com.kt.naas.xml.RequestCreateTransportNetwork;
 import com.kt.naas.xml.RequestDeleteCloudNetwork;
 import com.kt.naas.xml.RequestInfoCloudSDN;
+import com.kt.naas.xml.RequestInfoCloudSDNConnnection;
 import com.kt.naas.xml.ResponseCloudNWList;
 import com.kt.naas.xml.ResponseCreateCloudNetwork;
 import com.kt.naas.xml.ResponseCreateTransportNetwork;
@@ -33,25 +38,33 @@ public class CloudSDNAPI extends SDNAPI {
 			String apiServer) {
 		super(request, response, apiServer);
 		
-		this.setUrlRead(apiServer + "/RetrievedCloudSDNTenantNEtworkList");
-		this.setUrlCreate(apiServer + "/createCloudSDNConnection");
-		this.setUrlDelete(apiServer + "/connectToInternet");
+		this.setUrlRead("/RetrievedCloudSDNTenantNEtworkList");
+		this.setUrlCreate("/ConnectKoren");
+		this.setUrlDelete("/ConnectInternet");
+	}
+	
+	public CloudSDNAPI(String apiServer) {
+		super(apiServer);
+		
+		this.setUrlRead("/RetrievedCloudSDNTenantNEtworkList");
+		this.setUrlCreate("/ConnectKoren");
+		this.setUrlDelete("/ConnectInternet");
 	}
 	
 	public ResponseCreateCloudNetwork createNetwork(RequestCreateCloudNetwork req) {
-		ResponseCreateCloudNetwork resTransportNW = new ResponseCreateCloudNetwork();
+		ResponseCreateCloudNetwork resCloudNW = new ResponseCreateCloudNetwork();
 	
 		try {
 			String responseXml = apiUtil.callAPI(getUrlCreate(), GlobalConstants.HTTP_POST, getRequestXML(req));
-			resTransportNW = xmlToResponse(responseXml, resTransportNW);
+			resCloudNW = xmlToResponse(responseXml, resCloudNW);
 		} catch (Exception e) {
 			DebugUtils.sendResponse(response, -1, e.toString());
 		}
 		
-		return resTransportNW;		
+		return resCloudNW;		
 	}
 	
-	public ResponseDeleteCloudNetwork createNetwork(RequestDeleteCloudNetwork req) {
+	public ResponseDeleteCloudNetwork deleteNetwork(RequestDeleteCloudNetwork req) {
 		ResponseDeleteCloudNetwork resCloudNW = new ResponseDeleteCloudNetwork();
 	
 		try {
@@ -62,6 +75,19 @@ public class CloudSDNAPI extends SDNAPI {
 		}
 		
 		return resCloudNW;		
+	}
+	
+	public ResponseCloudNWList readNetwork(RequestInfoCloudSDN req){
+		ResponseCloudNWList resCloudNW = new ResponseCloudNWList();
+		
+		try {
+			String responseXml = apiUtil.callAPI(getUrlRead(), GlobalConstants.HTTP_POST, getRequestXML(req));
+			resCloudNW = xmlToResponse(responseXml, resCloudNW);
+		} catch (Exception e) {
+			DebugUtils.sendResponse(response, -1, e.toString());
+		}
+		
+		return resCloudNW;
 	}
 	
 	public RequestInfoCloudSDN recvRequestfromWeb() {
@@ -139,5 +165,44 @@ public class CloudSDNAPI extends SDNAPI {
 		}
 
 		return xml;
+	}
+	
+	public void printResponseCreateCloudNetwork(ResponseCreateCloudNetwork res) {
+		try {
+			printUtil.printKeyAndValue("RETURN CODE" , res.getReturnCode());
+			printUtil.printKeyAndValue("RETURN MSG" , res.getMessage());
+			
+			printUtil.printKeyAndValue("DCSVCID" , res.getDcsvcid());
+			printUtil.printKeyAndValue("TENANTNAME" , res.getTenantname());
+			printUtil.printKeyAndValue("TENANTID" , res.getTenantid());
+
+			ArrayList<CloudVNID> list = res.getVNIDInfo();
+			if (list != null) {
+				for (int i = 0; i < list.size(); i++) {
+					CloudVNID item = list.get(i);
+					printUtil.printKeyAndValue("\tNWNAME" , item.getName());
+					printUtil.printKeyAndValue("\tVNID" , item.getVNID());
+					printUtil.printKeyAndValue("\tSUBNET" , item.getSubnet());
+					printUtil.printKeyAndValue("\tBW" , item.getBandwidth());
+
+					CloudConnectionList conList = item.getConnectionList();
+					if (conList != null) {
+						ArrayList<CloudSwitch> swlist = conList.getConnectionInfo();
+						if (swlist != null) {
+							for (int j = 0; j < swlist.size(); j++) {
+								CloudSwitch sw = swlist.get(j);
+								printUtil.printKeyAndValue("\t\tSWNAME", sw.getName());
+								printUtil.printKeyAndValue("\t\tSWID", sw.getDpid());
+								printUtil.printKeyAndValue("\t\tSWType", sw.getType());
+								printUtil.printKeyAndValue("\t\tUpPort", sw.getUplinkport());
+								printUtil.printKeyAndValue("\t\tDownPort", sw.getDownlinkport());
+							}
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

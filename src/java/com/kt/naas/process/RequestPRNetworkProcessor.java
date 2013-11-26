@@ -9,12 +9,20 @@ import java.util.ArrayList;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HTTP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.kt.naas.GlobalConstants;
+import com.kt.naas.api.DJPremiseSDNAPI;
+import com.kt.naas.api.PremiseSDNAPI;
+import com.kt.naas.api.WMPremiseSDNAPI;
 import com.kt.naas.db.DaoFactory;
 import com.kt.naas.db.DomainNetworkDao;
 import com.kt.naas.db.DomainNetworkEquipDao;
@@ -25,6 +33,7 @@ import com.kt.naas.domain.DomainNetworkEquip;
 import com.kt.naas.domain.DomainNetworkPort;
 import com.kt.naas.domain.FieldBuffer;
 import com.kt.naas.domain.PremiseNetworkService;
+import com.kt.naas.util.DebugUtils;
 import com.kt.naas.util.RequestClient;
 import com.kt.naas.xml.PremiseNetwork;
 import com.kt.naas.xml.PremiseSwitch;
@@ -40,27 +49,8 @@ import javax.xml.bind.Unmarshaller;
 public class RequestPRNetworkProcessor extends RequestProcessor {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
-	private String nmsId;
-	private String url = "http://211.224.204.145:8080/APIServer/psdnRetrieveNWList";
-	private String url_wm_nms = "http://211.224.204.157:8080/APIServer/psdnRetrieveNWList";
-	private String url_dj_nms = "http://211.224.204.137:8080/NaaS/api.retrievePremiseSDNConnection";
-	
-	private String djPremiseResponseXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ResponseInfo><ReturnCode>200</ReturnCode><ReturnCodeDescription>Success</ReturnCodeDescription><CpSvcId>PSDN000001</CpSvcId><TenantId>A111222333</TenantId><TenantName>NH_ADMIN</TenantName>"
-			+ "<NetworkList><NetworkName>농협_전민지사_사내망_1</NetworkName><Subnet>221.145.180.0/24</Subnet><VLANID>10</VLANID><Bandwidth>100M</Bandwidth><ConnectionList><Switch><SWName>4F_Partion</SWName><SWType>End-Point_Switch</SWType><SWID>jm_endpoint_sw_01</SWID><Ip>30.30.30.30</Ip><UpPort>1</UpPort><DownPort>2</DownPort></Switch><Switch><SWName>3F_L2_2211</SWName><SWType>L2_Switch</SWType><SWID>jm_l2_sw_01</SWID><Ip>20.20.20.20</Ip><UpPort>2</UpPort><DownPort>4</DownPort></Switch><Switch><SWName>3F_TransportSW</SWName><SWType>Aggregate_Switch</SWType><SWID>jm_aggr_sw_01</SWID><Ip>10.10.10.10</Ip><UpPort>2</UpPort><DownPort>3</DownPort></Switch></ConnectionList></NetworkList>"
-			+ "<NetworkList><NetworkName>농협_전민지사_사내망_2</NetworkName><Subnet>221.145.200.0/24</Subnet><VLANID>10</VLANID><Bandwidth>100M</Bandwidth><ConnectionList><Switch><SWName>4F_Partion</SWName><SWType>End-Point_Switch</SWType><SWID>jm_endpoint_sw_02</SWID><Ip>30.30.30.30</Ip><UpPort>1</UpPort><DownPort>2</DownPort></Switch><Switch><SWName>3F_L2_2211</SWName><SWType>L2_Switch</SWType><SWID>jm_l2_sw_02</SWID><Ip>20.20.20.20</Ip><UpPort>2</UpPort><DownPort>4</DownPort></Switch><Switch><SWName>3F_TransportSW</SWName><SWType>Aggregate_Switch</SWType><SWID>jm_aggr_sw_02</SWID><Ip>10.10.10.10</Ip><UpPort>2</UpPort><DownPort>3</DownPort></Switch></ConnectionList></NetworkList>"
-			+ "</ResponseInfo>";
-	private String wmPremiseResponseXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ResponseInfo><ReturnCode>200</ReturnCode><ReturnCodeDescription>Success</ReturnCodeDescription><CpSvcId>PSDN000002</CpSvcId><TenantId>A111222333</TenantId><TenantName>NH_ADMIN</TenantName>"
-			+ "<NetworkList><NetworkName>농협_우면지사_사내망_1</NetworkName><Subnet>210.183.240.0/24</Subnet><VLANID>10</VLANID><Bandwidth>100M</Bandwidth><ConnectionList><Switch><SWName>4F_Partion</SWName><SWType>End-Point_Switch</SWType><SWID>wm_endpoint_sw_01</SWID><Ip>30.30.30.30</Ip><UpPort>1</UpPort><DownPort>2</DownPort></Switch><Switch><SWName>3F_L2_2211</SWName><SWType>L2_Switch</SWType><SWID>wm_l2_sw_01</SWID><Ip>20.20.20.20</Ip><UpPort>2</UpPort><DownPort>4</DownPort></Switch><Switch><SWName>3F_TransportSW</SWName><SWType>Aggregate_Switch</SWType><SWID>wm_aggr_sw_01</SWID><Ip>10.10.10.10</Ip><UpPort>2</UpPort><DownPort>3</DownPort></Switch></ConnectionList></NetworkList>"
-			+ "<NetworkList><NetworkName>농협_우면지사_사내망_2</NetworkName><Subnet>210.183.241.0/24</Subnet><VLANID>10</VLANID><Bandwidth>100M</Bandwidth><ConnectionList><Switch><SWName>4F_Partion</SWName><SWType>End-Point_Switch</SWType><SWID>wm_endpoint_sw_02</SWID><Ip>30.30.30.30</Ip><UpPort>1</UpPort><DownPort>2</DownPort></Switch><Switch><SWName>3F_L2_2211</SWName><SWType>L2_Switch</SWType><SWID>wm_l2_sw_02</SWID><Ip>20.20.20.20</Ip><UpPort>2</UpPort><DownPort>4</DownPort></Switch><Switch><SWName>3F_TransportSW</SWName><SWType>Aggregate_Switch</SWType><SWID>wm_aggr_sw_02</SWID><Ip>10.10.10.10</Ip><UpPort>2</UpPort><DownPort>3</DownPort></Switch></ConnectionList></NetworkList>"
-			+ "<NetworkList><NetworkName>농협_우면지사_사내망_3</NetworkName><Subnet>210.183.242.0/24</Subnet><VLANID>10</VLANID><Bandwidth>100M</Bandwidth><ConnectionList><Switch><SWName>4F_Partion</SWName><SWType>End-Point_Switch</SWType><SWID>wm_endpoint_sw_03</SWID><Ip>30.30.30.30</Ip><UpPort>1</UpPort><DownPort>2</DownPort></Switch><Switch><SWName>3F_L2_2211</SWName><SWType>L2_Switch</SWType><SWID>wm_l2_sw_03</SWID><Ip>20.20.20.20</Ip><UpPort>2</UpPort><DownPort>4</DownPort></Switch><Switch><SWName>3F_TransportSW</SWName><SWType>Aggregate_Switch</SWType><SWID>wm_aggr_sw_03</SWID><Ip>10.10.10.10</Ip><UpPort>2</UpPort><DownPort>3</DownPort></Switch></ConnectionList></NetworkList>"
-			+ "</ResponseInfo>";
-
 	@Autowired
 	RequestClient requestClient;
-
-	public void sendResponse() {
-
-	}
 
 	public void updatePremiseNetworkServiceTable(ResponsePremiseNWList nwList) {
 		PremiseNetworkService item = null;
@@ -91,7 +81,6 @@ public class RequestPRNetworkProcessor extends RequestProcessor {
 
 							boolean isNew = false;
 							if (item == null) {
-								System.out.println("*** NGKIM *** : New Premise Network...");
 								isNew = true;
 								item = new PremiseNetworkService();
 							}
@@ -239,219 +228,30 @@ public class RequestPRNetworkProcessor extends RequestProcessor {
 		}
 	}
 
-	// Perform XML Unmarsharling of Response
-	public ResponsePremiseNWList getResponseObject(String responseXml) {
-
-		ResponsePremiseNWList res = null;
-		try {
-			JAXBContext jaxbContext = JAXBContext
-					.newInstance(ResponsePremiseNWList.class);
-
-			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-
-			StringReader reader = new StringReader(responseXml);
-			res = (ResponsePremiseNWList) jaxbUnmarshaller.unmarshal(reader);
-		} catch (Exception e) {
-			String retMsg = "" + e;
-			response.setResultCode(-1);
-			response.setResultMessage(retMsg);
-		}
-
-		return res;
-	}
-
-	public HttpResponse requestToAPIServer(String requstXml) {
-
-		HttpResponse res = null;
-		try {
-			HttpClient client = new DefaultHttpClient();
-
-			HttpGet req = new HttpGet(url);
-			// HttpPost req = new HttpPost(url);
-			// StringEntity entity = new StringEntity(requestXml);
-			// req.setEntity(entity);
-
-			// Get Response
-			res = client.execute(req);
-		} catch (java.net.NoRouteToHostException noroute) {
-			String retMsg = "No Route To Host Exception: API Server (" + url + ") is not responding";
-			response.setResultCode(-1);
-			response.setResultMessage(retMsg);
-		} catch (Exception e) {
-			String retMsg = "" + e;
-			response.setResultCode(-1);
-			response.setResultMessage(retMsg);
-		}
-
-		return res;
-
-	}
-
-	public String getResponseXml(HttpResponse res) {
-		String responseXml = "";
-
-		try {
-			BufferedReader rd = new BufferedReader(new InputStreamReader(res
-					.getEntity().getContent()));
-
-			String line = "";
-			StringBuffer jb = new StringBuffer();
-			while ((line = rd.readLine()) != null) {
-				jb.append(line);
-			}
-			responseXml = jb.toString();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return responseXml;
-	}
-
-	public void sendPRNWResponseToWeb(ResponsePremiseNWList nwList) {
-		FieldBuffer buf = null;
-
-		try {
-			buf = new FieldBuffer();
-
-			buf.putString("TENANTNAME", nwList.getTenantname());
-			 
-			 ArrayList<PremiseNetwork> pnList = nwList.getVnidlist();
-			 if (pnList != null) {
-				 for (int i = 0; i < pnList.size(); i++) {
-					 PremiseNetwork pn = pnList.get(i);
-					 
-					 buf.putString("NWNAME", pn.getName());
-					 buf.putString("SUBNET", pn.getSubnet());					 
-				 }
-			 }
-//			buf.putString("NWNAME", "Premise Network"); // TODO: NGKIM - Retrieve from nwList
-//			buf.putString("SUBNET", "10.10.1.0/24");
-
-			// Send response to Web
-			response.setFieldBuffer(buf);
-		} catch (Exception e) {
-			String retMsg = "" + e;
-			response.setResultCode(-1);
-			response.setResultMessage(retMsg);
-		}
-	}
-
-	// Perform XML Marsharling of Request
-	public String getRequestXML(RequestPremiseNWList req) {
-
-		String requestXml = "";
-		try {
-			JAXBContext jaxbContext = JAXBContext
-					.newInstance(RequestPremiseNWList.class);
-			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-
-			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
-			StringWriter writer = new StringWriter();
-			jaxbMarshaller.marshal(req, writer);
-
-			requestXml = writer.toString();
-		} catch (JAXBException e) {
-			String retMsg = "" + e;
-			response.setResultCode(-1);
-			response.setResultMessage(retMsg);
-		}
-
-		return requestXml;
-	}
-
-	// Get Messages and Create Request
-	public RequestPremiseNWList recvRequestfromWeb() {
-		String tenantname = "";
-		
-		try {
-			FieldBuffer inBuf = request.getFieldBuffer();
-
-			tenantname = inBuf.getString("TENANTNAME");
-			nmsId = inBuf.getString("NMSID");
-
-			if (nmsId != null) {
-				if (nmsId.trim().equals("1"))
-					url = url_dj_nms;
-				else if (nmsId.trim().equals("2"))
-					url = url_wm_nms;
-				else
-					url = url_dj_nms;
-			}
-		} catch (Exception e) {
-			String retMsg = "" + e;
-			response.setResultCode(-1);
-			response.setResultMessage(retMsg);
-		}
-
-		RequestPremiseNWList req = null;
-		try {
-			req = new RequestPremiseNWList();
-			req.setTenantName(tenantname);
-		} catch (Exception e) {
-			String retMsg = "" + e;
-			response.setResultCode(-1);
-			response.setResultMessage(retMsg);
-		}
-
-		return req;
-	}
-
 	@Override
 	public void processRequest() {
-		// Receive request from WAS and Send it to API Server
-		HttpResponse res = null;
+		ResponsePremiseNWList res = null;
 		try {
-			RequestPremiseNWList req = recvRequestfromWeb();
-
-			String requestXml = getRequestXML(req);
-			logger.debug(requestXml);
-
-//			res = requestToAPIServer(requestXml);
-		} catch (Exception e) {
-			String retMsg = "" + e;
-			response.setResultCode(-1);
-			response.setResultMessage(retMsg);
-		}
-
-		// Send response to WAS
-		try {
-//			String responseXml = getResponseXml(res);
-			String responseXml = "";
-			if (nmsId != null) {
-				if (nmsId.trim().equals("1")) {
-					url = url_dj_nms;
-					responseXml = djPremiseResponseXml;
-				} else if (nmsId.trim().equals("2")) {
-					url = url_wm_nms;
-					responseXml = wmPremiseResponseXml;
-				} else
-					url = url_dj_nms;
+			PremiseSDNAPI api = new PremiseSDNAPI(request, response, GlobalConstants.URL_PREMISE_SDN_API_DJ);
+			RequestPremiseNWList req = api.recvRequestfromWeb();
+			
+			res = api.readNetwork(req);
+			
+			if (res == null) {
+				DebugUtils.sendResponse(response, -1, "Error! No NW List...");				
+			} else {
+				if( GlobalConstants.OP_DEBUG ) api.printResponsePremiseNetwork(res);
+				
+				// send response to web
+				api.sendResponseToWeb(res);	
 			}
 			
-			System.out.println(responseXml);
-
-			ResponsePremiseNWList nwList = getResponseObject(responseXml);
-			Thread.sleep(1000); // NGKIM - to be removed...
-			if (nwList == null) {
-				String errMsg = "Error! No NW List...";
-				System.err.println(errMsg);
-
-				response.setResultCode(-1);
-				response.setResultMessage(errMsg);
-
-				return;
-			}
-
 			// TODO: network_service_premise에 정보를 입력
-			updateDomainNetworkTable(nwList);
+			updateDomainNetworkTable(res);
+			updateDomainNetworkTables(res);
+			updatePremiseNetworkServiceTable(res);
 
-			updateDomainNetworkTables(nwList);
-
-			updatePremiseNetworkServiceTable(nwList);
-
-			sendPRNWResponseToWeb(nwList);
+			api.sendResponseToWeb(res);
 		} catch (Exception e) {
 			e.printStackTrace();
 			String retMsg = "" + e;
