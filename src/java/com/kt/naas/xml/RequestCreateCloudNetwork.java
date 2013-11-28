@@ -1,5 +1,7 @@
 package com.kt.naas.xml;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -11,19 +13,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 </RequestToC>"
 */
 
-@XmlRootElement
+@XmlRootElement(name = "CloudSDN")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class RequestCreateCloudNetwork {
-	String tenantName;
+	String tid;
 	String vnid;
-	String qos;
+	String bw;
 	
-	public String getTenantName() {
-		return tenantName;
+	public String getTid() {
+		return tid;
 	}
 
-	@XmlElement
-	public void setTenantName(String tenantName) {
-		this.tenantName = tenantName;
+	public void setTid(String tid) {
+		this.tid = tid;
 	}
 
 	public String getVnid() {
@@ -34,23 +36,23 @@ public class RequestCreateCloudNetwork {
 		this.vnid = vnid;
 	}
 
-	public String getQos() {
-		return qos;
+	public String getBw() {
+		return bw;
 	}
 
-	public void setQos(String qos) {
-		this.qos = qos;
+	public void setBw(String bw) {
+		this.bw = bw;
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("RequestCreateCloudNetwork [tenantName=");
-		builder.append(tenantName);
+		builder.append(tid);
 		builder.append(", vnid=");
 		builder.append(vnid);
 		builder.append(", qos=");
-		builder.append(qos);
+		builder.append(bw);
 		builder.append("]");
 		return builder.toString();
 	}

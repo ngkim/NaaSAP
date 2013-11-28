@@ -1,4 +1,4 @@
-package com.kt.smnw.process;
+package com.kt.smnw.process.transport;
 import java.net.URL;
 import java.io.*;
 

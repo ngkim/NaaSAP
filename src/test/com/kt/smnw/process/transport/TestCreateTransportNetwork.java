@@ -1,4 +1,4 @@
-package com.kt.smnw.process;
+package com.kt.smnw.process.transport;
 
 import java.util.ArrayList;
 
@@ -39,14 +39,14 @@ public class TestCreateTransportNetwork {
 		
 		UNIPeer sw_potn = new UNIPeer();
 		sw_potn.setId("L2SW00001");
-		sw_potn.setPort("8");
-		sw_potn.setVlan("100");
+		sw_potn.setPort("24");
+		sw_potn.setVlan("200");
 		peers.add(sw_potn);
 		
 		UNIPeer sw_naas = new UNIPeer();
 		sw_naas.setId("L2SW00011");
 		sw_naas.setPort("22");
-		sw_naas.setVlan("100");
+		sw_naas.setVlan("200");
 					
 		peers.add(sw_naas);
 		req.setPeers(peers);
@@ -54,7 +54,7 @@ public class TestCreateTransportNetwork {
 		QoS qos = new QoS();
 		
 		qos.setBandwidth("100M");
-		qos.setExceed("10M");
+		qos.setExceed("0");
 		
 		req.setQos(qos);
 		

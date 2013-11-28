@@ -1,4 +1,4 @@
-package com.kt.smnw.process;
+package com.kt.smnw.process.premise;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +21,7 @@ import com.kt.naas.xml.ResponsePremiseNWList;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/test-context.xml")
-public class TestCreateWMPremiseNetwork {
+public class TestCreateDJPremiseNetwork {
 	@Autowired
 	private RequestClient requestClient;
 	
@@ -31,12 +31,13 @@ public class TestCreateWMPremiseNetwork {
 		reqPremiseNW.setTenantName("NH_ADMIN");
 		reqPremiseNW.setNetworkname("NH_PrivateNW1");
 		reqPremiseNW.setBandwidth(1000 * 1000);
+		reqPremiseNW.setCpSvcId("CSDN000001");
 			
 		return reqPremiseNW;		
 	}
 
 	@Test
-	public void testCreateWMPremiseNetwork() {
+	public void testCreateDJPremiseNetwork() {
 		ResponseCreatePremiseNetwork resPremiseNW = null;
 		TimeUtils time = new TimeUtils();
 		
@@ -44,11 +45,11 @@ public class TestCreateWMPremiseNetwork {
 			time.setStartTime();
 			RequestCreatePremiseNetwork reqPremiseNW = generateRequest();
 			
-			WMPremiseSDNAPI api = new WMPremiseSDNAPI(GlobalConstants.URL_PREMISE_SDN_API_WM);
+			DJPremiseSDNAPI api = new DJPremiseSDNAPI(GlobalConstants.URL_PREMISE_SDN_API_DJ);
 			resPremiseNW = api.createNetwork(reqPremiseNW);
-			
+						
 			double duration = time.getDuration();
-			System.out.println("Time for reading a premise network = " + duration + " ms");
+			System.err.println("\nTime for reading a premise network = " + duration + " ms\n");
 			
 			api.printResponseCreatePremiseNetwork(resPremiseNW);
 		} catch (Exception e){

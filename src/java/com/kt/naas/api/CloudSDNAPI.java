@@ -20,10 +20,12 @@ import com.kt.naas.xml.RequestCreateTransportNetwork;
 import com.kt.naas.xml.RequestDeleteCloudNetwork;
 import com.kt.naas.xml.RequestInfoCloudSDN;
 import com.kt.naas.xml.RequestInfoCloudSDNConnnection;
+import com.kt.naas.xml.RequestSwapCloudNetwork;
 import com.kt.naas.xml.ResponseCloudNWList;
 import com.kt.naas.xml.ResponseCreateCloudNetwork;
 import com.kt.naas.xml.ResponseCreateTransportNetwork;
 import com.kt.naas.xml.ResponseDeleteCloudNetwork;
+import com.kt.naas.xml.ResponseSwapCloudNetwork;
 
 public class CloudSDNAPI extends SDNAPI {
 	
@@ -39,7 +41,8 @@ public class CloudSDNAPI extends SDNAPI {
 		super(request, response, apiServer);
 		
 		this.setUrlRead("/RetrievedCloudSDNTenantNEtworkList");
-		this.setUrlCreate("/ConnectKoren");
+		this.setUrlCreate("/createCloudSDNConnection");
+		this.setUrlSwap("/ConnectKoren");
 		this.setUrlDelete("/ConnectInternet");
 	}
 	
@@ -47,7 +50,8 @@ public class CloudSDNAPI extends SDNAPI {
 		super(apiServer);
 		
 		this.setUrlRead("/RetrievedCloudSDNTenantNEtworkList");
-		this.setUrlCreate("/ConnectKoren");
+		this.setUrlCreate("/createCloudSDNConnection");
+		this.setUrlSwap("/ConnectKoren");
 		this.setUrlDelete("/ConnectInternet");
 	}
 	
@@ -82,6 +86,23 @@ public class CloudSDNAPI extends SDNAPI {
 		
 		try {
 			String responseXml = apiUtil.callAPI(getUrlRead(), GlobalConstants.HTTP_POST, getRequestXML(req));
+			resCloudNW = xmlToResponse(responseXml, resCloudNW);
+		} catch (Exception e) {
+			DebugUtils.sendResponse(response, -1, e.toString());
+		}
+		
+		return resCloudNW;
+	}
+	
+	public ResponseSwapCloudNetwork swapNetwork(RequestSwapCloudNetwork req){
+		return swapNetwork(GlobalConstants.HTTP_POST, req);
+	}
+	
+	public ResponseSwapCloudNetwork swapNetwork(int method, RequestSwapCloudNetwork req){
+		ResponseSwapCloudNetwork resCloudNW = new ResponseSwapCloudNetwork();
+		
+		try {
+			String responseXml = apiUtil.callAPI(this.getUrlSwap(), method, getRequestXML(req));
 			resCloudNW = xmlToResponse(responseXml, resCloudNW);
 		} catch (Exception e) {
 			DebugUtils.sendResponse(response, -1, e.toString());

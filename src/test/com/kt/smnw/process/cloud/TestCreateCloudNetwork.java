@@ -1,4 +1,4 @@
-package com.kt.smnw.process;
+package com.kt.smnw.process.cloud;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,6 +27,10 @@ public class TestCreateCloudNetwork {
 	
 	public RequestCreateCloudNetwork generateRequest() {
 		RequestCreateCloudNetwork reqCloudNW = new RequestCreateCloudNetwork();
+		
+		reqCloudNW.setTid("b999ba92afa2456287f7fd1a8b07e755");
+		reqCloudNW.setVnid("e3c4d6dc-0443-402f-8390-a238cdb5e512");
+		reqCloudNW.setBw("100M");
 		
 		return reqCloudNW;
 	}

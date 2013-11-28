@@ -1,4 +1,4 @@
-package com.kt.smnw.process;
+package com.kt.smnw.process.cloud;
 
 import java.io.BufferedReader;
 import java.io.IOException;

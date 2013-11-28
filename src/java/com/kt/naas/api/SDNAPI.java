@@ -18,6 +18,7 @@ public class SDNAPI {
 	protected String urlCreate;
 	protected String urlRead;
 	protected String urlUpdate;
+	protected String urlSwap;
 	protected String urlDelete;
 
 	public SDNAPI(String url) {
@@ -69,6 +70,14 @@ public class SDNAPI {
 		this.urlDelete = url + urlDelete;
 	}
 	
+	public String getUrlSwap() {
+		return urlSwap;
+	}
+
+	public void setUrlSwap(String urlSwap) {
+		this.urlSwap = url + urlSwap;
+	}
+
 	public <E> String getRequestXML(E req) {
 		String xml = "";
 

@@ -1,4 +1,4 @@
-package com.kt.smnw.process;
+package com.kt.smnw.process.premise;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,44 +14,44 @@ import com.kt.naas.util.RequestClient;
 import com.kt.naas.util.TimeUtils;
 import com.kt.naas.xml.RequestCreatePremiseNetwork;
 import com.kt.naas.xml.RequestCreateTransportNetwork;
+import com.kt.naas.xml.RequestDeletePremiseNetwork;
 import com.kt.naas.xml.RequestPremiseNWList;
 import com.kt.naas.xml.ResponseCreatePremiseNetwork;
 import com.kt.naas.xml.ResponseCreateTransportNetwork;
+import com.kt.naas.xml.ResponseDeletePremiseNetwork;
 import com.kt.naas.xml.ResponsePremiseNWList;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/test-context.xml")
-public class TestCreateDJPremiseNetwork {
+public class TestDeleteDJPremiseNetwork {
 	@Autowired
 	private RequestClient requestClient;
 	
-	private RequestCreatePremiseNetwork generateRequest() {
-		RequestCreatePremiseNetwork reqPremiseNW = new RequestCreatePremiseNetwork();
-		
-		reqPremiseNW.setTenantName("NH_ADMIN");
-		reqPremiseNW.setNetworkname("NH_PrivateNW1");
-		reqPremiseNW.setBandwidth(1000 * 1000);
-		reqPremiseNW.setCpSvcId("CSDN000001");
+	private RequestDeletePremiseNetwork generateRequest() {
+		RequestDeletePremiseNetwork reqPremiseNW = new RequestDeletePremiseNetwork();
 			
+		reqPremiseNW.setTenantname("NH_ADMIN");
+		reqPremiseNW.setCpSvcId("CSDN000001");
+		
 		return reqPremiseNW;		
 	}
 
 	@Test
-	public void testCreateDJPremiseNetwork() {
-		ResponseCreatePremiseNetwork resPremiseNW = null;
+	public void testDeleteDJPremiseNetwork() {
+		ResponseDeletePremiseNetwork resPremiseNW = null;
 		TimeUtils time = new TimeUtils();
 		
 		try {
 			time.setStartTime();
-			RequestCreatePremiseNetwork reqPremiseNW = generateRequest();
+			RequestDeletePremiseNetwork reqPremiseNW = generateRequest();
 			
 			DJPremiseSDNAPI api = new DJPremiseSDNAPI(GlobalConstants.URL_PREMISE_SDN_API_DJ);
-			resPremiseNW = api.createNetwork(reqPremiseNW);
-						
-			double duration = time.getDuration();
-			System.err.println("\nTime for reading a premise network = " + duration + " ms\n");
+			resPremiseNW = api.deleteNetwork(reqPremiseNW);
 			
-			api.printResponseCreatePremiseNetwork(resPremiseNW);
+			double duration = time.getDuration();
+			System.err.println("\nTime for reading a premise network = " + duration + " ms");
+			
+			api.printResponseDeletePremiseNetwork(resPremiseNW);
 		} catch (Exception e){
 			e.printStackTrace();
 		}

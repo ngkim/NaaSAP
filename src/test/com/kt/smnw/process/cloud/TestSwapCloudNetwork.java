@@ -1,4 +1,4 @@
-package com.kt.smnw.process;
+package com.kt.smnw.process.cloud;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,44 +12,45 @@ import com.kt.naas.api.TransportSDNAPI;
 import com.kt.naas.util.RequestClient;
 import com.kt.naas.util.TimeUtils;
 import com.kt.naas.xml.RequestCloudNWList;
+import com.kt.naas.xml.RequestCreateCloudNetwork;
 import com.kt.naas.xml.RequestInfoCloudSDN;
 import com.kt.naas.xml.RequestInfoEthernet;
+import com.kt.naas.xml.RequestSwapCloudNetwork;
 import com.kt.naas.xml.ResponseCloudNWList;
+import com.kt.naas.xml.ResponseCreateCloudNetwork;
 import com.kt.naas.xml.ResponseInfoEthernet;
+import com.kt.naas.xml.ResponseSwapCloudNetwork;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/test-context.xml")
-public class TestReadCloudNetwork {
+public class TestSwapCloudNetwork {
 	@Autowired
 	private RequestClient requestClient;
 	
-	public RequestInfoCloudSDN generateRequest() {
-		RequestInfoCloudSDN reqCloudNW = new RequestInfoCloudSDN();
-//		RequestCloudNWList reqCloudNW = new RequestCloudNWList();
-		
-		reqCloudNW.setDcid("dn_0001");
-//		reqCloudNW.setTenantName("e84ea728cd134dea9110df0c2e9398b0");
-		reqCloudNW.setTid("b999ba92afa2456287f7fd1a8b07e755");
+	public RequestSwapCloudNetwork generateRequest() {
+		RequestSwapCloudNetwork reqCloudNW = new RequestSwapCloudNetwork();
 		
 		return reqCloudNW;
 	}
 
 	@Test
-	public void testReadCloudNetwork() {
-		ResponseCloudNWList res = new ResponseCloudNWList();
+	public void testSwapCloudNetwork() {
+		ResponseSwapCloudNetwork res = new ResponseSwapCloudNetwork();
 		
 		TimeUtils time = new TimeUtils();
 		try {
 			time.setStartTime();
 			
-			RequestInfoCloudSDN req = generateRequest();	
+			RequestSwapCloudNetwork req = generateRequest();	
 		
 			CloudSDNAPI api = new CloudSDNAPI(GlobalConstants.URL_CLOUD_SDN_API);
-			res = api.readNetwork(req);
+			res = api.swapNetwork(req);
 			
-			double duration = time.getDuration();			
-			System.err.println("\nTime for reading a cloud network = " + duration + " ms\n");
+			double duration = time.getDuration() / 1000;			
+			System.err.println("\nTime for swapping a cloud network = " + duration + " seconds.\n");
 			
+			
+			System.out.println(api.getRequestXML(res));
 //			api.printResponseInfoEthernet(res);
 			
 		} catch (Exception e) {

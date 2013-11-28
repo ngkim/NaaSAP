@@ -34,9 +34,6 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 	@Autowired
 	RequestClient requestClient;
 
-	RequestCreateCloudNetwork reqCloud;
-	RequestCreatePremiseNetwork reqPremise;
-	
 	@Override
 	public void processRequest() {
 		// generate a new id
@@ -71,9 +68,9 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 					CloudSDNAPI api = new CloudSDNAPI(request, response, GlobalConstants.URL_CLOUD_SDN_API);
 
 					RequestCreateCloudNetwork req = new RequestCreateCloudNetwork();
-					req.setTenantName("b999ba92afa2456287f7fd1a8b07e755");
+					req.setTid("b999ba92afa2456287f7fd1a8b07e755");
 					req.setVnid("e3c4d6dc-0443-402f-8390-a238cdb5e512");
-					req.setQos(Integer.toString(svcReq.getBandwidth()));
+					req.setBw(Integer.toString(svcReq.getBandwidth()));
 					
 					progress.update(svcReq.getCustId(), "Cloud SDN에 Network 생성을 요청하였습니다.");					
 					ResponseCreateCloudNetwork nwRes = api.createNetwork(req);					
@@ -103,7 +100,7 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 					req.setTenantName(tn.getTenantName());
 					req.setBandwidth(svcReq.getBandwidth());
 
-					ResponseCreatePremiseNetwork nwRes = api.createNetwork(reqPremise);
+					ResponseCreatePremiseNetwork nwRes = api.createNetwork(req);
 					progress.update(svcReq.getCustId(), "Premise SDN에 요청한 Network가 생성되었습니다. (" + nwRes.getCpsvcid() + ")");
 				}
 			}

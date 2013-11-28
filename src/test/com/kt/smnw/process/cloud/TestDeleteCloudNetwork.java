@@ -1,4 +1,4 @@
-package com.kt.smnw.process;
+package com.kt.smnw.process.cloud;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
