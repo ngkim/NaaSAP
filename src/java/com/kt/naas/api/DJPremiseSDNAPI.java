@@ -39,8 +39,8 @@ public class DJPremiseSDNAPI extends PremiseSDNAPI {
 			RequestCreatePremiseNetwork req) {
 		
 		if(!GlobalConstants.OP_DEMO_SNMP_DJ) {
-			SnmpUtils.vlanSwap(getSnmpAgent(), "10020", 21);
-			SnmpUtils.vlanSwap(getSnmpAgent(), "10001", 11);
+			System.err.println("*** CreateNetwork - Call DJ VLAN swap...");
+			SnmpUtils.vlanSwap(getSnmpAgent(), GlobalConstants.DJ_PREMISE_VLAN_ITF_TO_SWAP, GlobalConstants.DJ_PREMISE_VLAN_POTN);
 		}
 		
 		return super.createNetwork(req);
@@ -51,9 +51,10 @@ public class DJPremiseSDNAPI extends PremiseSDNAPI {
 			RequestDeletePremiseNetwork req) {
 		
 		if(!GlobalConstants.OP_DEMO_SNMP_DJ) {
-		SnmpUtils.vlanSwap(getSnmpAgent(), "10001", 21);
-		SnmpUtils.vlanSwap(getSnmpAgent(), "10020", 11);
-	}
+			System.err.println("*** DeleteNetwork - Call DJ VLAN swap...");
+			SnmpUtils.vlanSwap(getSnmpAgent(), GlobalConstants.DJ_PREMISE_VLAN_ITF_TO_SWAP, GlobalConstants.DJ_PREMISE_VLAN_INTERNET);
+		}
+	
 		return super.deleteNetwork(req);
 	}	
 	

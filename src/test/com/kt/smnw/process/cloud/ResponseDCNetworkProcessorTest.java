@@ -39,12 +39,10 @@ public class ResponseDCNetworkProcessorTest {
 		System.out.println("TENANTNAME= " + nwList.getTenantname());
 		System.out.println("TENANTID= " + nwList.getTenantid());
 
-		ArrayList<CloudVirtualNetworkList> list = nwList.getVNIDInfo();
-		for (int i = 0; i < list.size(); i++) {
-			CloudVirtualNetworkList vnl = list.get(i);
-			ArrayList<CloudVirtualNetwork> vnlist = vnl.getVnlist();
-			for (int j = 0; j < vnlist.size(); j++) {
-				CloudVirtualNetwork item = vnlist.get(j);
+		ArrayList<CloudVirtualNetwork> list = nwList.getVNIDInfo();
+		if (list != null) {
+			for (int i = 0; i < list.size(); i++) {
+				CloudVirtualNetwork item = list.get(i);
 				System.out.println("NWNAME= " + item.getName());
 				System.out.println("VNID= " + item.getVNID());
 				System.out.println("SUBNET= " + item.getSubnet());
@@ -87,10 +85,8 @@ public class ResponseDCNetworkProcessorTest {
 			nwList.setTenantid("abcde");
 			nwList.setTenantname("cloudsdn");
 			
-			ArrayList<CloudVirtualNetworkList> vnlist = new ArrayList<CloudVirtualNetworkList>();
 			ArrayList<CloudVirtualNetwork> list = new ArrayList<CloudVirtualNetwork>();
 			
-			CloudVirtualNetworkList cvnList = new CloudVirtualNetworkList();
 			CloudVirtualNetwork vnid = new CloudVirtualNetwork();
 			vnid.setName("vn_1");
 			vnid.setSubnet("10.10.10.0/24");
@@ -104,10 +100,7 @@ public class ResponseDCNetworkProcessorTest {
 			list.add(vnid);
 			list.add(vnid1);
 			
-			cvnList.setVnlist(list);
-			vnlist.add(cvnList);
-			
-			nwList.setVNIDInfo(vnlist);
+			nwList.setVNIDInfo(list);
 			
 			System.out.println("Request XML...");
 			System.out.println(getRequestXML(nwList));

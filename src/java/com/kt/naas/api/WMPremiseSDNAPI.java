@@ -9,16 +9,16 @@ public class WMPremiseSDNAPI extends PremiseSDNAPI {
 			String url) {
 		super(request, response, url);
 
-		this.setUrlRead("/retrievePremiseSDNConnection?tenant_name=NH_ADMIN");
-		this.setUrlCreate("/updatepremisesdnvlan");
-		this.setUrlDelete("/deletepremisesdnvlan");
+		this.setUrlRead("/api.retrievePremiseSDNConnection");
+		this.setUrlCreate("/api.updatePremiseSDNConnection");
+		this.setUrlDelete("/api.deletePremiseSDNConnection");
 	}
 
 	public WMPremiseSDNAPI(String url) {
 		super(url);
 
-		this.setUrlRead("/retrievePremiseSDNConnection?tenant_name=NH_ADMIN");
-		this.setUrlCreate("/updatepremisesdnvlan");
-		this.setUrlDelete("/deletepremisesdnvlan");
+		this.setUrlRead("/api.retrievePremiseSDNConnection");
+		this.setUrlCreate("/api.updatePremiseSDNConnection");
+		this.setUrlDelete("/api.deletePremiseSDNConnection");
 	}
 }

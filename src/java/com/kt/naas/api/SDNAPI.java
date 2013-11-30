@@ -7,6 +7,8 @@ import com.kt.naas.util.DebugUtils;
 import com.kt.naas.util.PrintUtils;
 import com.kt.naas.util.RestAPIUtils;
 
+import javax.xml.bind.UnmarshalException;
+
 public class SDNAPI {
 	protected RequestMessage request;
 	protected ResponseMessage response;
@@ -93,13 +95,15 @@ public class SDNAPI {
 
 	}
 	
-	public <E> E xmlToResponse(String responseXml, E obj) {
+	public <E> E xmlToResponse(String responseXml, E obj) throws Exception{
 		try {
 			if (GlobalConstants.OP_DEBUG)
 				printUtil.printKeyAndValue("ResponseXML", responseXml);
 			obj = apiUtil.getResponseObject(responseXml, obj);
+		} catch (UnmarshalException e) {
+			throw new UnmarshalException("Unable to unmarshal: " + e.getMessage()); 
 		} catch (Exception e) {
-			DebugUtils.sendResponse(response, -1, e.toString());
+			throw new Exception(e.getMessage()); 
 		}
 		return obj;
 	}

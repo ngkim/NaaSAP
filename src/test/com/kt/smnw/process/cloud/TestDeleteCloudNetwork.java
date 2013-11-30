@@ -34,7 +34,7 @@ public class TestDeleteCloudNetwork {
 	}
 
 	@Test
-	public void testCreateCloudNetwork() {
+	public void testDeleteCloudNetwork() {
 		ResponseDeleteCloudNetwork res = new ResponseDeleteCloudNetwork();
 		
 		TimeUtils time = new TimeUtils();

@@ -1,8 +1,12 @@
 package com.kt.naas.api;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import com.kt.naas.GlobalConstants;
+import com.kt.naas.domain.NetworkServiceRequest;
+import com.kt.naas.domain.TenantNetworkInfo;
 import com.kt.naas.message.RequestMessage;
 import com.kt.naas.message.ResponseMessage;
 import com.kt.naas.xml.QoS;
@@ -14,11 +18,38 @@ import com.kt.naas.xml.ResponseDeleteTransportNetwork;
 import com.kt.naas.xml.ResponseInfoEthernet;
 import com.kt.naas.xml.UNIME;
 import com.kt.naas.xml.UNIPeer;
+import com.kt.naas.util.BWUtils;
 import com.kt.naas.util.DebugUtils;
 import com.kt.naas.util.PrintUtils;
 
 public class TransportSDNAPI extends SDNAPI {
+	
+	class SwitchPortPair {
+		String swId;
+		String swPort;
+		
+		public SwitchPortPair(String swId, String swPort) {
+			this.swId = swId;
+			this.swPort = swPort;
+		}
 
+		public String getSwId() {
+			return swId;
+		}
+
+		public void setSwId(String swId) {
+			this.swId = swId;
+		}
+
+		public String getSwPort() {
+			return swPort;
+		}
+
+		public void setSwPort(String swPort) {
+			this.swPort = swPort;
+		}
+	}
+	
 	public TransportSDNAPI(String url) {
 		super(url);
 
@@ -93,40 +124,90 @@ public class TransportSDNAPI extends SDNAPI {
 		return resTransportNW;
 	}
 	
-	public RequestCreateTransportNetwork generateRequest() {
+	// generate NetworkServiceRequest from request info received from portal
+	public RequestCreateTransportNetwork generateRequest(NetworkServiceRequest svcReq) {
 		RequestCreateTransportNetwork req = new RequestCreateTransportNetwork();
 		
 		req.setName("naasEth");
-		req.setDescription("DJ POTN connection test");
+		req.setDescription("POTN connection " + (int)(Math.random() * 1000));
 		
 		req.setRid("NaaS");
 		req.setCid("88888888880");
-		req.seteType("E-LINE");
+		req.seteType(svcReq.getConnType());
 		
 		ArrayList<UNIPeer> peers = new ArrayList<UNIPeer>();
 		
-		UNIPeer sw_potn = new UNIPeer();
-		sw_potn.setId("L2SW00001");
-		sw_potn.setPort("8");
-		sw_potn.setVlan("100");
-		peers.add(sw_potn);
+		String vlanId = getAvailableVlan(); // check available vlan
+				
+		ArrayList<TenantNetworkInfo> tnList = svcReq.getNetworklist();
+		if (tnList != null) {
+			for ( int i = 0; i < tnList.size(); i++ ) {
+				TenantNetworkInfo tn = tnList.get(i);
+				
+				SwitchPortPair sw = getSwitchPortPair(tn);
+				
+				UNIPeer sw_potn = new UNIPeer();
+				sw_potn.setId(sw.getSwId());
+				sw_potn.setPort(sw.getSwPort());
+				sw_potn.setVlan(vlanId);
+				
+				peers.add(sw_potn);
+			}
+		}
 		
-		UNIPeer sw_naas = new UNIPeer();
-		sw_naas.setId("L2SW00011");
-		sw_naas.setPort("22");
-		sw_naas.setVlan("100");
-					
-		peers.add(sw_naas);
 		req.setPeers(peers);
 		
 		QoS qos = new QoS();
 		
-		qos.setBandwidth("100M");
-		qos.setExceed("10M");
+		qos.setBandwidth(BWUtils.bwToStr(svcReq.getBandwidth()));
+		qos.setExceed("0");
 		
 		req.setQos(qos);
 		
 		return req;
+	}
+	
+	
+	// find switch and port information based on tenant name
+	public SwitchPortPair getSwitchPortPair(TenantNetworkInfo tn) {
+		HashMap<String, SwitchPortPair> tenantSwitchPair = new HashMap<String, SwitchPortPair>();
+		
+		SwitchPortPair spPairDJ = new SwitchPortPair("dj_ib_aggr_1", "22");
+		SwitchPortPair spPairWM = new SwitchPortPair("wm_ib_aggr_1", "26");
+		SwitchPortPair spPairDC = new SwitchPortPair("wm_cl_aggr_1", "1");
+		
+		tenantSwitchPair.put("cloudsdn", spPairDC);
+		tenantSwitchPair.put("농협_전민지사", spPairDJ);
+		tenantSwitchPair.put("농협_우면지사", spPairWM);
+		
+		return tenantSwitchPair.get(tn.getTenantName());
+	}
+	
+	public String getAvailableVlan() {
+		String vlan = "";
+		
+		vlan = "100";
+		
+		return vlan; 
+	}
+	
+	public String getSwitchType(String swId) {
+		String result = "";
+		
+		List<String> swPRList = new ArrayList<String>();
+		swPRList.add("dj_ib_aggr_1");
+		swPRList.add("wm_ib_aggr_1");
+		
+		List<String> swDCList = new ArrayList<String>();
+		swDCList.add("wm_cl_aggr_1");
+		
+		if ( swPRList.contains(swId)) {
+			result = "PR";
+		} else if ( swDCList.contains(swId)) {
+			result = "DC";
+		}
+					
+		return result;
 	}
 
 	public void printRequestCreateTransportNetwork(

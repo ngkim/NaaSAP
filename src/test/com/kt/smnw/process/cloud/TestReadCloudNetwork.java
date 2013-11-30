@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.kt.naas.GlobalConstants;
 import com.kt.naas.api.CloudSDNAPI;
 import com.kt.naas.api.TransportSDNAPI;
+import com.kt.naas.util.DebugUtils;
 import com.kt.naas.util.RequestClient;
 import com.kt.naas.util.TimeUtils;
 import com.kt.naas.xml.RequestCloudNWList;
@@ -50,7 +51,7 @@ public class TestReadCloudNetwork {
 			double duration = time.getDuration();			
 			System.err.println("\nTime for reading a cloud network = " + duration + " ms\n");
 			
-//			api.printResponseInfoEthernet(res);
+			api.printResponseCloudNWList(res);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

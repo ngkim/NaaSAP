@@ -24,10 +24,10 @@ public class RequestDCNetworkProcessor extends RequestProcessor {
 			if (nwList == null) {
 				DebugUtils.sendResponse(response, -1, "Error! No NW List...");				
 			} else {
-				if( GlobalConstants.OP_DEMO_CLOUD ) DebugUtils.printResponseCloudNWList(nwList);
+				if( GlobalConstants.OP_DEMO_CLOUD ) api.printResponseCloudNWList(nwList);
 				
 				// send response to web
-				api.sendResponseToWeb(nwList);	
+				api.sendResponseToWeb(req, nwList);	
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

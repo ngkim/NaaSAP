@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlType;
 public class ResponseCloudNWList {
 
 	@XmlElement(name = "VirtualNetworkList")
-	private ArrayList<CloudVirtualNetworkList> vnidlist;
+	private ArrayList<CloudVirtualNetwork> vnidlist;
 
 	@XmlElement(name = "TenantName")
 	private String tenantname;
@@ -81,11 +81,11 @@ public class ResponseCloudNWList {
 	}
 
  	/* use in csdnRetrieveNWList.java */
-	public ArrayList<CloudVirtualNetworkList> getVNIDInfo() {
+	public ArrayList<CloudVirtualNetwork> getVNIDInfo() {
 		return vnidlist;
 	}
 	
-	public void setVNIDInfo(ArrayList<CloudVirtualNetworkList> vnidlist) {
+	public void setVNIDInfo(ArrayList<CloudVirtualNetwork> vnidlist) {
 		this.vnidlist = vnidlist;
 	}
 

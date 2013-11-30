@@ -67,9 +67,6 @@ public class PremiseSDNAPI extends SDNAPI {
 			String responseXml = apiUtil.callAPI(getUrlCreate(), method,
 					getRequestXML(req));
 			
-			if (GlobalConstants.OP_DEBUG)
-				printUtil.printKeyAndValue("ResponseXML", responseXml);
-
 			resPremiseNW = xmlToResponse(responseXml, resPremiseNW);
 		} catch (Exception e) {
 			DebugUtils.sendResponse(response, -1, e.toString());
@@ -91,9 +88,7 @@ public class PremiseSDNAPI extends SDNAPI {
 
 			String responseXml = apiUtil.callAPI(getUrlRead(), method,
 					getRequestXML(reqPremiseNW));
-			if (GlobalConstants.OP_DEBUG)
-				printUtil.printKeyAndValue("ResponseXML", responseXml);
-
+			
 			resPremiseNW = xmlToResponse(responseXml, resPremiseNW);
 		} catch (Exception e) {
 			DebugUtils.sendResponse(response, -1, e.toString());
@@ -117,9 +112,7 @@ public class PremiseSDNAPI extends SDNAPI {
 
 			String responseXml = apiUtil.callAPI(getUrlDelete(), method,
 					getRequestXML(req));
-			if (GlobalConstants.OP_DEBUG)
-				printUtil.printKeyAndValue("ResponseXML", responseXml);
-
+			
 			resPremiseNW = xmlToResponse(responseXml, resPremiseNW);
 		} catch (Exception e) {
 			DebugUtils.sendResponse(response, -1, e.toString());
@@ -158,6 +151,7 @@ public class PremiseSDNAPI extends SDNAPI {
 			buf = new FieldBuffer();
 
 			buf.putString("TENANTNAME", res.getTenantname());
+			buf.putString("CPSVCID", res.getCpsvcid());
 
 			ArrayList<PremiseNetwork> pnList = res.getVnidlist();
 			if (pnList != null) {

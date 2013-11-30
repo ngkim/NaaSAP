@@ -41,7 +41,7 @@ public class TestReadDJPremiseNetwork {
 			RequestPremiseNWList reqPremiseNW = generateRequest();
 			
 			DJPremiseSDNAPI api = new DJPremiseSDNAPI(GlobalConstants.URL_PREMISE_SDN_API_DJ);
-			resPremiseNW = api.readNetwork(GlobalConstants.HTTP_GET, reqPremiseNW);
+			resPremiseNW = api.readNetwork(reqPremiseNW);
 			
 			double duration = time.getDuration() / 1000;
 			System.err.println("\nTime for reading a premise network = " + duration + " sec\n");

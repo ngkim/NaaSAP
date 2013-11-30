@@ -28,8 +28,8 @@ public class TestCreateDJPremiseNetwork {
 	private RequestCreatePremiseNetwork generateRequest() {
 		RequestCreatePremiseNetwork reqPremiseNW = new RequestCreatePremiseNetwork();
 		
-		reqPremiseNW.setTenantName("NH_ADMIN");
-		reqPremiseNW.setNetworkname("NH_PrivateNW1");
+		reqPremiseNW.setTenantName("농협_전민지사");
+		reqPremiseNW.setNetworkname("전민지사 4동 1층");
 		reqPremiseNW.setBandwidth(1000 * 1000);
 		reqPremiseNW.setCpSvcId("CSDN000001");
 			
