@@ -10,8 +10,13 @@ public interface GlobalConstants {
 	public final static boolean OP_DEMO_CLOUD = true;
 	public final static boolean OP_DEMO_PREMISE_DJ = false;
 	public final static boolean OP_DEMO_PREMISE_WM = false;
-	public final static boolean OP_DEMO_SNMP_DJ = false;
+	public final static boolean OP_DEMO_SWAP_DJ = false;
 	public final static boolean OP_DEMO_SNMP_WM = true;
+	
+	public final static int SWAP_METHOD_SNMP = 1;
+	public final static int SWAP_METHOD_OPENFLOW = 2;
+	
+	public final static int OP_DJ_SWAP_METHOD = SWAP_METHOD_OPENFLOW;
 	
 	public final static String DJ_PREMISE_VLAN_ITF_TO_SWAP = "10007";
 	public final static int DJ_PREMISE_VLAN_POTN = 11;
@@ -25,6 +30,9 @@ public interface GlobalConstants {
 	public final static String URL_PREMISE_SDN_API_DJ = "http://211.224.204.137:8080/NaaS";
 	public final static String URL_TRANSPORT_SDN_API = "https://211.224.204.144:7502";
 //	public final static String URL_TRANSPORT_SDN_API = "https://220.123.31.51:7502";
+	
+	public final static String SW_DJ_OPENFLOW = "00:00:00:1c:73:4f:32:d7";
+	public final static String DJ_FLOODLIGHT = "211.224.204.144:8080";
 	
 	public final static int HTTP_GET = 0x11;
 	public final static int HTTP_POST = 0x12;

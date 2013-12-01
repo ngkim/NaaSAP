@@ -28,32 +28,40 @@ public class TestCreateTransportNetwork {
 	private RequestCreateTransportNetwork generateRequest() {
 		RequestCreateTransportNetwork req = new RequestCreateTransportNetwork();
 		
-		req.setName("naasEth");
-		req.setDescription("DJ POTN connection test");
+		req.setName("naasEth-375");
+		req.setDescription("POTN connection test");
 		
 		req.setRid("NaaS");
 		req.setCid("88888888880");
-		req.seteType("E-LINE");
+		req.seteType("E-LAN");
 		
 		ArrayList<UNIPeer> peers = new ArrayList<UNIPeer>();
 		
-		UNIPeer sw_potn = new UNIPeer();
-		sw_potn.setId("L2SW00001");
-		sw_potn.setPort("24");
-		sw_potn.setVlan("200");
-		peers.add(sw_potn);
-		
-		UNIPeer sw_naas = new UNIPeer();
-		sw_naas.setId("L2SW00011");
-		sw_naas.setPort("22");
-		sw_naas.setVlan("200");
+		UNIPeer sw_cloud = new UNIPeer();
+		sw_cloud.setId("L2SW00013");
+		sw_cloud.setPort("1");
+		sw_cloud.setVlan("338");
 					
-		peers.add(sw_naas);
+		peers.add(sw_cloud);
+		
+		UNIPeer sw_dj = new UNIPeer();
+		sw_dj.setId("L2SW00011");
+		sw_dj.setPort("22");
+		sw_dj.setVlan("338");
+		peers.add(sw_dj);
+		
+		UNIPeer sw_wm = new UNIPeer();
+		sw_wm.setId("L2SW00003");
+		sw_wm.setPort("26");
+		sw_wm.setVlan("338");
+					
+		peers.add(sw_wm);
+		
 		req.setPeers(peers);
 		
 		QoS qos = new QoS();
 		
-		qos.setBandwidth("100M");
+		qos.setBandwidth("10M");
 		qos.setExceed("0");
 		
 		req.setQos(qos);

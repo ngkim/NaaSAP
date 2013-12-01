@@ -27,6 +27,7 @@ public class ProgressStatusEntry {
 		
 		updateCurrentCnt(); // increase currentCnt when updateProgressStatus is called
 		
+		System.err.println("update msg: " + msg);
 		progress = progressDao.selectProgressStatusById(custId);
 		if (progress == null) {
 			progress = new ProgressStatus();

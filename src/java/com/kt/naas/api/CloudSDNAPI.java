@@ -1,6 +1,7 @@
 package com.kt.naas.api;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.http.HttpResponse;
 
@@ -126,7 +127,7 @@ public class CloudSDNAPI extends SDNAPI {
 
 			dcid = inBuf.getString("DCID");
 			tenantname = inBuf.getString("TENANTNAME");
-			
+
 		} catch (Exception e) {
 			DebugUtils.sendResponse(response, -1, e.toString());
 		}
@@ -147,7 +148,8 @@ public class CloudSDNAPI extends SDNAPI {
 		return req;
 	}
 
-	public void sendResponseToWeb(RequestInfoCloudSDN req, ResponseCloudNWList nwList) {
+	public void sendResponseToWeb(RequestInfoCloudSDN req,
+			ResponseCloudNWList nwList) {
 		FieldBuffer buf = null;
 
 		try {

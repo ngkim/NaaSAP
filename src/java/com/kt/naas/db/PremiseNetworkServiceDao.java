@@ -29,6 +29,15 @@ public class PremiseNetworkServiceDao extends SqlMapClientDaoSupport {
 		return (PremiseNetworkService) getSqlMapClientTemplate().queryForObject("selectPremiseNetworkServiceById", params);
 	}
 	
+	public PremiseNetworkService selectPremiseNetworkServiceByTenantName(String svcid, String tenantname, String nwName)
+	{
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("svcid", svcid);
+		params.put("tenantname", tenantname);
+		params.put("nwname", nwName);
+		return (PremiseNetworkService) getSqlMapClientTemplate().queryForObject("selectPremiseNetworkServiceByTenantName", params);
+	}
+	
 	public int updatePremiseNetworkService(PremiseNetworkService network)
 	{
 		return getSqlMapClientTemplate().update("updatePremiseNetworkService", network);

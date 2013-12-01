@@ -38,7 +38,7 @@ public class TransportNetworkServiceEntry {
 	 * <eType>E-LINE</eType>
 	 * </Ethernet>
 	 */
-	public void insert(String svcId, String transportSvcId, ResponseCreateTransportNetwork res) {
+	public void insert(String svcId, ResponseCreateTransportNetwork res) {
 		String strBw = "", strExceed = "";
 		
 		QoS qos = res.getQos();
@@ -67,7 +67,7 @@ public class TransportNetworkServiceEntry {
 					tnSvc.setEquipbw(BWUtils.bwToInt(strBw)); // 100M
 				}
 				
-				tnSvc.setAssociatedswid(peer.getId());
+				tnSvc.setAssociatedswid(api.getAssociatedSWID(peer.getId()));
 				tnSvc.setAssociatedswtype(api.getSwitchType(peer.getId()));
 				tnSvc.setEquipoutboundportid(peer.getPort());
 				tnSvc.setEquipvlanid(peer.getVlan());

@@ -34,14 +34,13 @@ public class NetworkServiceEntry {
 		item.setSvcId(svcId);
 		item.setState("C"); // Set state as running
 
-		Random random = new Random();
-		item.setSvcName(custName + "-" + random.nextInt(1000));
+		item.setSvcName(req.getServiceName());
 		item.setSvctype(req.getServiceType());
 		item.setTopologyType(req.getTopologyType());
 		item.setConnType(req.getConnType());
 		item.setBandwidth(req.getBandwidth());
 
-		System.out.println("*** NGKIM Network Service= " + item.getSvcName());
+		System.err.println("[NetworkServiceEntry:generateNetworkService] Network Service= " + item.getSvcName());
 		
 		Timestamp beginTime = Timestamp.valueOf(req.getFromTime() + ":00");
 		Timestamp endTime = Timestamp.valueOf(req.getToTime() + ":00");

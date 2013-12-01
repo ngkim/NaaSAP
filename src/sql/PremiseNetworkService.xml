@@ -42,6 +42,19 @@
 		WHERE
 			CPSVCID = #cpsvcid# and CONNID = #connid# and SVCID	= #svcid#
 	</select> 
+	
+	<select id="selectPremiseNetworkServiceByTenantName" resultClass="com.kt.naas.domain.PremiseNetworkService" parameterClass="java.util.HashMap">
+		SELECT
+			CPSVCID, CONNID, SVCID, NWNAME, SUBNET, TENANTID, TENANTNAME, TRANSEQUIPID, TRANSEQUIPPORTID, ADDR,
+		   	AGGRID, AGGRNAME, AGGRIP, AGGRUPPORTID, AGGRDOWNPORTID, AGGRBW, AGGRVLANID,
+		   	L2ID, L2NAME, L2IP, L2UPPORTID, L2DOWNPORTID, L2BW, L2VLANID,
+		   	ENDPOINTID, ENDPOINTNAME, ENDPOINTIP, ENDPOINTUPPORTID, ENDPOINTDOWNPORTID, ENDPOINTBW, ENDPOINTVLANID,
+		   	STATUS, RESULTMSG
+		FROM
+			T_NW_SERVICE_PREMISE
+		WHERE
+			SVCID	= #svcid# and TENANTNAME = #tenantname# and NWNAME = #nwname#
+	</select> 
     
     <update id="updatePremiseNetworkService" parameterClass="com.kt.naas.domain.PremiseNetworkService">
     	UPDATE T_NW_SERVICE_PREMISE

@@ -5,6 +5,7 @@ public class TenantNetworkInfo {
 	String nwName;
 	String dcId;
 	String dcName;
+	String nwType; // PR, DC
 
 	public String getTenantName() {
 		return tenantName;
@@ -36,5 +37,13 @@ public class TenantNetworkInfo {
 
 	public void setDcName(String dcName) {
 		this.dcName = dcName;
+	}
+
+	public String getNwType() {
+		return nwType;
+	}
+
+	public void setNwType(String nwType) {
+		this.nwType = nwType;
 	}
 }

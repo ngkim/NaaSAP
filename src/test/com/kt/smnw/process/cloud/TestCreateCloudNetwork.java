@@ -51,6 +51,7 @@ public class TestCreateCloudNetwork {
 			double duration = time.getDuration() / 1000;			
 			System.err.println("\nTime for creating a cloud network = " + duration + " seconds.\n");
 			
+			api.printResponseCreateCloudNetwork(res);
 //			api.printResponseInfoEthernet(res);
 			
 		} catch (Exception e) {

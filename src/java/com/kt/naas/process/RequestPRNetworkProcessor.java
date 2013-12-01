@@ -60,6 +60,7 @@ public class RequestPRNetworkProcessor extends RequestProcessor {
 
 			String returnCode = nwList.getReturnCode();
 			String returnCodeDescription = nwList.getMessage();
+			
 			String cpSvcid = nwList.getCpsvcid();
 			String tenantId = nwList.getTenantid();
 			String tenantName = nwList.getTenantname();

@@ -27,7 +27,7 @@ public class TestDeleteTransportNetwork {
 		
 		req.setRid("NaaS");
 		req.setCid("88888888880");
-		req.setEid("NS_20061");
+		req.setEid("NS_60541");
 				
 		return req;
 	}

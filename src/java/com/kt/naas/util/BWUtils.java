@@ -27,8 +27,9 @@ public class BWUtils {
 			return bytes + " B";
 		
 		int exp = (int) (Math.log(bytes) / Math.log(unit));
-		String pre = ("KMGTPE").charAt(exp - 1) + "";
-		strBw = String.format("%f%s", bytes / Math.pow(unit, exp), pre);
+		
+		String pre = ("MGTPE").charAt(exp - 1) + "";
+		strBw = String.format("%.0f%s", bytes / Math.pow(unit, exp), pre);
 
 		return strBw;
 	}

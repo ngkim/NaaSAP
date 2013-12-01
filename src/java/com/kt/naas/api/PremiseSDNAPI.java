@@ -3,9 +3,12 @@ package com.kt.naas.api;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.kt.naas.GlobalConstants;
+import com.kt.naas.api.TransportSDNAPI.SwitchPortPair;
 import com.kt.naas.domain.FieldBuffer;
+import com.kt.naas.domain.TenantNetworkInfo;
 import com.kt.naas.message.RequestMessage;
 import com.kt.naas.message.ResponseMessage;
 import com.kt.naas.util.DebugUtils;
@@ -31,7 +34,7 @@ public class PremiseSDNAPI extends SDNAPI {
 			+ "<NetworkList><NetworkName>농협_우면지사_사내망_2</NetworkName><Subnet>210.183.241.0/24</Subnet><VLANID>10</VLANID><Bandwidth>100M</Bandwidth><ConnectionList><Switch><SWName>4F_Partion</SWName><SWType>End-Point_Switch</SWType><SWID>wm_endpoint_sw_02</SWID><Ip>30.30.30.30</Ip><UpPort>1</UpPort><DownPort>2</DownPort></Switch><Switch><SWName>3F_L2_2211</SWName><SWType>L2_Switch</SWType><SWID>wm_l2_sw_02</SWID><Ip>20.20.20.20</Ip><UpPort>2</UpPort><DownPort>4</DownPort></Switch><Switch><SWName>3F_TransportSW</SWName><SWType>Aggregate_Switch</SWType><SWID>wm_aggr_sw_02</SWID><Ip>10.10.10.10</Ip><UpPort>2</UpPort><DownPort>3</DownPort></Switch></ConnectionList></NetworkList>"
 			+ "<NetworkList><NetworkName>농협_우면지사_사내망_3</NetworkName><Subnet>210.183.242.0/24</Subnet><VLANID>10</VLANID><Bandwidth>100M</Bandwidth><ConnectionList><Switch><SWName>4F_Partion</SWName><SWType>End-Point_Switch</SWType><SWID>wm_endpoint_sw_03</SWID><Ip>30.30.30.30</Ip><UpPort>1</UpPort><DownPort>2</DownPort></Switch><Switch><SWName>3F_L2_2211</SWName><SWType>L2_Switch</SWType><SWID>wm_l2_sw_03</SWID><Ip>20.20.20.20</Ip><UpPort>2</UpPort><DownPort>4</DownPort></Switch><Switch><SWName>3F_TransportSW</SWName><SWType>Aggregate_Switch</SWType><SWID>wm_aggr_sw_03</SWID><Ip>10.10.10.10</Ip><UpPort>2</UpPort><DownPort>3</DownPort></Switch></ConnectionList></NetworkList>"
 			+ "</ResponseInfo>";
-	
+
 	private String snmpAgent;
 
 	public PremiseSDNAPI(RequestMessage request, ResponseMessage response,
@@ -50,14 +53,19 @@ public class PremiseSDNAPI extends SDNAPI {
 		this.setUrlCreate("/api.updatePremiseSDNConnection");
 		this.setUrlDelete("/api.deletePremiseSDNConnection");
 	}
-	
+
 	public ResponseCreatePremiseNetwork createNetwork(
 			RequestCreatePremiseNetwork req) {
-		return createNetwork(GlobalConstants.HTTP_POST, req);
+		return createNetwork(GlobalConstants.HTTP_POST, req, false);
+	}
+	
+	public ResponseCreatePremiseNetwork createNetwork(
+			RequestCreatePremiseNetwork req, boolean fromApp) {
+		return createNetwork(GlobalConstants.HTTP_POST, req, fromApp);
 	}
 
 	public ResponseCreatePremiseNetwork createNetwork(int method,
-			RequestCreatePremiseNetwork req) {
+			RequestCreatePremiseNetwork req, boolean fromApp) {
 		ResponseCreatePremiseNetwork resPremiseNW = new ResponseCreatePremiseNetwork();
 
 		try {
@@ -66,7 +74,7 @@ public class PremiseSDNAPI extends SDNAPI {
 
 			String responseXml = apiUtil.callAPI(getUrlCreate(), method,
 					getRequestXML(req));
-			
+
 			resPremiseNW = xmlToResponse(responseXml, resPremiseNW);
 		} catch (Exception e) {
 			DebugUtils.sendResponse(response, -1, e.toString());
@@ -88,7 +96,7 @@ public class PremiseSDNAPI extends SDNAPI {
 
 			String responseXml = apiUtil.callAPI(getUrlRead(), method,
 					getRequestXML(reqPremiseNW));
-			
+
 			resPremiseNW = xmlToResponse(responseXml, resPremiseNW);
 		} catch (Exception e) {
 			DebugUtils.sendResponse(response, -1, e.toString());
@@ -99,11 +107,11 @@ public class PremiseSDNAPI extends SDNAPI {
 
 	public ResponseDeletePremiseNetwork deleteNetwork(
 			RequestDeletePremiseNetwork req) {
-		return deleteNetwork(GlobalConstants.HTTP_POST, req);
+		return deleteNetwork(GlobalConstants.HTTP_POST, req, false);
 	}
 
 	public ResponseDeletePremiseNetwork deleteNetwork(int method,
-			RequestDeletePremiseNetwork req) {
+			RequestDeletePremiseNetwork req, boolean fromApp) {
 		ResponseDeletePremiseNetwork resPremiseNW = new ResponseDeletePremiseNetwork();
 
 		try {
@@ -112,7 +120,7 @@ public class PremiseSDNAPI extends SDNAPI {
 
 			String responseXml = apiUtil.callAPI(getUrlDelete(), method,
 					getRequestXML(req));
-			
+
 			resPremiseNW = xmlToResponse(responseXml, resPremiseNW);
 		} catch (Exception e) {
 			DebugUtils.sendResponse(response, -1, e.toString());

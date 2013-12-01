@@ -20,6 +20,7 @@ import com.kt.naas.db.access.TransportNetworkServiceEntry;
 import com.kt.naas.domain.FieldBuffer;
 import com.kt.naas.domain.NetworkServiceRequest;
 import com.kt.naas.domain.TenantNetworkInfo;
+import com.kt.naas.message.RequestMessage;
 import com.kt.naas.util.DebugUtils;
 import com.kt.naas.util.RequestClient;
 import com.kt.naas.util.UUIDUtil;
@@ -40,8 +41,7 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 	// Progress table entry
 	ProgressStatusEntry progress;
 
-	private boolean createTransportNetwork(String svcId, String transportSvcId,
-			NetworkServiceRequest svcReq) {
+	private boolean createTransportNetwork(String svcId, NetworkServiceRequest svcReq) {
 		boolean result = false;
 
 		try {
@@ -49,17 +49,26 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 				System.out.println("*** Request create Transport Network");
 
 			TransportSDNAPI api = new TransportSDNAPI(request, response, GlobalConstants.URL_TRANSPORT_SDN_API);
-			RequestCreateTransportNetwork reqTransNW = api.generateRequest(svcReq);
+			RequestCreateTransportNetwork reqTransNW = api.generateRequest(svcId, svcReq);
 
 			progress.update(svcReq.getCustId(), "Transport SDN에 Network 생성을 요청하였습니다.");
 			ResponseCreateTransportNetwork resTransNW = api.createNetwork(reqTransNW);
 			
-			TransportNetworkServiceEntry transNsEntry = new TransportNetworkServiceEntry();
-			transNsEntry.insert(svcId, transportSvcId, resTransNW);
-
-			progress.update(svcReq.getCustId(), "Transport SDN에 요청한 Network가 생성되었습니다. (" + resTransNW.getId() + ")");
-
-			result = true;
+			if (resTransNW != null) {
+				if (resTransNW.getStatus().trim().equals("FAIL")) {
+					progress.update(svcReq.getCustId(), "Transport SDN에 요청한 Network 생성에 실패하였습니다.");
+					result = false;
+				} else {
+					TransportNetworkServiceEntry transNsEntry = new TransportNetworkServiceEntry();
+					transNsEntry.insert(svcId, resTransNW);
+				
+					progress.update(svcReq.getCustId(), "Transport SDN에 요청한 Network가 생성되었습니다.");
+					result = true;
+				}				
+			} else {
+				progress.update(svcReq.getCustId(), "Transport SDN에 요청한 Network 생성에 실패하였습니다.");
+				result = false;
+			}			
 		} catch (Exception e) {
 			e.printStackTrace();
 			DebugUtils.sendResponse(response, -1, e.getMessage());
@@ -74,6 +83,7 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 		boolean result = false;
 
 		try {
+		
 			if (GlobalConstants.OP_DEBUG)
 				System.out.println("*** Request create Cloud Network");
 
@@ -91,21 +101,24 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 					"Cloud SDN에 Network 생성을 요청하였습니다.");
 
 			ResponseCreateCloudNetwork nwRes = api.createNetwork(req);
-			if (nwRes != null)
+			if (nwRes != null) {
+							
+				if (GlobalConstants.OP_DEBUG)
+					api.printResponseCreateCloudNetwork(nwRes);
+
+				// Insert into tables using nwRes
+				DCNetworkServiceEntry dcNsEntry = new DCNetworkServiceEntry();
+				dcNsEntry.insert(tn, svcId, nwRes);
+				
 				progress.update(svcReq.getCustId(),
 						"Cloud SDN에 요청한 Network가 생성되었습니다.");
-			else
+
+				result = true;
+			} else {
 				progress.update(svcReq.getCustId(),
 						"Cloud SDN에 요청한 Network 생성에 실패하였습니다.");
-
-			if (GlobalConstants.OP_DEBUG)
-				api.printResponseCreateCloudNetwork(nwRes);
-
-			// Insert into tables using nwRes
-			DCNetworkServiceEntry dcNsEntry = new DCNetworkServiceEntry();
-			dcNsEntry.insert(tn, svcId, nwRes);
-
-			result = true;
+				result = false;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			DebugUtils.sendResponse(response, -1, e.getMessage());
@@ -120,15 +133,14 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 	private boolean isFromApp(String custId) {
 		return custId.trim().equals("FromApp"); 		
 	}
-
+	
 	@Override
 	public void processRequest() {
 		boolean result = true;
 
 		// generate a new id
 		String svcId = UUIDUtil.generateUUID();
-		String transportSvcId = UUIDUtil.generateUUID();
-
+		
 		// Receive request from WAS and Send it to API Server
 		NetworkServiceRequest svcReq = null;
 
@@ -141,10 +153,11 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 
 			// Notify current progress to Web
 			progress.update(svcReq.getCustId(), "네트워크 생성 요청을 준비 중입니다.");
-
+			Thread.sleep(2000);
+			
 			ArrayList<TenantNetworkInfo> tnList = svcReq.getNetworklist();
 			if (GlobalConstants.OP_DEBUG)
-				System.out.println("tnList.size" + tnList.size());
+				System.out.println("[RequestCreateNetworkProcessor:processRequest] tnList.size= " + tnList.size());
 
 			for (int i = 0; i < tnList.size(); i++) {
 				TenantNetworkInfo tn = tnList.get(i);
@@ -159,9 +172,12 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 			}
 
 			if(!isFromApp(svcReq.getCustId())){
-				result = createTransportNetwork(svcId, transportSvcId, svcReq);
+				result = createTransportNetwork(svcId, svcReq);
+			} else {
+				// TODO: Insert into database with fixed information
 			}
 
+			Thread.sleep(2000);
 			if (result )	progress.update(svcReq.getCustId(), "요청한 Network 생성이 완료 되었습니다.");
 			else	progress.update(svcReq.getCustId(), "요청한 Network 생성에 실패하였습니다.");
 
@@ -184,7 +200,7 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 
 			progress.update(svcReq.getCustId(),
 					"Premise SDN에 Network 생성을 요청하였습니다.");
-
+			Thread.sleep(2000);
 			PremiseSDNAPI api = null;
 			if (tn.getTenantName().trim().equals("농협_전민지사")) {
 				api = new DJPremiseSDNAPI(request, response,
@@ -201,14 +217,18 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 			req.setBandwidth(svcReq.getBandwidth());
 			req.setCpSvcId(tn.getTenantName()); // TODO: need to updated...
 
-			ResponseCreatePremiseNetwork nwRes = api.createNetwork(req);
-			
-			progress.update(
-					svcReq.getCustId(),
-					"Premise SDN에 요청한 Network가 생성되었습니다. ("
-							+ nwRes.getCpsvcid() + ")");
-			
-			result = true;
+			ResponseCreatePremiseNetwork nwRes = api.createNetwork(req, isFromApp(svcReq.getCustId()));
+			if (nwRes != null) {
+				progress.update(
+						svcReq.getCustId(),
+						"Premise SDN에 요청한 Network가 생성되었습니다.");
+				result = true;
+			} else {
+				progress.update(
+						svcReq.getCustId(),
+						"Premise SDN에 요청한 Network 생성에 실패하였습니다.");
+				result = false;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			DebugUtils.sendResponse(response, -1, e.getMessage());
@@ -229,14 +249,16 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 			// if custId is FromApp, no transport request, dj vlan swap only, no cloud vlan swap
 			String custId = inBuf.getString("CUSTID");
 			String serviceType = inBuf.getString("SERVICETYPE");
+			String serviceName = inBuf.getString("SERVICENAME");
 			String topologyType = inBuf.getString("TOPOLOGYTYPE");
 			String connType = inBuf.getString("CONNTYPE");
 			String fromTime = inBuf.getString("FROMTIME");
 			String toTime = inBuf.getString("TOTIME");
 			String bandwidth = inBuf.getString("BANDWIDTH");
-
+			
 			nsReq.setCustId(custId);
 			nsReq.setServiceType(serviceType);
+			nsReq.setServiceName(serviceName);
 			nsReq.setTopologyType(topologyType);
 			nsReq.setConnType(connType);
 			nsReq.setFromTime(fromTime);
@@ -256,15 +278,11 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 
 				tnInfo.setTenantName(inBuf.getString("TENANTNAME"));
 				tnInfo.setNwName(inBuf.getString("NWNAME"));
-
+				tnInfo.setNwType(inBuf.getString("GUBUN"));
 				try {
-					String dcId;
-					String dcName;
-					if ((dcId = inBuf.getString("DCID")) != null) {
-						tnInfo.setDcId(dcId);
-					}
-					if ((dcName = inBuf.getString("DCNAME")) != null) {
-						tnInfo.setDcName(dcName);
+					if (tnInfo.getNwType().trim().equals("DC")) {
+						tnInfo.setDcId(inBuf.getString("DCID"));
+						tnInfo.setDcName(inBuf.getString("DCNAME"));
 					}
 				} catch (IndexOutOfBoundsException ioobe) {
 					System.out.println(ioobe.getMessage());

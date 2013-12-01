@@ -96,6 +96,21 @@ public class RequestClient implements MessageListener, ExceptionListener {
 			onException(e);
 		}
 	}
+	
+	public void requestToWeb(RequestMessage request) {
+		request.setSenderType(GlobalConstants.ACTOR_AP);
+		request.setSenderUID(clientId);
+		System.out.println("send request to webui\n" + request);
+		try {
+			request.setSenderType(GlobalConstants.ACTOR_AP);
+			ObjectMessage objectMessage = session.createObjectMessage(request);
+			
+			requestProducer.send(objectMessage);
+		} catch (JMSException e) {
+			onException(e);
+		}
+	}
+	
 	public ConnectionFactory getConnectionFactory() {
 		return connectionFactory;
 	}
