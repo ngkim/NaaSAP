@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Address">    
+    
+
+
+    <insert id="insertAddress" parameterClass="com.kt.naas.domain.Address">
+		INSERT INTO T_ADDRESS(
+		    NUM, ADDR, DETAILADDR, CONTACTNAME, CONTACTNUM, NMSNAME, NMSCONTRACTNAME, NMSCONTRACTNUM, CUSTNAME)
+		VALUES 
+			(#num#, #addr#, #detailaddr#, #contactname#, #contactnum#, #nmsname#, #nmscontractname#, #nmscontractnum#, #custname#)
+    </insert> 
+    
+    
+    <select id="selectAddress" resultClass="com.kt.naas.domain.Address">
+    	SELECT 
+    		NUM, ADDR, DETAILADDR, CONTACTNAME, CONTACTNUM, NMSNAME, NMSCONTRACTNAME, NMSCONTRACTNUM, CUSTNAME
+    	FROM
+    		T_ADDRESS
+    </select>
+    
+	<select id="selectAddressByCustname" resultClass="com.kt.naas.domain.Address" parameterClass="java.util.HashMap">
+		SELECT
+			NUM, ADDR, DETAILADDR, CONTACTNAME, CONTACTNUM, NMSNAME, NMSCONTRACTNAME, NMSCONTRACTNUM, CUSTNAME
+		FROM
+			T_ADDRESS
+		WHERE
+			CUSTNAME = #custname#
+	</select> 
+    
+    <delete id="deleteAddressById" parameterClass="java.util.HashMap">
+    <![CDATA[
+        DELETE FROM T_ADDRESS
+        WHERE 
+			NUM	= #num#
+    ]]>
+    </delete>    
+    
+    
+    
+   
+</sqlMap>

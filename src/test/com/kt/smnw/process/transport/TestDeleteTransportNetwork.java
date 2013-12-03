@@ -27,7 +27,7 @@ public class TestDeleteTransportNetwork {
 		
 		req.setRid("NaaS");
 		req.setCid("88888888880");
-		req.setEid("NS_60541");
+		req.setEid("NS_44046");
 				
 		return req;
 	}
@@ -41,14 +41,14 @@ public class TestDeleteTransportNetwork {
 			time.setStartTime();
 			
 			RequestDeleteTransportNetwork req = generateRequest();
-			TransportSDNAPI api = new TransportSDNAPI(GlobalConstants.URL_TRANSPORT_SDN_API);
+			TransportSDNAPI api = new TransportSDNAPI(GlobalConstants.URL_TRANSPORT_SDN_API_TEST);
 			res = api.deleteNetwork(req);
 			
 			double duration = time.getDuration() / 1000;
 			
 			System.err.println("Time for deleting a transport network = " + duration);
 			
-//			api.printResponseDeleteTransportNetwork(res);
+			api.printResponseDeleteTransportNetwork(res);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

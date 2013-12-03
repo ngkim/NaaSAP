@@ -20,6 +20,10 @@ public class NetworkServiceDao extends SqlMapClientDaoSupport {
 		return getSqlMapClientTemplate().queryForList("selectNetworkService");
 	}
 	
+	public List<NetworkService> selectNetworkServicesDeleted() {
+		return getSqlMapClientTemplate().queryForList("selectNetworkServicesDeleted");
+	}
+	
 	public NetworkService selectNetworkServiceById(String id)
 	{
 		Map<String, String> params = new HashMap<String, String>();

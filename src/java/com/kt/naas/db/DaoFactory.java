@@ -9,6 +9,11 @@ public class DaoFactory {
 		return (VmIpDao)MainContext.getBean("vmIpDao");
 	}
 	
+	public static AddressDao getAddressDao()
+	{
+		return (AddressDao)MainContext.getBean("addressDao");
+	}
+	
 	public static DomainNetworkDao getDomainNetworkDao()
 	{
 		return (DomainNetworkDao)MainContext.getBean("domainNetworkDao");

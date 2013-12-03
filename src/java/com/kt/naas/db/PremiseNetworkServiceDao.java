@@ -29,13 +29,20 @@ public class PremiseNetworkServiceDao extends SqlMapClientDaoSupport {
 		return (PremiseNetworkService) getSqlMapClientTemplate().queryForObject("selectPremiseNetworkServiceById", params);
 	}
 	
-	public PremiseNetworkService selectPremiseNetworkServiceByTenantName(String svcid, String tenantname, String nwName)
+	public List<PremiseNetworkService> selectPremiseNetworkServiceBySvcId(String svcid)
+	{
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("svcid", svcid);
+		return (List<PremiseNetworkService>) getSqlMapClientTemplate().queryForList("selectPremiseNetworkServiceBySvcId", params);
+	}
+	
+	public List<PremiseNetworkService> selectPremiseNetworkServiceByTenantName(String svcid, String tenantname, String nwname)
 	{
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("svcid", svcid);
 		params.put("tenantname", tenantname);
-		params.put("nwname", nwName);
-		return (PremiseNetworkService) getSqlMapClientTemplate().queryForObject("selectPremiseNetworkServiceByTenantName", params);
+		params.put("nwname", nwname);
+		return (List<PremiseNetworkService>) getSqlMapClientTemplate().queryForList("selectPremiseNetworkServiceByTenantName", params);
 	}
 	
 	public int updatePremiseNetworkService(PremiseNetworkService network)
@@ -50,5 +57,12 @@ public class PremiseNetworkServiceDao extends SqlMapClientDaoSupport {
 		params.put("connid", connid);
 		params.put("svcid", svcid);
 		return getSqlMapClientTemplate().delete("deletePremiseNetworkServiceById", params);
+	}
+	
+	public int deletePremiseNetworkServiceBySvcId(String svcid)
+	{
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("svcid", svcid);
+		return getSqlMapClientTemplate().delete("deletePremiseNetworkServiceBySvcId", params);
 	}
 }

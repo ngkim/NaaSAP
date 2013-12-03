@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Random;
 
 import com.kt.naas.GlobalConstants;
+import com.kt.naas.db.access.DCNetworkServiceEntry;
 import com.kt.naas.db.access.PremiseNetworkServiceEntry;
+import com.kt.naas.domain.DCNetworkService;
 import com.kt.naas.domain.NetworkServiceRequest;
 import com.kt.naas.domain.PremiseNetworkService;
 import com.kt.naas.domain.TenantNetworkInfo;
@@ -166,11 +168,8 @@ public class TransportSDNAPI extends SDNAPI {
 				TenantNetworkInfo tn = tnList.get(i);
 
 				// TODO: to be removed
-				if (tn.getNwType().trim().equals("DC"))
-					continue;
-
 				SwitchPortPair spv = getSwitchPortVlan(svcId, tn);
-
+				
 				if (spv != null)
 					System.err.println("swid= " + spv.getSwId());
 				else
@@ -209,6 +208,7 @@ public class TransportSDNAPI extends SDNAPI {
 		HashMap<String, String> NEIDs = new HashMap<String, String>();
 
 		NEIDs.put("dj_ib_aggr_1", "L2SW00011");
+		NEIDs.put("dj_ib_aggr_2", "L2SW00011");
 		NEIDs.put("wm_cl_aggr_1", "L2SW00013");
 		NEIDs.put("wm_ib_aggr_1", "L2SW00003");
 
@@ -233,15 +233,30 @@ public class TransportSDNAPI extends SDNAPI {
 		if (tn.getNwType().trim().equals("PR")) {
 			PremiseNetworkServiceEntry pnsEntry = new PremiseNetworkServiceEntry();
 
-			PremiseNetworkService pns = pnsEntry.selectByTenantname(svcId,
-					tn.getTenantName(), tn.getNwName());
-			if (pns != null) {
-				spv = new SwitchPortPair(pns.getAggrid(),
-						pns.getAggrupportid(), pns.getAggrvlanid());
+			List<PremiseNetworkService> pnsList = pnsEntry.selectByTenantname(svcId, tn.getTenantName(), tn.getNwName());
+			if (pnsList != null) {
+				for ( int i = 0; i < pnsList.size(); i++ ) {
+					PremiseNetworkService pns = pnsList.get(i);
+					if (pns != null) {
+						spv = new SwitchPortPair(pns.getAggrid(),
+								pns.getAggrupportid(), pns.getAggrvlanid());
+						break;
+					}
+				}
+
 			}
 		} else if (tn.getNwType().trim().equals("DC")) {
 			// TODO: need to retrieve cloud network information and return
 			// SwitchPortPair for it
+			
+			DCNetworkServiceEntry dcsEntry = new DCNetworkServiceEntry();
+
+			DCNetworkService dns = dcsEntry.selectByTenantname(svcId,
+					tn.getTenantName());
+			if (dns != null) {
+				spv = new SwitchPortPair(dns.getL2id(),
+						dns.getL2upportid(), dns.getL2vlanid());
+			}
 		}
 
 		return spv;
@@ -352,6 +367,16 @@ public class TransportSDNAPI extends SDNAPI {
 		printUtil.printKeyAndValue("Rid", res.getRid());
 		printUtil.printKeyAndValue("Cid", res.getCid());
 		printUtil.printKeyAndValue("Eid", res.getEid());
+	}
+	
+	public void printResponseDeleteTransportNetwork(
+			ResponseDeleteTransportNetwork res) {
+		printUtil.printKeyAndValue("Name", res.getName());
+		printUtil.printKeyAndValue("Description", res.getDescription());
+		
+		printUtil.printKeyAndValue("EID", res.getId());
+		printUtil.printKeyAndValue("Status", res.getStatus().getResult());
+		
 	}
 
 }

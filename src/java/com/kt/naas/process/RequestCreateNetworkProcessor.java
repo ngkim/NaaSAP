@@ -21,6 +21,7 @@ import com.kt.naas.domain.FieldBuffer;
 import com.kt.naas.domain.NetworkServiceRequest;
 import com.kt.naas.domain.TenantNetworkInfo;
 import com.kt.naas.message.RequestMessage;
+import com.kt.naas.util.BWUtils;
 import com.kt.naas.util.DebugUtils;
 import com.kt.naas.util.RequestClient;
 import com.kt.naas.util.UUIDUtil;
@@ -78,6 +79,61 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 		return result;
 	}
 
+	private boolean createPremiseNetwork(String svcId,
+			NetworkServiceRequest svcReq, TenantNetworkInfo tn) {
+		boolean result = false;
+		
+		if (GlobalConstants.OP_DEBUG)
+			System.out.println("*** Request create Premise Network");
+	
+		PremiseNetworkServiceEntry prNsEntry = new PremiseNetworkServiceEntry();
+		try {
+			
+			prNsEntry.update(tn, svcId, svcReq.getCustId());
+	
+			progress.update(svcReq.getCustId(),
+					"Premise SDN에 Network 생성을 요청하였습니다.");
+			Thread.sleep(2000);
+			PremiseSDNAPI api = null;
+			if (tn.getTenantName().trim().equals("농협_전민지사")) {
+				api = new DJPremiseSDNAPI(request, response,
+					GlobalConstants.URL_PREMISE_SDN_API_DJ);
+			} else if (tn.getTenantName().trim().equals("농협_우면지사")) {
+				api = new WMPremiseSDNAPI(request, response,
+						GlobalConstants.URL_PREMISE_SDN_API_WM);
+			} else {
+				api = new PremiseSDNAPI(request, response,
+						GlobalConstants.URL_PREMISE_SDN_API_DJ);
+			}
+	
+			RequestCreatePremiseNetwork req = new RequestCreatePremiseNetwork();
+	
+			req.setNetworkname(tn.getNwName());
+			req.setTenantName(tn.getTenantName());
+			req.setBandwidth(svcReq.getBandwidth());
+			req.setCpSvcId(tn.getTenantName()); // TODO: need to updated...
+	
+			ResponseCreatePremiseNetwork nwRes = api.createNetwork(req, isFromApp(svcReq.getCustId()));
+			if (nwRes != null) {
+				progress.update(
+						svcReq.getCustId(),
+						"Premise SDN에 요청한 Network가 생성되었습니다.");
+				result = true;
+			} else {
+				progress.update(
+						svcReq.getCustId(),
+						"Premise SDN에 요청한 Network 생성에 실패하였습니다.");
+				result = false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			DebugUtils.sendResponse(response, -1, e.getMessage());
+			result = false;
+		}
+		
+		return result;
+	}
+
 	private boolean createCloudNetwork(String svcId,
 			NetworkServiceRequest svcReq, TenantNetworkInfo tn) {
 		boolean result = false;
@@ -95,7 +151,7 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 															// replace to tenant
 															// Id
 			req.setVnid("e3c4d6dc-0443-402f-8390-a238cdb5e512"); // TODO: vnid
-			req.setBw(Integer.toString(svcReq.getBandwidth()));
+			req.setBw(BWUtils.bwToStr(svcReq.getBandwidth()));
 
 			progress.update(svcReq.getCustId(),
 					"Cloud SDN에 Network 생성을 요청하였습니다.");
@@ -107,7 +163,7 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 					api.printResponseCreateCloudNetwork(nwRes);
 
 				// Insert into tables using nwRes
-				DCNetworkServiceEntry dcNsEntry = new DCNetworkServiceEntry();
+				DCNetworkServiceEntry dcNsEntry = new DCNetworkServiceEntry(isFromApp(svcReq.getCustId()));
 				dcNsEntry.insert(tn, svcId, nwRes);
 				
 				progress.update(svcReq.getCustId(),
@@ -148,9 +204,6 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 			svcReq = recvRequestfromWeb();
 			progress = new ProgressStatusEntry(totalCnt);
 
-			NetworkServiceEntry nsEntry = new NetworkServiceEntry();
-			nsEntry.insert(svcId, svcReq);
-
 			// Notify current progress to Web
 			progress.update(svcReq.getCustId(), "네트워크 생성 요청을 준비 중입니다.");
 			Thread.sleep(2000);
@@ -178,64 +231,19 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 			}
 
 			Thread.sleep(2000);
-			if (result )	progress.update(svcReq.getCustId(), "요청한 Network 생성이 완료 되었습니다.");
+			if (result )	{
+				// insert service entry after all step are done
+				NetworkServiceEntry nsEntry = new NetworkServiceEntry();
+				nsEntry.insert(svcId, svcReq);
+				
+				progress.update(svcReq.getCustId(), "요청한 Network 생성이 완료 되었습니다.");
+			}
 			else	progress.update(svcReq.getCustId(), "요청한 Network 생성에 실패하였습니다.");
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			DebugUtils.sendResponse(response, -1, e.getMessage());
 		}
-	}
-
-	private boolean createPremiseNetwork(String svcId,
-			NetworkServiceRequest svcReq, TenantNetworkInfo tn) {
-		boolean result = false;
-		
-		if (GlobalConstants.OP_DEBUG)
-			System.out.println("*** Request create Premise Network");
-
-		PremiseNetworkServiceEntry prNsEntry = new PremiseNetworkServiceEntry();
-		try {
-			prNsEntry.update(tn, svcId);
-
-			progress.update(svcReq.getCustId(),
-					"Premise SDN에 Network 생성을 요청하였습니다.");
-			Thread.sleep(2000);
-			PremiseSDNAPI api = null;
-			if (tn.getTenantName().trim().equals("농협_전민지사")) {
-				api = new DJPremiseSDNAPI(request, response,
-					GlobalConstants.URL_PREMISE_SDN_API_DJ);
-			} else if (tn.getTenantName().trim().equals("농협_우면지사")) {
-				api = new WMPremiseSDNAPI(request, response,
-						GlobalConstants.URL_PREMISE_SDN_API_WM);
-			}
-
-			RequestCreatePremiseNetwork req = new RequestCreatePremiseNetwork();
-
-			req.setNetworkname(tn.getNwName());
-			req.setTenantName(tn.getTenantName());
-			req.setBandwidth(svcReq.getBandwidth());
-			req.setCpSvcId(tn.getTenantName()); // TODO: need to updated...
-
-			ResponseCreatePremiseNetwork nwRes = api.createNetwork(req, isFromApp(svcReq.getCustId()));
-			if (nwRes != null) {
-				progress.update(
-						svcReq.getCustId(),
-						"Premise SDN에 요청한 Network가 생성되었습니다.");
-				result = true;
-			} else {
-				progress.update(
-						svcReq.getCustId(),
-						"Premise SDN에 요청한 Network 생성에 실패하였습니다.");
-				result = false;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			DebugUtils.sendResponse(response, -1, e.getMessage());
-			result = false;
-		}
-		
-		return result;
 	}
 
 	private NetworkServiceRequest recvRequestfromWeb() {

@@ -23,13 +23,15 @@ public interface GlobalConstants {
 	public final static int DJ_PREMISE_VLAN_INTERNET = 31;
 	
 	
-//	public final static String URL_CLOUD_SDN_API = "http://210.183.241.184:5000";
-	public final static String URL_CLOUD_SDN_API = "http://211.224.204.144:5000";
-//	public final static String URL_PREMISE_SDN_API_WM = "http://211.224.204.157:8080/APIServer/psdnRetrieveNWList";
+	public final static String URL_CLOUD_SDN_API = "http://210.183.241.184:5000";
+	public final static String URL_CLOUD_SDN_API_TEST = "http://211.224.204.144:5000";
+	//	public final static String URL_CLOUD_SDN_API = "http://211.224.204.144:5000";
+	public final static String URL_TRANSPORT_SDN_API = "https://220.123.31.51:7502";
+	public final static String URL_TRANSPORT_SDN_API_TEST = "https://211.224.204.144:7502";
+
+	//	public final static String URL_PREMISE_SDN_API_WM = "http://211.224.204.157:8080/APIServer/psdnRetrieveNWList";
 	public final static String URL_PREMISE_SDN_API_WM = "http://211.224.204.137:8080/NaaS";
 	public final static String URL_PREMISE_SDN_API_DJ = "http://211.224.204.137:8080/NaaS";
-	public final static String URL_TRANSPORT_SDN_API = "https://211.224.204.144:7502";
-//	public final static String URL_TRANSPORT_SDN_API = "https://220.123.31.51:7502";
 	
 	public final static String SW_DJ_OPENFLOW = "00:00:00:1c:73:4f:32:d7";
 	public final static String DJ_FLOODLIGHT = "211.224.204.144:8080";

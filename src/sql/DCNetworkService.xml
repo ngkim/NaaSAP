@@ -36,6 +36,30 @@
 			T_NW_SERVICE_DC
 		WHERE
 			DCSVCID = #dcsvcid# and CONNID = #connid# and SVCID	= #svcid#
+	</select>
+	
+	<select id="selectDCNetworkServiceBySvcId" resultClass="com.kt.naas.domain.DCNetworkService" parameterClass="java.util.HashMap">
+		SELECT
+			DCSVCID, CONNID, SVCID, NWNAME, SUBNET, TENANTID, TENANTNAME, TRANSEQUIPID, TRANSEQUIPPORTID, 
+		   	L2ID, L2NAME, L2IP, L2UPPORTID, L2DOWNPORTID, L2BW, L2VLANID,
+		   	TORID, TORNAME, TORIP, TORUPPORTID, TORDOWNPORTID, TORBW, TORVLANID,
+		   	STATUS, RESULTMSG, DCID
+		FROM
+			T_NW_SERVICE_DC
+		WHERE
+			SVCID	= #svcid#
+	</select>
+	
+	<select id="selectDCNetworkServiceByTenant" resultClass="com.kt.naas.domain.DCNetworkService" parameterClass="java.util.HashMap">
+		SELECT
+			DCSVCID, CONNID, SVCID, NWNAME, SUBNET, TENANTID, TENANTNAME, TRANSEQUIPID, TRANSEQUIPPORTID, 
+		   	L2ID, L2NAME, L2IP, L2UPPORTID, L2DOWNPORTID, L2BW, L2VLANID,
+		   	TORID, TORNAME, TORIP, TORUPPORTID, TORDOWNPORTID, TORBW, TORVLANID,
+		   	STATUS, RESULTMSG, DCID
+		FROM
+			T_NW_SERVICE_DC
+		WHERE
+			SVCID	= #svcid# and TENANTNAME = #tenantname#
 	</select> 
     
     <update id="updateDCNetworkService" parameterClass="com.kt.naas.domain.DCNetworkService">
@@ -74,6 +98,12 @@
         WHERE 
 			DCSVCID = #dcsvcid# and CONNID = #connid# and SVCID	= #svcid# 
     ]]>
+    </delete>
+    
+    <delete id="deleteDCNetworkServiceBySvcId" parameterClass="java.util.HashMap">
+        DELETE FROM T_NW_SERVICE_DC
+        WHERE 
+			SVCID	= #svcid# 
     </delete>    
     
     

@@ -59,7 +59,7 @@ public class TransportNetworkServiceEntry {
 
 				tnSvc.setSvcid(svcId);
 				tnSvc.setTransvcid(res.getId());
-				tnSvc.setNwname(res.getName());
+				tnSvc.setNwname("kt Transport Network (" + res.getName()+")");
 				
 				if (!strBw.trim().equals("")) {
 					tnSvc.setQosofcir(strBw);

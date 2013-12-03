@@ -45,14 +45,13 @@ public class TestCreateCloudNetwork {
 			
 			RequestCreateCloudNetwork req = generateRequest();	
 		
-			CloudSDNAPI api = new CloudSDNAPI(GlobalConstants.URL_CLOUD_SDN_API);
+			CloudSDNAPI api = new CloudSDNAPI(GlobalConstants.URL_CLOUD_SDN_API_TEST);
 			res = api.createNetwork(req);
 			
 			double duration = time.getDuration() / 1000;			
 			System.err.println("\nTime for creating a cloud network = " + duration + " seconds.\n");
 			
 			api.printResponseCreateCloudNetwork(res);
-//			api.printResponseInfoEthernet(res);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

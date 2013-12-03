@@ -33,6 +33,17 @@
 		WHERE
 			TRANSVCID = #transvcid# and EQUIPID = #equipid# and ASSOCIATEDSWID	= #associatedswid# and SVCID = #svcid#
 	</select> 
+	
+	<select id="selectTransportNetworkServiceBySvcId" resultClass="com.kt.naas.domain.TransportNetworkService" parameterClass="java.util.HashMap">
+		SELECT
+			STATUS, RESULTMSG, NWNAME, SVCID, TRANSVCID, PWLABELID, ETHTYPE, CONNTYPE, 
+		    EQUIPID, EQUIPNAME, EQUIPINBOUNDPORTID, EQUIPOUTBOUNDPORTID, EQUIPBW, EQUIPVLANID, 
+		    ASSOCIATEDSWID, ASSOCIATEDSWTYPE, QOSOFEIR, QOSOFCIR
+		FROM
+			T_NW_SERVICE_TRANSPORT
+		WHERE
+			SVCID = #svcid#
+	</select> 
     
     <update id="updateTransportNetworkService" parameterClass="com.kt.naas.domain.TransportNetworkService">
     	UPDATE T_NW_SERVICE_TRANSPORT
@@ -62,6 +73,12 @@
         WHERE 
 			TRANSVCID = #transvcid# and EQUIPID = #equipid# and ASSOCIATEDSWID	= #associatedswid# and SVCID = #svcid#
     ]]>
+    </delete>
+    
+    <delete id="deleteTransportNetworkServiceBySvcId" parameterClass="java.util.HashMap">
+        DELETE FROM T_NW_SERVICE_TRANSPORT
+        WHERE 
+			SVCID	= #svcid# 
     </delete>    
     
     

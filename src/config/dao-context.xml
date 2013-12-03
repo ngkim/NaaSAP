@@ -19,6 +19,11 @@
 	</bean> 
 	
 	<!-- ngkim -->
+	
+	<bean id="addressDao" class="com.kt.naas.db.AddressDao">
+		<property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean>
+	
 	<bean id="domainNetworkDao" class="com.kt.naas.db.DomainNetworkDao">
 		<property name="sqlMapClient" ref="sqlMapClient"/>
 	</bean>

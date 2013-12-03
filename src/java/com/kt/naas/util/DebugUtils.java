@@ -20,11 +20,13 @@ public class DebugUtils {
 		
 
 		if ( response != null ) {
+			if (GlobalConstants.OP_DEBUG)
+				System.err.println("Response Msg= " + retMsg);
 			response.setResultCode(retCode);
 			response.setResultMessage(retMsg);
 		} else {
 			if (GlobalConstants.OP_DEBUG)
-				System.err.println(retMsg);
+				System.err.println("Response Msg= " + retMsg);
 		}
 	}
 }

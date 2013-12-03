@@ -196,4 +196,21 @@ public class TransportNetworkService {
 		this.resultmsg = resultmsg;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("TransportNetworkService [transvcid=");
+		builder.append(transvcid);
+		builder.append(", svcid=");
+		builder.append(svcid);
+		builder.append(", nwname=");
+		builder.append(nwname);
+		builder.append(", associatedswid=");
+		builder.append(associatedswid);
+		builder.append("]");
+		return builder.toString();
+	}
+	
+	
+
 }

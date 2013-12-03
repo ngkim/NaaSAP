@@ -39,7 +39,7 @@ public class DJPremiseSDNAPI extends PremiseSDNAPI {
 	public ResponseCreatePremiseNetwork createNetwork(
 			RequestCreatePremiseNetwork req, boolean fromApp) {
 
-		if (!GlobalConstants.OP_DEMO_SWAP_DJ && !fromApp) {
+		if (!GlobalConstants.OP_DEMO_SWAP_DJ && fromApp) {
 			System.err.println("*** CreateNetwork - Call DJ VLAN swap...");
 			swapNetworkToPOTN();
 		}
@@ -51,7 +51,7 @@ public class DJPremiseSDNAPI extends PremiseSDNAPI {
 	public ResponseDeletePremiseNetwork deleteNetwork(
 			int method, RequestDeletePremiseNetwork req, boolean fromApp) {
 
-		if (!GlobalConstants.OP_DEMO_SWAP_DJ && !fromApp) {
+		if (!GlobalConstants.OP_DEMO_SWAP_DJ && fromApp) {
 			System.err.println("*** DeleteNetwork - Call DJ VLAN swap...");
 			swapNetworkToInternet();
 		}
@@ -86,7 +86,7 @@ public class DJPremiseSDNAPI extends PremiseSDNAPI {
 		return result;
 	}
 
-	private boolean swapNetworkToInternet() {
+	public boolean swapNetworkToInternet() {
 		boolean result = false;
 
 		if (getSwapMethod() == GlobalConstants.SWAP_METHOD_SNMP) {

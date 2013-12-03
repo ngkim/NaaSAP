@@ -23,11 +23,13 @@ import com.kt.naas.GlobalConstants;
 import com.kt.naas.api.DJPremiseSDNAPI;
 import com.kt.naas.api.PremiseSDNAPI;
 import com.kt.naas.api.WMPremiseSDNAPI;
+import com.kt.naas.db.AddressDao;
 import com.kt.naas.db.DaoFactory;
 import com.kt.naas.db.DomainNetworkDao;
 import com.kt.naas.db.DomainNetworkEquipDao;
 import com.kt.naas.db.DomainNetworkPortDao;
 import com.kt.naas.db.PremiseNetworkServiceDao;
+import com.kt.naas.domain.Address;
 import com.kt.naas.domain.DomainNetwork;
 import com.kt.naas.domain.DomainNetworkEquip;
 import com.kt.naas.domain.DomainNetworkPort;
@@ -91,6 +93,10 @@ public class RequestPRNetworkProcessor extends RequestProcessor {
 							item.setSvcid(svcId);
 							item.setTenantid(tenantId);
 							item.setTenantname(tenantName);
+							
+							AddressDao addrDao = DaoFactory.getAddressDao();
+							Address address = addrDao.selectAddressByCustname(tenantName);
+							item.setAddr(address.getAddr());
 
 							item.setStatus(Integer.parseInt(returnCode));
 							item.setResultmsg(returnCodeDescription);

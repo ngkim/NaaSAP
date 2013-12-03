@@ -24,6 +24,8 @@ public class NetworkService {
 								// 종료일시
 	private String state;
 
+	private Timestamp regdate;
+	
 	public String getSvcId() {
 		return svcid;
 	}
@@ -155,6 +157,14 @@ public class NetworkService {
 
 	public void setState(String state) {
 		this.state = state;
+	}
+
+	public Timestamp getRegdate() {
+		return regdate;
+	}
+
+	public void setRegdate(Timestamp regdate) {
+		this.regdate = regdate;
 	}
 
 }

@@ -20,6 +20,14 @@ public class TransportNetworkServiceDao extends SqlMapClientDaoSupport {
 		return getSqlMapClientTemplate().queryForList("selectTransportNetworkService");
 	}
 	
+	public List<TransportNetworkService> selectTransportNetworkServiceBySvcId(String svcid)
+	{
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("svcid", svcid);
+		
+		return (List<TransportNetworkService>) getSqlMapClientTemplate().queryForList("selectTransportNetworkServiceBySvcId", params);
+	}
+	
 	public TransportNetworkService selectTransportNetworkServiceById(String transvcid, String equipid, String associatedswid, String svcid)
 	{
 		Map<String, String> params = new HashMap<String, String>();
@@ -44,5 +52,12 @@ public class TransportNetworkServiceDao extends SqlMapClientDaoSupport {
 		params.put("associatedswid", associatedswid);
 		params.put("svcid", svcid);
 		return getSqlMapClientTemplate().delete("deleteTransportNetworkServiceById", params);
+	}
+	
+	public int deleteTransportNetworkServiceBySvcId(String svcid)
+	{
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("svcid", svcid);
+		return getSqlMapClientTemplate().delete("deleteTransportNetworkServiceBySvcId", params);
 	}
 }

@@ -5,6 +5,7 @@
 <sqlMapConfig>
 	<sqlMap resource="Code.xml"/>
 	<sqlMap resource="Server.xml"/>
+	<sqlMap resource="Address.xml"/>
 	<sqlMap resource="DomainNetwork.xml"/>
 	<sqlMap resource="DomainNetworkLink.xml"/>
 	<sqlMap resource="DomainNetworkPort.xml"/>
