@@ -40,20 +40,20 @@ public class TestCreateTransportNetwork {
 		UNIPeer sw_cloud = new UNIPeer();
 		sw_cloud.setId("L2SW00013");
 		sw_cloud.setPort("1");
-		sw_cloud.setVlan("338");
+		sw_cloud.setVlan("10");
 					
 		peers.add(sw_cloud);
 		
 		UNIPeer sw_dj = new UNIPeer();
 		sw_dj.setId("L2SW00011");
 		sw_dj.setPort("22");
-		sw_dj.setVlan("338");
+		sw_dj.setVlan("10");
 		peers.add(sw_dj);
 		
 		UNIPeer sw_wm = new UNIPeer();
 		sw_wm.setId("L2SW00003");
 		sw_wm.setPort("26");
-		sw_wm.setVlan("338");
+		sw_wm.setVlan("10");
 					
 		peers.add(sw_wm);
 		
@@ -61,7 +61,7 @@ public class TestCreateTransportNetwork {
 		
 		QoS qos = new QoS();
 		
-		qos.setBandwidth("10M");
+		qos.setBandwidth("100M");
 		qos.setExceed("0");
 		
 		req.setQos(qos);
@@ -78,7 +78,7 @@ public class TestCreateTransportNetwork {
 			time.setStartTime();
 			
 			RequestCreateTransportNetwork req = generateRequest();
-			TransportSDNAPI api = new TransportSDNAPI(GlobalConstants.URL_TRANSPORT_SDN_API);
+			TransportSDNAPI api = new TransportSDNAPI(GlobalConstants.URL_TRANSPORT_SDN_API_TEST);
 			res = api.createNetwork(req);
 			
 			double duration = time.getDuration() / 1000;

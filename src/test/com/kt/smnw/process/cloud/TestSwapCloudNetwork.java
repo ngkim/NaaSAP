@@ -43,7 +43,7 @@ public class TestSwapCloudNetwork {
 			
 			RequestSwapCloudNetwork req = generateRequest();	
 		
-			CloudSDNAPI api = new CloudSDNAPI(GlobalConstants.URL_CLOUD_SDN_API);
+			CloudSDNAPI api = new CloudSDNAPI(GlobalConstants.URL_CLOUD_SDN_API_TEST);
 			res = api.swapNetwork(req);
 			
 			double duration = time.getDuration() / 1000;			

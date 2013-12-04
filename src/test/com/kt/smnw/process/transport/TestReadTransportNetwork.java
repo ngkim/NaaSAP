@@ -29,10 +29,10 @@ public class TestReadTransportNetwork {
 			time.setStartTime();
 			
 			req.setRid("NaaS");
-			req.setCid("NH_ADMIN");
-			req.setEid("NS_58277");
+			req.setCid("88888888880");
+			req.setEid("NS_63429");
 			
-			TransportSDNAPI api = new TransportSDNAPI(GlobalConstants.URL_TRANSPORT_SDN_API);
+			TransportSDNAPI api = new TransportSDNAPI(GlobalConstants.URL_TRANSPORT_SDN_API_TEST);
 			res = api.readNetwork(req);
 			
 			double duration = time.getDuration();			

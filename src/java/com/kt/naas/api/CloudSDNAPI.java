@@ -30,19 +30,18 @@ import com.kt.naas.xml.ResponseSwapCloudNetwork;
 
 public class CloudSDNAPI extends SDNAPI {
 
-	private String wmResponseXml = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?> <ResponseInfo>   <ReturnCode>200</ReturnCode>   <ReturnCodeDescription>Success</ReturnCodeDescription>   <TenantId>0be2a9fc8a7040d8963c9f67f521bdab</TenantId>   <TenantName>cloudsdn</TenantName>   "
+	private String readResponseXml = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?> <ResponseInfo>   <ReturnCode>200</ReturnCode>   <ReturnCodeDescription>Success</ReturnCodeDescription>   <TenantId>b999ba92afa2456287f7fd1a8b07e755</TenantId>   <TenantName>cloudsdn</TenantName>   "
 			+ "<VirtualNetworkList>	"
 			+ "<VirtualNetwork>	<VirtualNetworkName>우면_CDC망_1</VirtualNetworkName>		<VirtualNetworkID>d2f1b6e4-8721-4b66-a64a-6728d39862c2</VirtualNetworkID>		<Subnet>210.183.240.0/24</Subnet>	</VirtualNetwork>   "
 			+ "<VirtualNetwork>	<VirtualNetworkName>우면_CDC망_2</VirtualNetworkName>		<VirtualNetworkID>d1f1b6e4-8721-4b66-a64a-6728d39862c2</VirtualNetworkID>		<Subnet>210.183.241.0/24</Subnet>	</VirtualNetwork>   "
 			+ "<VirtualNetwork>	<VirtualNetworkName>우면_CDC망_3</VirtualNetworkName>		<VirtualNetworkID>d1f1b6e4-8721-4b66-a64a-6728d39862c2</VirtualNetworkID>		<Subnet>210.183.242.0/24</Subnet>	</VirtualNetwork>   "
 			+ "</VirtualNetworkList> </ResponseInfo>";
 	
-	/*String responseXml = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?><ResponseInfo><ReturnCode>200</ReturnCode><ReturnCodeDescription>Success</ReturnCodeDescription><DcSvcId>PSDN000001</DcSvcId><TenantId>b999ba92afa2456287f7fd1a8b07e755</TenantId><TenantName>cloudsdn</TenantName><NetworkList>	"
+	String createResponseXml = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?><ResponseInfo><ReturnCode>200</ReturnCode><ReturnCodeDescription>Success</ReturnCodeDescription><DcSvcId>PSDN000001</DcSvcId><TenantId>b999ba92afa2456287f7fd1a8b07e755</TenantId><TenantName>cloudsdn</TenantName><NetworkList>	"
 	+ "<NetworkName>net_cloudsdn</NetworkName>	<Subnet> 210.183.241.0/24</Subnet>	<VLANID>10</VLANID>	<Bandwidth>100M</Bandwidth>	"
 	+ "<ConnectionList>	           "
 	+ "<Switch>		<SWName>DC Aggregate SW</SWName>		<SWType>Aggregate</SWType>		<SWID>wm_cl_aggr_1</SWID>		<UpPort>1</UpPort>		<DownPort>3</DownPort>	          </Switch>	          "
 	+ "<Switch>		<SWName>DC ToR SW</SWName>		<SWType>ToR</SWType>		<SWID>wm_cl_tor_1 </SWID>		<UpPort>1</UpPort>		<DownPort>8</DownPort>	          </Switch>	</ConnectionList></NetworkList></ResponseInfo>";
-*/
 
 	public CloudSDNAPI(RequestMessage request, ResponseMessage response,
 			String apiServer) {
@@ -190,7 +189,7 @@ public class CloudSDNAPI extends SDNAPI {
 		try {
 			if (GlobalConstants.OP_DEMO_CLOUD) {
 				Thread.sleep(1000);
-				xml = wmResponseXml;
+				xml = readResponseXml;
 			} else {
 				xml = apiUtil.callAPI(getUrlCreate(),
 						GlobalConstants.HTTP_POST, requestXml);

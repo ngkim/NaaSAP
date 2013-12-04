@@ -259,7 +259,7 @@ public class ServiceUtils {
 
 			RequestDeleteTransportNetwork req = generateRequest(transportSvcId);
 			TransportSDNAPI api = new TransportSDNAPI(
-					GlobalConstants.URL_TRANSPORT_SDN_API_TEST);
+					GlobalConstants.URL_TRANSPORT_SDN_API);
 			res = api.deleteNetwork(req);
 
 			double duration = time.getDuration() / 1000;

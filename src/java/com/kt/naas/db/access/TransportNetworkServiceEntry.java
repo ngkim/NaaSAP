@@ -40,7 +40,7 @@ public class TransportNetworkServiceEntry {
 	 */
 	public void insert(String svcId, ResponseCreateTransportNetwork res) {
 		String strBw = "", strExceed = "";
-		
+				
 		QoS qos = res.getQos();
 		if (qos != null) {
 			strBw = qos.getBandwidth();

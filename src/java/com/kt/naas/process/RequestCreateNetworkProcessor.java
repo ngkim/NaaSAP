@@ -57,17 +57,22 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 			
 			if (resTransNW != null) {
 				if (resTransNW.getStatus().trim().equals("FAIL")) {
-					progress.update(svcReq.getCustId(), "Transport SDN에 요청한 Network 생성에 실패하였습니다.");
+					progress.update(svcReq.getCustId(), "Transport SDN에 요청한 Network 생성에 실패하였습니다. (Failed to creat Transport service)");
 					result = false;
 				} else {
-					TransportNetworkServiceEntry transNsEntry = new TransportNetworkServiceEntry();
-					transNsEntry.insert(svcId, resTransNW);
+					if (resTransNW.getId() == null) {
+						progress.update(svcReq.getCustId(), "Transport SDN에 요청한 Network 생성에 실패하였습니다. (Failed to creat Transport service)");
+						result = false;
+					} else {
+						TransportNetworkServiceEntry transNsEntry = new TransportNetworkServiceEntry();
+						transNsEntry.insert(svcId, resTransNW);
 				
-					progress.update(svcReq.getCustId(), "Transport SDN에 요청한 Network가 생성되었습니다.");
-					result = true;
+						progress.update(svcReq.getCustId(), "Transport SDN에 요청한 Network가 생성되었습니다.");
+						result = true;
+					}
 				}				
 			} else {
-				progress.update(svcReq.getCustId(), "Transport SDN에 요청한 Network 생성에 실패하였습니다.");
+				progress.update(svcReq.getCustId(), "Transport SDN에 요청한 Network 생성에 실패하였습니다. (No response from Transport SDN)");
 				result = false;
 			}			
 		} catch (Exception e) {
@@ -155,7 +160,7 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 
 			progress.update(svcReq.getCustId(),
 					"Cloud SDN에 Network 생성을 요청하였습니다.");
-
+			
 			ResponseCreateCloudNetwork nwRes = api.createNetwork(req);
 			if (nwRes != null) {
 							
@@ -166,8 +171,10 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 				DCNetworkServiceEntry dcNsEntry = new DCNetworkServiceEntry(isFromApp(svcReq.getCustId()));
 				dcNsEntry.insert(tn, svcId, nwRes);
 				
+				Thread.sleep(1000);
 				progress.update(svcReq.getCustId(),
 						"Cloud SDN에 요청한 Network가 생성되었습니다.");
+				Thread.sleep(1000);
 
 				result = true;
 			} else {
