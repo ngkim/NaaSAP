@@ -18,8 +18,6 @@ public class DeleteEmptyServices {
 
 	}
 
-	
-
 	public static void main(String[] args) {
 		ApplicationContext context = new ClassPathXmlApplicationContext(
 				"test-context.xml");

@@ -98,7 +98,7 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 	
 			progress.update(svcReq.getCustId(),
 					"Premise SDN에 Network 생성을 요청하였습니다.");
-			Thread.sleep(2000);
+			Thread.sleep(1000);
 			PremiseSDNAPI api = null;
 			if (tn.getTenantName().trim().equals("농협_전민지사")) {
 				api = new DJPremiseSDNAPI(request, response,
@@ -118,7 +118,8 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 			req.setBandwidth(svcReq.getBandwidth());
 			req.setCpSvcId(tn.getTenantName()); // TODO: need to updated...
 	
-			ResponseCreatePremiseNetwork nwRes = api.createNetwork(req, isFromApp(svcReq.getCustId()));
+			// Do not execute vlan swap even if it's called from app
+			ResponseCreatePremiseNetwork nwRes = api.createNetwork(req, false);
 			if (nwRes != null) {
 				progress.update(
 						svcReq.getCustId(),
@@ -161,7 +162,8 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 			progress.update(svcReq.getCustId(),
 					"Cloud SDN에 Network 생성을 요청하였습니다.");
 			
-			ResponseCreateCloudNetwork nwRes = api.createNetwork(req);
+			// Use demo mode if request comes from App
+			ResponseCreateCloudNetwork nwRes = api.createNetwork(req, isFromApp(svcReq.getCustId()));
 			if (nwRes != null) {
 							
 				if (GlobalConstants.OP_DEBUG)
@@ -213,8 +215,7 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 
 			// Notify current progress to Web
 			progress.update(svcReq.getCustId(), "네트워크 생성 요청을 준비 중입니다.");
-			Thread.sleep(2000);
-			
+						
 			ArrayList<TenantNetworkInfo> tnList = svcReq.getNetworklist();
 			if (GlobalConstants.OP_DEBUG)
 				System.out.println("[RequestCreateNetworkProcessor:processRequest] tnList.size= " + tnList.size());
@@ -237,7 +238,7 @@ public class RequestCreateNetworkProcessor extends RequestProcessor {
 				// TODO: Insert into database with fixed information
 			}
 
-			Thread.sleep(2000);
+			Thread.sleep(1000);
 			if (result )	{
 				// insert service entry after all step are done
 				NetworkServiceEntry nsEntry = new NetworkServiceEntry();

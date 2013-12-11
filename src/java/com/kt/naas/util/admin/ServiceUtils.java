@@ -1,5 +1,8 @@
 package com.kt.naas.util.admin;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -105,6 +108,27 @@ public class ServiceUtils {
 
 		return dcSvcId;
 	}
+	
+	private void storeSvcId(String fileName, String svcId) {
+		FileWriter output = null;
+		try {
+			output = new FileWriter(fileName);
+			BufferedWriter writer = new BufferedWriter(output);
+			writer.write(svcId);
+			if (writer != null)
+				writer.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (output != null) {
+				try {
+					output.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 
 	public void printTransportSvcId(String svcId, boolean delete) {
 		// 1. Select latest service id
@@ -120,6 +144,9 @@ public class ServiceUtils {
 			for (int i = 0; i < nsList.size(); i++) {
 				TransportNetworkService ns = nsList.get(i);
 				transportSvcId = ns.getTransvcid();
+				
+				// store svc id for future use
+				storeSvcId("id.transport", transportSvcId);
 				
 				if (transportSvcId.trim().equals(oldId.trim())) break; // to avoid sending delete request twice for a transport service
 				
@@ -197,16 +224,22 @@ public class ServiceUtils {
 
 		List<NetworkService> nsList = dao.selectNetworkService();
 
-		String svcId = null;
+		String svcId = null, svcName = null, state = null;
 		if (nsList != null) {
 			for (int i = 0; i < nsList.size(); i++) {
 				NetworkService ns = nsList.get(i);
 				svcId = ns.getSvcId();
-
-				if (svcId != null) {
-					String regdate = new SimpleDateFormat("MM/dd HH:MM").format(ns.getRegdate());
-					System.out.printf("%s SVCNAME= %-20s SVCID= %s\n", regdate, ns.getSvcName(), svcId);
-					break;
+				svcName = ns.getSvcName();
+				state = ns.getState();
+				
+				if (svcName != null) {
+					// state is fixed F, then continue
+					if (svcName.trim().equals("FromApp") || state.trim().equals("F")) 	continue;
+					else {
+						String regdate = new SimpleDateFormat("MM/dd HH:MM").format(ns.getRegdate());
+						System.out.printf("%s SVCNAME= %-20s SVCID= %s\n", regdate, ns.getSvcName(), svcId);
+						break;	
+					}
 				}
 			}
 		}

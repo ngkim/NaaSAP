@@ -1,3 +1,6 @@
 eclipse.preferences.version=1
+encoding//src/java/com/kt/naas/domain/TransportNetworkService.java=UTF-8
 encoding//src/java/com/kt/naas/util/SnmpUtils.java=EUC-KR
 encoding//src/java/com/kt/naas/util/TimeUtils.java=UTF-8
+encoding//src/test/com/kt/smnw/process/premise/TestCreateDJPremiseNetwork.java=UTF-8
+encoding/<project>=UTF-8

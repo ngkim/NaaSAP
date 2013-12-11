@@ -7,6 +7,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 
 import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.SSLSession;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -31,18 +32,18 @@ import com.kt.naas.GlobalConstants;
 import com.sun.xml.internal.messaging.saaj.packaging.mime.Header;
 
 public class RestAPIUtils {
-	
-	public String callAPI(String url, int method,
-			String requestXml) throws Exception {
+
+	public String callAPI(String url, int method, String requestXml)
+			throws Exception {
 		String responseXml = "";
-		
+
 		PrintUtils pu = new PrintUtils();
 		if (GlobalConstants.OP_DEBUG) {
 			pu.printKeyAndValue("callAPI URL", url);
 		}
 		HttpResponse httpRes = requestToAPIServer(url, method, requestXml);
 		responseXml = getResponseXml(httpRes);
-		
+
 		return responseXml;
 	}
 
@@ -53,13 +54,13 @@ public class RestAPIUtils {
 		HttpClient client = new DefaultHttpClient();
 		if (method == GlobalConstants.HTTP_GET) {
 			HttpGet req = new HttpGet(url);
-			
+
 			res = client.execute(req);
 		} else if (method == GlobalConstants.HTTP_POST) {
 			HttpPost req = new HttpPost(url);
 			StringEntity entity = new StringEntity(requestXml, "UTF-8");
 			req.setEntity(entity);
-			
+
 			res = client.execute(req);
 		}
 
@@ -71,8 +72,8 @@ public class RestAPIUtils {
 			return true;
 		}
 	}
-
-	public String requestToAPIServerHttps(String url, String requestXml) throws Exception {
+	
+	private String callAPIServerHttps(String url, String requestXml) throws Exception {
 		String response;
 
 		SslConfigurator sslConfig = SslConfigurator.newInstance()
@@ -85,15 +86,29 @@ public class RestAPIUtils {
 				.sslContext(sslConfig.createSSLContext()).build();
 
 		client.register(new HttpBasicAuthFilter("admin", "admin"));
-		
-		Entity<String> entity = Entity.entity(requestXml, MediaType.APPLICATION_XML_TYPE);
-		
+
+		Entity<String> entity = Entity.entity(requestXml,
+				MediaType.APPLICATION_XML_TYPE);
+
 		Response res = client.target(url)
 				.request(MediaType.APPLICATION_XML_TYPE).post(entity);
-		
+
 		response = res.readEntity(String.class);
 		client.close();
 
+		return response;
+	}
+
+	public String requestToAPIServerHttps(String url, String requestXml) throws Exception {
+		String response;
+
+		try {
+			response = callAPIServerHttps(url, requestXml);
+		} catch (SSLHandshakeException sslex) {
+			System.out.println("Error!!! " + sslex.getMessage() + " Retry...");
+			Thread.sleep(1000); // wait for 1 second and retry
+			response = callAPIServerHttps(url, requestXml);
+		}
 		return response;
 	}
 

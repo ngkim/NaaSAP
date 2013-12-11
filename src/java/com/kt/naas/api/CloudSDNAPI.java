@@ -37,11 +37,16 @@ public class CloudSDNAPI extends SDNAPI {
 			+ "<VirtualNetwork>	<VirtualNetworkName>우면_CDC망_3</VirtualNetworkName>		<VirtualNetworkID>d1f1b6e4-8721-4b66-a64a-6728d39862c2</VirtualNetworkID>		<Subnet>210.183.242.0/24</Subnet>	</VirtualNetwork>   "
 			+ "</VirtualNetworkList> </ResponseInfo>";
 	
-	String createResponseXml = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?><ResponseInfo><ReturnCode>200</ReturnCode><ReturnCodeDescription>Success</ReturnCodeDescription><DcSvcId>PSDN000001</DcSvcId><TenantId>b999ba92afa2456287f7fd1a8b07e755</TenantId><TenantName>cloudsdn</TenantName><NetworkList>	"
-	+ "<NetworkName>net_cloudsdn</NetworkName>	<Subnet> 210.183.241.0/24</Subnet>	<VLANID>10</VLANID>	<Bandwidth>100M</Bandwidth>	"
-	+ "<ConnectionList>	           "
-	+ "<Switch>		<SWName>DC Aggregate SW</SWName>		<SWType>Aggregate</SWType>		<SWID>wm_cl_aggr_1</SWID>		<UpPort>1</UpPort>		<DownPort>3</DownPort>	          </Switch>	          "
-	+ "<Switch>		<SWName>DC ToR SW</SWName>		<SWType>ToR</SWType>		<SWID>wm_cl_tor_1 </SWID>		<UpPort>1</UpPort>		<DownPort>8</DownPort>	          </Switch>	</ConnectionList></NetworkList></ResponseInfo>";
+	String createResponseXml = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>"
+			+ "<ResponseInfo><ReturnCode>200</ReturnCode><ReturnCodeDescription>Success</ReturnCodeDescription>"
+			+ "<DcSvcId>PSDN000001</DcSvcId><TenantId>b999ba92afa2456287f7fd1a8b07e755</TenantId><TenantName>cloudsdn</TenantName>"
+			+ "<NetworkList>    "
+			+ "<NetworkName>net_cloudsdn</NetworkName> <Subnet>210.183.241.0/24</Subnet>       <VLANID>10</VLANID>     <Bandwidth>10M</Bandwidth>     "
+			+ "<ConnectionList>                   "
+			+ "<Switch>             <SWName>DC Aggregate SW</SWName>                <SWType>Aggregate</SWType>              <SWID>wm_cl_aggr_1</SWID>               <UpPort>1</UpPort>              <DownPort>3</DownPort>            </Switch>"
+			+ "               "
+			+ "<Switch>              <SWName>DC ToR SW</SWName>              <SWType>ToR</SWType>            <SWID>wm_cl_tor_1</SWID>                <UpPort>1</UpPort>              <DownPort>8</DownPort>            </Switch>     "
+			+ "</ConnectionList></NetworkList></ResponseInfo>";
 
 	public CloudSDNAPI(RequestMessage request, ResponseMessage response,
 			String apiServer) {
@@ -63,11 +68,18 @@ public class CloudSDNAPI extends SDNAPI {
 	}
 
 	public ResponseCreateCloudNetwork createNetwork(
-			RequestCreateCloudNetwork req) {
+			RequestCreateCloudNetwork req, boolean demo) {
 		ResponseCreateCloudNetwork resCloudNW = new ResponseCreateCloudNetwork();
 
+		String responseXml = "";
 		try {
-			String responseXml = apiUtil.callAPI(getUrlCreate(), GlobalConstants.HTTP_POST, getRequestXML(req));
+			if (demo) {
+				System.out.println("[CloudSDNAPI:createNetwork] Demo mode...");
+				responseXml = createResponseXml;
+				Thread.sleep(1000);
+			} else {
+				responseXml = apiUtil.callAPI(getUrlCreate(), GlobalConstants.HTTP_POST, getRequestXML(req));
+			}
 			
 			resCloudNW = xmlToResponse(responseXml, resCloudNW);
 		} catch (Exception e) {
